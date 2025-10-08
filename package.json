@@ -44,6 +44,16 @@
         "command": "colorful-titlebar.controlPanel",
         "title": "%command.controlPanel.title%",
         "category": "%extension.category%"
+      },
+      {
+        "command": "colorful-titlebar.applyGlow",
+        "title": "%command.applyGlow.title%",
+        "category": "%extension.category%"
+      },
+      {
+        "command": "colorful-titlebar.removeGlow",
+        "title": "%command.removeGlow.title%",
+        "category": "%extension.category%"
       }
     ],
     "configuration": {
