@@ -1,14 +1,18 @@
 import { ExtensionContext, workspace } from 'vscode';
-import { injectMarker } from '@/core/marker.js';
+import { Marker } from '@/core/marker.js';
 import registers from '@/registers.js';
+import hacker from '@/core/hacker';
 
 export const activate = async (context: ExtensionContext) => {
-  injectMarker();
+  await hacker.apply();
+  const marker = new Marker();
 
-  context.subscriptions.push(workspace.onDidChangeWorkspaceFolders(injectMarker));
-
-  // Register commands
   registers(context);
+
+  context.subscriptions.push(
+    marker.item,
+    workspace.onDidChangeWorkspaceFolders(() => marker.update())
+  );
 };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function

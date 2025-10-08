@@ -1,13 +1,14 @@
 import { window } from 'vscode';
 import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
+
 import { i18n } from '@/misc/i18n.js';
-import { searchWorkbenchCss, getCssColors, getColorIndexFromWorkspace } from './utils.js';
+import { searchWorkbenchCss, getCssColors } from './utils.js';
 
 const Css = {
   token: '\u002F\u002A__JETBRAINS_TITLEBAR_KASUKABETSUMUGI__\u002A\u002F',
   // CSS template with :has() selector to target titlebar based on injected element's class
-  template: `#workbench\u005C\u002Eparts\u005C\u002Etitlebar:has(.jb-titlebar-glow-marker.jb-color-{{index}})::before{
+  template: `#workbench\u005C\u002Eparts\u005C\u002Etitlebar:has(#KasukabeTsumugi.jetbrains-titlebar[aria-label="KS{{index}}"])::before{
       content: '';
       position: absolute;
       width: 200px;
