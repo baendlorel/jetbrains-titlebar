@@ -1,8 +1,6 @@
 {
-  "extension.category": "Colorful Titlebar",
-  "configuration.title": "Colorful Titlebar",
-  "command.controlPanel.title": "Open Control Panel",
+  "extension.category": "JetBrains Titlebar",
+  "configuration.title": "JetBrains Titlebar",
   "command.applyGlow.title": "Apply Titlebar Glow Effect",
-  "command.removeGlow.title": "Remove Titlebar Glow Effect",
-  "configuration.akasha.description": "This is encrypted user settings. Open the Colorful Titlebar Control Panel from the command palette to modify settings. Note that only global settings will be loaded."
+  "command.removeGlow.title": "Remove Titlebar Glow Effect"
 }

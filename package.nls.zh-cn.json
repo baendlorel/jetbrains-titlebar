@@ -1,8 +1,6 @@
 {
-  "extension.category": "Colorful Titlebar",
-  "configuration.title": "彩色标题栏",
-  "command.controlPanel.title": "打开Colorful Titlebar控制面板",
+  "extension.category": "JetBrains Titlebar",
+  "configuration.title": "JetBrains标题栏",
   "command.applyGlow.title": "应用标题栏光晕效果",
-  "command.removeGlow.title": "移除标题栏光晕效果",
-  "configuration.akasha.description": "这是简单加密后的用户设置。从命令面板打开Colorful Titlebar控制面板可以修改设置。需注意只会加载本插件的全局设置，不会加载工作区里的。"
+  "command.removeGlow.title": "移除标题栏光晕效果"
 }
