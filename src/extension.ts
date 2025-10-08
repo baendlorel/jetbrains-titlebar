@@ -1,17 +1,11 @@
 import vscode from 'vscode';
-import { injectTitlebarMarker, updateTitlebarMarker } from '@/core/marker.js';
+import { injectMarker } from '@/core/marker.js';
 import registers from '@/registers.js';
 
 export const activate = async (context: vscode.ExtensionContext) => {
-  // Inject the titlebar marker on activation
-  injectTitlebarMarker();
+  injectMarker();
 
-  // Update marker when workspace folders change
-  context.subscriptions.push(
-    vscode.workspace.onDidChangeWorkspaceFolders(() => {
-      updateTitlebarMarker();
-    })
-  );
+  context.subscriptions.push(vscode.workspace.onDidChangeWorkspaceFolders(injectMarker));
 
   // Register commands
   registers(context);

@@ -4,7 +4,7 @@ import { getColorIndexFromWorkspace } from './utils.js';
  * Inject a marker element into the titlebar to identify the current workspace color
  * This marker will be used by CSS :has() selector to apply the correct glow color
  */
-export function injectTitlebarMarker(): void {
+export function injectMarker(): void {
   const colorIndex = getColorIndexFromWorkspace();
 
   // Remove any existing markers first
@@ -30,11 +30,4 @@ export function injectTitlebarMarker(): void {
 export function removeTitlebarMarker(): void {
   const existingMarkers = document.querySelectorAll('.jb-titlebar-glow-marker');
   existingMarkers.forEach((marker) => marker.remove());
-}
-
-/**
- * Update the marker when workspace changes
- */
-export function updateTitlebarMarker(): void {
-  injectTitlebarMarker();
 }
