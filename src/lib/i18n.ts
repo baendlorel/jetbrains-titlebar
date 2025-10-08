@@ -8,6 +8,7 @@ const zh = {
   'hacker.get-css-path.auto-found.title': '已自动找到 CSS 文件',
   'hacker.get-css-path.auto-found.placeHolder': '使用此路径',
   'hacker.get-css-path.not-found': '文件不存在，请检查路径',
+  'hacker.clean.success': '样式清理成功',
 };
 
 const en = {
@@ -19,6 +20,7 @@ const en = {
   'hacker.get-css-path.auto-found.title': 'CSS file found automatically',
   'hacker.get-css-path.auto-found.placeHolder': 'Use this path',
   'hacker.get-css-path.not-found': 'File not found, please check the path',
+  'hacker.clean.success': 'Style cleanup succeeded',
 } satisfies typeof zh;
 
 export const i18n = env.language.startsWith('en') ? en : zh;

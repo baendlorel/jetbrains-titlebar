@@ -80,7 +80,7 @@ class Hacker {
     const css = await readFile(cssPath, 'utf8');
     const lines = this.purge(css.split('\n'));
     await writeFile(cssPath, lines.join('\n'), 'utf8');
-    window.showInformationMessage(i18n['hacker.get-css-path.success']);
+    window.showInformationMessage(i18n['hacker.clean.success']);
   }
 
   async apply(): Promise<void> {
