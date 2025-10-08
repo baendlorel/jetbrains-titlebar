@@ -3,8 +3,8 @@
     "module": "ESNext",
     "target": "ESNext",
     "moduleResolution": "node",
-    "declaration": false, // 是否生成声明文件, 选择false然后由rollup配置全权掌握
-    "esModuleInterop": true, // 可选，增强兼容性
+    "declaration": false,
+    "esModuleInterop": true,
     "strict": true,
     "outDir": "out",
     "baseUrl": ".",
@@ -12,5 +12,5 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*.ts", "tests/**/*.ts", "plugins/**/*.ts"]
+  "include": ["src/**/*.ts", "tests/**/*.ts"]
 }

@@ -1,4 +1,4 @@
-import { ExtensionContext, workspace } from 'vscode';
+import { ExtensionContext, window, workspace } from 'vscode';
 import { Marker } from '@/core/marker.js';
 import registers from '@/registers.js';
 import hacker from '@/core/hacker';
@@ -11,7 +11,17 @@ export const activate = async (context: ExtensionContext) => {
 
   context.subscriptions.push(
     marker.item,
-    workspace.onDidChangeWorkspaceFolders(() => marker.update())
+    workspace.onDidChangeWorkspaceFolders(() => marker.update()),
+    // Listen for intensity changes and re-inject styles automatically
+    workspace.onDidChangeConfiguration(async (e) => {
+      if (e.affectsConfiguration('jetbrains-titlebar.intensity')) {
+        hacker
+          .apply()
+          .catch((err) =>
+            window.showErrorMessage(err instanceof Error ? err.message : String(err))
+          );
+      }
+    })
   );
 };
 

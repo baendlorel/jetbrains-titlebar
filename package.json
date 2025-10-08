@@ -68,10 +68,6 @@
     "configuration": {
       "title": "%configuration.title%",
       "properties": {
-        "jetbrains-titlebar.akasha": {
-          "type": "string",
-          "default": ""
-        },
         "jetbrains-titlebar.intensity": {
           "type": "number",
           "default": 32,
