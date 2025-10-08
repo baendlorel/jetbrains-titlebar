@@ -2,25 +2,10 @@ import { window } from 'vscode';
 import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 
-import { i18n } from '@/misc/i18n.js';
+import { i18n } from '@/lib/i18n.js';
 import { searchWorkbenchCss, getCssColors } from './utils.js';
 
-const Css = {
-  token: '\u002F\u002A__JETBRAINS_TITLEBAR_KASUKABETSUMUGI__\u002A\u002F',
-  // CSS template with :has() selector to target titlebar based on injected element's class
-  template: `#workbench\u005C\u002Eparts\u005C\u002Etitlebar:has(#KasukabeTsumugi.jetbrains-titlebar[aria-label="KS{{index}}"])::before{
-      content: '';
-      position: absolute;
-      width: 200px;
-      height: 125%;
-      top: -12.5%;
-      left: 0;
-      background: radial-gradient(ellipse at left, {{color}}80 0%, {{color}}40 30%, transparent 72%);
-      pointer-events: none;
-      z-index: 1;
-    }`,
-};
-
+// * /mnt/d/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css
 class Hacker {
   /**
    * Get the path to the workbench CSS file

@@ -5,7 +5,7 @@ export class Marker {
   readonly item: StatusBarItem;
   constructor() {
     this.item = window.createStatusBarItem(StatusBarAlignment.Left, NaN);
-    this.item.text = 'Ready';
+    this.update();
     this.item.color = 'red'; // 'transparent';
     this.item.show();
   }
