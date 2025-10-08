@@ -9,6 +9,10 @@
   "engines": {
     "vscode": "^1.74.0"
   },
+  "author": {
+    "email": "futami16237@gmail.com",
+    "name": "Kasukabe Tsumugi"
+  },
   "categories": [
     "Themes"
   ],
@@ -67,6 +71,7 @@
     }
   },
   "scripts": {
+    "test-build": "rimraf out && rollup -c",
     "build": "rimraf out && rollup -c",
     "watch": "tsc -watch -p ./",
     "check": "tsc -p tsconfig.build.json",
