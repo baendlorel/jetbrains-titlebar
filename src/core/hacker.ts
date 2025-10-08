@@ -1,4 +1,4 @@
-import { window } from 'vscode';
+import { window, workspace } from 'vscode';
 import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 
@@ -8,11 +8,41 @@ import { searchWorkbenchCss, getCssColors } from './utils.js';
 // * /mnt/d/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css
 class Hacker {
   /**
+   * Get cached CSS path from configuration
+   */
+  private getCachedCssPath(): string | null {
+    const config = workspace.getConfiguration('jetbrains-titlebar');
+    const cachedPath = config.get<string>('cssPath', '');
+
+    if (cachedPath && existsSync(cachedPath)) {
+      return cachedPath;
+    }
+    return null;
+  }
+
+  /**
+   * Save CSS path to configuration
+   */
+  private async saveCssPath(path: string): Promise<void> {
+    const config = workspace.getConfiguration('jetbrains-titlebar');
+    await config.update('cssPath', path, true);
+  }
+
+  /**
    * Get the path to the workbench CSS file
    * Auto-search common locations first, then prompt user if not found
+   * @param forceRelocate Force re-search even if cached path exists
    * @returns The CSS file path, or null if not found or user cancels input
    */
-  async getWorkbenchCssPath(): Promise<string | null> {
+  async getWorkbenchCssPath(forceRelocate = false): Promise<string | null> {
+    // Try to use cached path first (unless force relocate)
+    if (!forceRelocate) {
+      const cachedPath = this.getCachedCssPath();
+      if (cachedPath) {
+        return cachedPath;
+      }
+    }
+
     // Try to find CSS file automatically
     const autoPath = await searchWorkbenchCss();
     if (autoPath) {
@@ -21,6 +51,7 @@ class Hacker {
         placeHolder: `${i18n['hacker.get-css-path.auto-found.placeHolder']}: ${autoPath}`,
       });
       if (useAuto === 'Yes') {
+        await this.saveCssPath(autoPath);
         return autoPath;
       }
     }
@@ -38,7 +69,10 @@ class Hacker {
       }
       return null;
     }
-    return input.trim();
+
+    const trimmedPath = input.trim();
+    await this.saveCssPath(trimmedPath);
+    return trimmedPath;
   }
 
   /**
@@ -52,15 +86,18 @@ class Hacker {
 
   /**
    * Inject gradient CSS styles into the workbench CSS file
-   * Creates CSS rules for all color classes using :has() selector
-   * @param cssPath Path to the workbench CSS file
    */
   private async inject(cssPath: string): Promise<void> {
+    const config = workspace.getConfiguration('jetbrains-titlebar');
+    const raw = Number(config.get<number>('intensity', Consts.DefaultIndensity));
+    const intensity = Number.isSafeInteger(raw)
+      ? Math.max(0, Math.min(100, raw)) / 100
+      : Consts.DefaultIndensity;
+
     const colors = getCssColors();
-    const base = Css.base.replace(/\n[\s]+/g, '');
+    const base = Css.base.replace(/\n[\s]+/g, '').replace('{{opacity}}', String(intensity));
     const template = Css.template.replace(/\n[\s]+/g, '');
 
-    // Generate CSS rules for all colors with their index
     const styles = colors.map((color, index) =>
       template.replaceAll('{{color}}', color).replaceAll('{{index}}', String(index))
     );
@@ -98,6 +135,17 @@ class Hacker {
       return;
     }
     await this.clean(cssPath);
+  }
+
+  /**
+   * Force relocate CSS file path by clearing cache and searching again
+   */
+  async relocate(): Promise<void> {
+    const cssPath = await this.getWorkbenchCssPath(true);
+    if (!cssPath) {
+      return;
+    }
+    window.showInformationMessage(i18n['hacker.relocate.success']);
   }
 }
 

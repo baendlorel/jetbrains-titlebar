@@ -2,5 +2,8 @@
   "extension.category": "JetBrains Titlebar",
   "configuration.title": "JetBrains Titlebar",
   "command.applyGlow.title": "Apply Titlebar Glow Effect",
-  "command.removeGlow.title": "Remove Titlebar Glow Effect"
+  "command.removeGlow.title": "Remove Titlebar Glow Effect",
+  "command.relocateCssPath.title": "Relocate CSS File Path",
+  "configuration.intensity.description": "Glow effect intensity as percentage (0-100)",
+  "configuration.cssPath.description": "Cached workbench CSS file path"
 }

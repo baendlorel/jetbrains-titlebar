@@ -1,14 +1,18 @@
-import vscode from 'vscode';
+import { commands, ExtensionContext, Disposable } from 'vscode';
 import hacker from '@/core/hacker.js';
 
-export default (context: vscode.ExtensionContext) => {
-  const commands: vscode.Disposable[] = [
-    vscode.commands.registerCommand('jetbrains-titlebar.applyGlow', async () => {
+export default (context: ExtensionContext) => {
+  const list: Disposable[] = [
+    commands.registerCommand('jetbrains-titlebar.applyGlow', async () => {
       await hacker.apply();
     }),
-    vscode.commands.registerCommand('jetbrains-titlebar.removeGlow', async () => {
+    commands.registerCommand('jetbrains-titlebar.removeGlow', async () => {
       await hacker.none();
     }),
+    commands.registerCommand('jetbrains-titlebar.relocateCssPath', async () => {
+      await hacker.relocate();
+    }),
   ].filter((v) => v !== undefined);
-  context.subscriptions.push(...commands);
+
+  context.subscriptions.push(...list);
 };

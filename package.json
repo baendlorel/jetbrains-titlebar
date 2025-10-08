@@ -58,6 +58,11 @@
         "command": "jetbrains-titlebar.removeGlow",
         "title": "%command.removeGlow.title%",
         "category": "%extension.category%"
+      },
+      {
+        "command": "jetbrains-titlebar.relocateCssPath",
+        "title": "%command.relocateCssPath.title%",
+        "category": "%extension.category%"
       }
     ],
     "configuration": {
@@ -66,12 +71,24 @@
         "jetbrains-titlebar.akasha": {
           "type": "string",
           "default": ""
+        },
+        "jetbrains-titlebar.intensity": {
+          "type": "number",
+          "default": 32,
+          "minimum": 0,
+          "maximum": 100,
+          "description": "%configuration.intensity.description%"
+        },
+        "jetbrains-titlebar.cssPath": {
+          "type": "string",
+          "default": "",
+          "description": "%configuration.cssPath.description%"
         }
       }
     }
   },
   "scripts": {
-    "test-build": "rimraf out &&  tsx ./.scripts/rollup.ts",
+    "test-build": "rimraf out && export NODE_ENV=dev && tsx ./.scripts/rollup.ts",
     "build": "rimraf out &&  tsx ./.scripts/rollup.ts",
     "watch": "tsc -watch -p ./",
     "check": "tsc -p tsconfig.build.json",
@@ -92,7 +109,7 @@
     "@vscode/vsce": "^3.0.0",
     "rimraf": "^6.0.1",
     "rollup": "^4.52.4",
-    "rollup-plugin-conditional-compilation": "^1.0.4",
+    "rollup-plugin-conditional-compilation": "^1.0.6",
     "rollup-plugin-const-enum": "^1.1.1",
     "rollup-plugin-dts": "^6.2.1",
     "rollup-plugin-func-macro": "^1.1.1",

@@ -156,9 +156,11 @@ export async function searchWorkbenchCss(): Promise<string | null> {
     );
   }
 
+  // #if DEBUG
   possiblePaths.push(
     '/mnt/d/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css'
   );
+  // #endif
 
   // Check each path
   for (const path of possiblePaths) {

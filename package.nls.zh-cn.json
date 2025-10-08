@@ -2,5 +2,8 @@
   "extension.category": "JetBrains Titlebar",
   "configuration.title": "JetBrains标题栏",
   "command.applyGlow.title": "应用标题栏光晕效果",
-  "command.removeGlow.title": "移除标题栏光晕效果"
+  "command.removeGlow.title": "移除标题栏光晕效果",
+  "command.relocateCssPath.title": "重新定位 CSS 文件路径",
+  "configuration.intensity.description": "光晕效果强度（0-100，单位：%）",
+  "configuration.cssPath.description": "缓存的 workbench CSS 文件路径"
 }
