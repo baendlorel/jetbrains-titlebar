@@ -11,6 +11,7 @@ import terser from '@rollup/plugin-terser';
 import replace from '@rollup/plugin-replace';
 import funcMacro from 'rollup-plugin-func-macro';
 import constEnum from 'rollup-plugin-const-enum';
+import conditional from 'rollup-plugin-conditional-compilation';
 
 // custom plugins
 import { replaceLiteralOpts, replaceOpts } from './.scripts/replace.mjs';

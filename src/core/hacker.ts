@@ -57,6 +57,7 @@ class Hacker {
    */
   private async inject(cssPath: string): Promise<void> {
     const colors = getCssColors();
+    const base = Css.base.replace(/\n[\s]+/g, '');
     const template = Css.template.replace(/\n[\s]+/g, '');
 
     // Generate CSS rules for all colors with their index
@@ -67,7 +68,7 @@ class Hacker {
     const css = await readFile(cssPath, 'utf8');
     const lines = this.purge(css.split('\n'));
 
-    lines.push(`${Css.token}${styles.join('')}`);
+    lines.push(`${Css.token}${base}${styles.join('')}`);
     await writeFile(cssPath, lines.join('\n'), 'utf8');
     window.showInformationMessage(i18n['hacker.get-css-path.success']);
   }

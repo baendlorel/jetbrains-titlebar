@@ -41,6 +41,9 @@ importers:
       rollup:
         specifier: ^4.52.4
         version: 4.52.4
+      rollup-plugin-conditional-compilation:
+        specifier: ^1.0.4
+        version: 1.0.4
       rollup-plugin-const-enum:
         specifier: ^1.1.1
         version: 1.1.1
@@ -1313,6 +1316,9 @@ packages:
     resolution: {integrity: sha512-9dkvaxAsk/xNXSJzMgFqqMCuFgt2+KsOFek3TMLfo8NCPfWpBmqwyNn5Y+NX56QUYfCtsyhF3ayiboEoUmJk/A==}
     engines: {node: 20 || >=22}
     hasBin: true
+
+  rollup-plugin-conditional-compilation@1.0.4:
+    resolution: {integrity: sha512-5kk9k0Yo3yJFuXMKowt6F+busxyystc44HoYzYdxMs0+PKI/qna+GnTtixH9quNNQaPo5g2lhtuNuRwr1u0+zg==}
 
   rollup-plugin-const-enum@1.1.1:
     resolution: {integrity: sha512-+Rmd98Xhp06WgviT+0+j8voH1mccFNdLLPWO+Vseko0LJMwqU89PmI5RVKQ7Q71HU44hACHe3s5A9NfGQfD+Rg==}
@@ -2954,6 +2960,10 @@ snapshots:
     dependencies:
       glob: 11.0.3
       package-json-from-dist: 1.0.1
+
+  rollup-plugin-conditional-compilation@1.0.4:
+    dependencies:
+      acorn: 8.15.0
 
   rollup-plugin-const-enum@1.1.1: {}
 

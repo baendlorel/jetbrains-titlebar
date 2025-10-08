@@ -71,8 +71,8 @@
     }
   },
   "scripts": {
-    "test-build": "rimraf out && tsx ./.scripts/rollup.ts",
-    "build": "rimraf out && tsx ./.scripts/rollup.ts",
+    "test-build": "rimraf out &&  tsx ./.scripts/rollup.ts",
+    "build": "rimraf out &&  tsx ./.scripts/rollup.ts",
     "watch": "tsc -watch -p ./",
     "check": "tsc -p tsconfig.build.json",
     "test": "tsx tests/index.test.ts",
@@ -92,6 +92,7 @@
     "@vscode/vsce": "^3.0.0",
     "rimraf": "^6.0.1",
     "rollup": "^4.52.4",
+    "rollup-plugin-conditional-compilation": "^1.0.4",
     "rollup-plugin-const-enum": "^1.1.1",
     "rollup-plugin-dts": "^6.2.1",
     "rollup-plugin-func-macro": "^1.1.1",
