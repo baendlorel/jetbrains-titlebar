@@ -1,6 +1,7 @@
 import vscode from 'vscode';
 import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
+import { i18n } from '@/misc/i18n';
 
 const Css = {
   token: '\u002F\u002A__JETBRAINS_TITLEBAR_KASUKABETSUMUGI__\u002A\u002F',
@@ -26,18 +27,15 @@ class Hacker {
    */
   async getWorkbenchCssPath(): Promise<string | null> {
     const input = await vscode.window.showInputBox({
-      title: this.Enable.title,
-      prompt: this.Enable.prompt,
-      placeHolder: this.Enable.placeHolder,
+      title: i18n['hacker.get-css-path.title'],
+      prompt: i18n['hacker.get-css-path.prompt'],
+      placeHolder: i18n['hacker.get-css-path.placeHolder'],
       ignoreFocusOut: true,
     });
     if (!input || !existsSync(input.trim())) {
       return null;
     }
-
-    cssPath = input.trim();
-    await configs.setWorkbenchCssPath(cssPath);
-    return cssPath;
+    return input.trim();
   }
 
   /**
@@ -64,7 +62,7 @@ class Hacker {
 
     lines.push(`${Css.token}${style}`);
     await writeFile(cssPath, lines.join('\n'), 'utf8');
-    vscode.window.showInformationMessage(this.Enable.success);
+    vscode.window.showInformationMessage(i18n['hacker.get-css-path.success']);
   }
 
   /**
@@ -75,7 +73,7 @@ class Hacker {
     const css = await readFile(cssPath, 'utf8');
     const lines = this.purge(css.split('\n'));
     await writeFile(cssPath, lines.join('\n'), 'utf8');
-    vscode.window.showInformationMessage(this.Enable.success);
+    vscode.window.showInformationMessage(i18n['hacker.get-css-path.success']);
   }
 
   async apply(): Promise<void> {
