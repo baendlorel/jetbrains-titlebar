@@ -1,0 +1,6 @@
+{
+  "extension.category": "Colorful Titlebar",
+  "configuration.title": "Colorful Titlebar",
+  "command.controlPanel.title": "Open Control Panel",
+  "configuration.akasha.description": "This is encrypted user settings. Open the Colorful Titlebar Control Panel from the command palette to modify settings. Note that only global settings will be loaded."
+}
