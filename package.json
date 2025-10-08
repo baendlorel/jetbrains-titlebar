@@ -75,6 +75,13 @@
           "maximum": 100,
           "description": "%configuration.intensity.description%"
         },
+        "jetbrains-titlebar.glowDiameter": {
+          "type": "number",
+          "default": 260,
+          "minimum": 0,
+          "maximum": 2000,
+          "description": "%configuration.glowDiameter.description%"
+        },
         "jetbrains-titlebar.cssPath": {
           "type": "string",
           "default": "",

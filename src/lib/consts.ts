@@ -1,9 +1,9 @@
-declare const enum Css {
+const enum Css {
   token = '\u002F\u002A__JETBRAINS_TITLEBAR_KASUKABETSUMUGI__\u002A\u002F',
   base = `body:has(#KasukabeTsumugi\u005C\u002Ejetbrains-titlebar) #workbench\u005C\u002Eparts\u005C\u002Etitlebar::before{
         content: '';
         position: absolute;
-  width: {{width}}px;
+        width: {{width}}px;
         height: 100%;
         pointer-events: none;
         opacity: {{opacity}};
@@ -14,7 +14,7 @@ declare const enum Css {
       }`,
 }
 
-declare const enum Consts {
+const enum Consts {
   DefaultIndensity = 32,
   DefaultGlowDiameter = 260,
 }

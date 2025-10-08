@@ -95,7 +95,16 @@ class Hacker {
       : Consts.DefaultIndensity;
 
     const colors = getCssColors();
-    const base = Css.base.replace(/\n[\s]+/g, '').replace('{{opacity}}', String(intensity));
+
+    const rawDiameter = Number(config.get<number>('glowDiameter', Consts.DefaultGlowDiameter));
+    const diameter = Number.isFinite(rawDiameter)
+      ? Math.round(Math.max(0, rawDiameter))
+      : Consts.DefaultGlowDiameter;
+
+    const base = Css.base
+      .replace(/\n[\s]+/g, '')
+      .replace('{{opacity}}', String(intensity))
+      .replace('{{width}}', String(diameter));
     const template = Css.template.replace(/\n[\s]+/g, '');
 
     const styles = colors.map((color, index) =>
