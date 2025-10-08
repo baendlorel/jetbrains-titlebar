@@ -1,7 +1,7 @@
 import vscode from 'vscode';
 import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
-import { i18n } from '@/misc/i18n';
+import { i18n } from '@/misc/i18n.js';
 
 const Css = {
   token: '\u002F\u002A__JETBRAINS_TITLEBAR_KASUKABETSUMUGI__\u002A\u002F',
