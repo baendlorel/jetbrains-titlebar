@@ -54,7 +54,7 @@ const options = [
       replace({
         preventAssignment: false,
         delimiters: ['', ''],
-        replaceLiteralOpts,
+        values: replaceLiteralOpts,
       }),
       replace(replaceOpts),
       funcMacro(),

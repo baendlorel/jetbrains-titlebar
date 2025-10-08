@@ -71,8 +71,8 @@
     }
   },
   "scripts": {
-    "test-build": "rimraf out && rollup -c",
-    "build": "rimraf out && rollup -c",
+    "test-build": "rimraf out && tsx ./.scripts/rollup.ts",
+    "build": "rimraf out && tsx ./.scripts/rollup.ts",
     "watch": "tsc -watch -p ./",
     "check": "tsc -p tsconfig.build.json",
     "test": "tsx tests/index.test.ts",

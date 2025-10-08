@@ -1,4 +1,4 @@
-import vscode from 'vscode';
+import { workspace } from 'vscode';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
@@ -20,7 +20,7 @@ export function hashString(str: string): number {
  * Get color index from workspace folder name
  */
 export function getColorIndexFromWorkspace(): number {
-  const workspaceFolders = vscode.workspace.workspaceFolders;
+  const workspaceFolders = workspace.workspaceFolders;
   if (!workspaceFolders || workspaceFolders.length === 0) {
     return 0;
   }

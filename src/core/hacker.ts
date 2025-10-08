@@ -1,4 +1,4 @@
-import vscode from 'vscode';
+import { window } from 'vscode';
 import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { i18n } from '@/misc/i18n.js';
@@ -30,7 +30,7 @@ class Hacker {
     // Try to find CSS file automatically
     const autoPath = await searchWorkbenchCss();
     if (autoPath) {
-      const useAuto = await vscode.window.showQuickPick(['Yes', 'No'], {
+      const useAuto = await window.showQuickPick(['Yes', 'No'], {
         title: i18n['hacker.get-css-path.auto-found.title'],
         placeHolder: `${i18n['hacker.get-css-path.auto-found.placeHolder']}: ${autoPath}`,
       });
@@ -40,7 +40,7 @@ class Hacker {
     }
 
     // Prompt user for manual input
-    const input = await vscode.window.showInputBox({
+    const input = await window.showInputBox({
       title: i18n['hacker.get-css-path.title'],
       prompt: i18n['hacker.get-css-path.prompt'],
       placeHolder: i18n['hacker.get-css-path.placeHolder'],
@@ -48,7 +48,7 @@ class Hacker {
     });
     if (!input || !existsSync(input.trim())) {
       if (input && !existsSync(input.trim())) {
-        vscode.window.showErrorMessage(i18n['hacker.get-css-path.not-found']);
+        window.showErrorMessage(i18n['hacker.get-css-path.not-found']);
       }
       return null;
     }
@@ -83,7 +83,7 @@ class Hacker {
 
     lines.push(`${Css.token}${styles.join('')}`);
     await writeFile(cssPath, lines.join('\n'), 'utf8');
-    vscode.window.showInformationMessage(i18n['hacker.get-css-path.success']);
+    window.showInformationMessage(i18n['hacker.get-css-path.success']);
   }
 
   /**
@@ -94,7 +94,7 @@ class Hacker {
     const css = await readFile(cssPath, 'utf8');
     const lines = this.purge(css.split('\n'));
     await writeFile(cssPath, lines.join('\n'), 'utf8');
-    vscode.window.showInformationMessage(i18n['hacker.get-css-path.success']);
+    window.showInformationMessage(i18n['hacker.get-css-path.success']);
   }
 
   async apply(): Promise<void> {

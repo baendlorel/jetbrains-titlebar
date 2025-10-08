@@ -1,4 +1,4 @@
-import vscode from 'vscode';
+import { env } from 'vscode';
 
 const zh = {
   'hacker.get-css-path.title': '请输入 workbench.desktop.main.css 文件路径',
@@ -21,4 +21,4 @@ const en = {
   'hacker.get-css-path.not-found': 'File not found, please check the path',
 } satisfies typeof zh;
 
-export const i18n = vscode.env.language.startsWith('en') ? en : zh;
+export const i18n = env.language.startsWith('en') ? en : zh;

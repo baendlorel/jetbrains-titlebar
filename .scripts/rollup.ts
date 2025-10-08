@@ -1,10 +1,10 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
-import { join, relative } from 'node:path';
+import { join } from 'node:path';
 import { execute } from './execute.js';
 
 type BaseFileInfo = { file: string; size: number };
 
-const dist = join(process.cwd(), 'dist');
+const dist = join(process.cwd(), 'out');
 
 function printSize(files: string[]) {
   let maxLen = 0;
@@ -33,7 +33,7 @@ function printSize(files: string[]) {
 }
 
 async function run() {
-  await execute(['rimraf', 'dist']);
+  await execute(['rimraf', 'out']);
 
   const cwd = join(process.cwd(), 'package.json');
   const rawpkg = readFileSync(cwd, 'utf-8');
@@ -47,6 +47,7 @@ async function run() {
 
   const files = readdirSync(dist);
   printSize(files);
+  console.log(`Built`, `[${purpose}]`, name, version);
 }
 
 run();
