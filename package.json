@@ -45,11 +45,6 @@
   "contributes": {
     "commands": [
       {
-        "command": "jetbrains-titlebar.controlPanel",
-        "title": "%command.controlPanel.title%",
-        "category": "%extension.category%"
-      },
-      {
         "command": "jetbrains-titlebar.applyGlow",
         "title": "%command.applyGlow.title%",
         "category": "%extension.category%"
@@ -90,7 +85,7 @@
           "description": "%configuration.glowOffsetX.description%"
         },
         "jetbrains-titlebar.cssPath": {
-          "type": "string",
+          "type": "object",
           "default": "",
           "description": "%configuration.cssPath.description%"
         }

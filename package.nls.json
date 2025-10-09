@@ -5,7 +5,7 @@
   "command.removeGlow.title": "Remove Titlebar Glow Effect",
   "command.relocateCssPath.title": "Relocate CSS File Path",
   "configuration.glowIntensity.description": "Glow effect glowIntensity as percentage (0-100)",
-  "configuration.cssPath.description": "Cached workbench CSS file path",
+  "configuration.cssPath.description": "Cached workbench CSS file path, a homedir-csspath map object",
   "configuration.glowDiameter.description": "Glow diameter in pixels, > 80 recommended, default 130",
   "configuration.glowOffsetX.description": "Glow horizontal offset in pixels, default 120"
 }

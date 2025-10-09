@@ -42,6 +42,7 @@ async function run() {
 
   const { name, version, purpose } = pkg;
   console.log(`Building`, `[${purpose}]`, name, version);
+  console.log(`NODE_ENV`, process.env.NODE_ENV || '[empty]');
 
   await execute(['rollup', '-c'], { env: { ...process.env } });
 

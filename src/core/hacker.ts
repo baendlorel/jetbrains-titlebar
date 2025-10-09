@@ -1,19 +1,26 @@
-import { window, workspace } from 'vscode';
+import { ConfigurationTarget, window, workspace } from 'vscode';
 import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 
 import { i18n } from '@/lib/i18n.js';
 import { searchWorkbenchCss, getCssColors, ConfigJustifier } from './utils.js';
+import { homedir } from 'node:os';
 
 // * /mnt/d/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css
 class Hacker {
-  /**
-   * Get cached CSS path from configuration
-   */
-  private getCachedCssPath(): string | null {
-    const config = workspace.getConfiguration('jetbrains-titlebar');
-    const cachedPath = config.get<string>('cssPath', '');
+  private readonly cssPathKey: string;
+  constructor() {
+    this.cssPathKey = homedir();
+  }
 
+  /**
+   * Get saved CSS path from configuration
+   */
+  private getSavedPath(): string | null {
+    const config = workspace.getConfiguration('jetbrains-titlebar');
+    const map = config.get<Record<string, string>>('cssPath', {});
+
+    const cachedPath = map[this.cssPathKey];
     if (cachedPath && existsSync(cachedPath)) {
       return cachedPath;
     }
@@ -23,9 +30,12 @@ class Hacker {
   /**
    * Save CSS path to configuration
    */
-  private async saveCssPath(path: string): Promise<void> {
+  private async savePath(path: string): Promise<void> {
     const config = workspace.getConfiguration('jetbrains-titlebar');
-    await config.update('cssPath', path, true);
+    const cssPath = config.get<Record<string, string>>('cssPath', {});
+    cssPath[this.cssPathKey] = path;
+
+    await config.update('cssPath', path, ConfigurationTarget.Global);
   }
 
   /**
@@ -35,25 +45,19 @@ class Hacker {
    * @returns The CSS file path, or null if not found or user cancels input
    */
   async getWorkbenchCssPath(forceRelocate = false): Promise<string | null> {
-    // Try to use cached path first (unless force relocate)
+    // Try to use saved path first (unless force relocate)
     if (!forceRelocate) {
-      const cachedPath = this.getCachedCssPath();
-      if (cachedPath) {
-        return cachedPath;
+      const p = this.getSavedPath();
+      if (p) {
+        return p;
       }
     }
 
     // Try to find CSS file automatically
     const autoPath = await searchWorkbenchCss();
     if (autoPath) {
-      const useAuto = await window.showQuickPick(['Yes', 'No'], {
-        title: i18n['hacker.get-css-path.auto-found.title'],
-        placeHolder: `${i18n['hacker.get-css-path.auto-found.placeHolder']}: ${autoPath}`,
-      });
-      if (useAuto === 'Yes') {
-        await this.saveCssPath(autoPath);
-        return autoPath;
-      }
+      await this.savePath(autoPath);
+      return autoPath;
     }
 
     // Prompt user for manual input
@@ -63,16 +67,17 @@ class Hacker {
       placeHolder: i18n['hacker.get-css-path.placeHolder'],
       ignoreFocusOut: true,
     });
-    if (!input || !existsSync(input.trim())) {
-      if (input && !existsSync(input.trim())) {
-        window.showErrorMessage(i18n['hacker.get-css-path.not-found']);
-      }
+    if (input === undefined) {
+      return null;
+    }
+    const trimmed = input.trim();
+    if (!existsSync(trimmed)) {
+      window.showErrorMessage(i18n['hacker.get-css-path.not-found']);
       return null;
     }
 
-    const trimmedPath = input.trim();
-    await this.saveCssPath(trimmedPath);
-    return trimmedPath;
+    await this.savePath(trimmed);
+    return trimmed;
   }
 
   /**
@@ -88,6 +93,17 @@ class Hacker {
    * Inject gradient CSS styles into the workbench CSS file
    */
   private async inject(cssPath: string): Promise<void> {
+    const oldCss = await readFile(cssPath, 'utf8');
+    const injected = oldCss.includes(Css.token) && oldCss.includes(Css.tokenVersion);
+
+    // #if DEBUG
+    window.showInformationMessage('When debugging, always inject');
+    // #else
+    if (injected) {
+      return;
+    }
+    // #endif
+
     const justifier = new ConfigJustifier();
     const intensity = justifier.percent('glowIntensity', Intensity.default);
     const diameter = justifier.pixel('glowDiameter', Diameter.default, Diameter.min);
@@ -105,10 +121,9 @@ class Hacker {
       template.replaceAll('{{color}}', color).replaceAll('{{index}}', String(index))
     );
 
-    const css = await readFile(cssPath, 'utf8');
-    const lines = this.purge(css.split('\n'));
+    const lines = this.purge(oldCss.split('\n'));
 
-    lines.push(`${Css.token}${base}${styles.join('')}`);
+    lines.push(`${Css.token}${Css.tokenVersion}${base}${styles.join('')}`);
     await writeFile(cssPath, lines.join('\n'), 'utf8');
     window.showInformationMessage(i18n['hacker.get-css-path.success']);
   }
@@ -126,18 +141,16 @@ class Hacker {
 
   async apply(): Promise<void> {
     const cssPath = await this.getWorkbenchCssPath();
-    if (!cssPath) {
-      return;
+    if (cssPath) {
+      await this.inject(cssPath);
     }
-    await this.inject(cssPath);
   }
 
   async none() {
     const cssPath = await this.getWorkbenchCssPath();
-    if (!cssPath) {
-      return;
+    if (cssPath) {
+      await this.clean(cssPath);
     }
-    await this.clean(cssPath);
   }
 
   /**
