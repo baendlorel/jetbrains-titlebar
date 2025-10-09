@@ -38,43 +38,19 @@ class Hacker {
     await config.update('cssPath', cssPath, ConfigurationTarget.Global);
   }
 
-  /**
-   * Get the path to the workbench CSS file
-   * Auto-search common locations first, then prompt user if not found
-   * @param forceRelocate Force re-search even if cached path exists
-   * @returns The CSS file path, or null if not found or user cancels input
-   */
-  async getWorkbenchCssPath(forceRelocate = false): Promise<string | null> {
+  private async getWorkbenchCssPath(): Promise<string | null> {
     // Try to use saved path first (unless force relocate)
-    if (!forceRelocate) {
-      const p = this.getSavedPath();
-      if (p) {
-        return p;
-      }
+    const p = this.getSavedPath();
+    if (p) {
+      return p;
     }
 
-    // Try to find CSS file automatically
-    const autoPath = await searchWorkbenchCss();
-    if (autoPath) {
-      await this.savePath(autoPath);
-      return autoPath;
-    }
-
-    // Prompt user for manual input
-    const input = await this.manuallyInputCssPath();
-    if (input === null) {
-      return null;
-    }
-
-    await this.savePath(input);
-    return input;
+    return await this.relocateAuto(true);
   }
 
-  private async manuallyInputCssPath(): Promise<string | null> {
+  private async manuallyInputCssPath(prompt?: string): Promise<string | null> {
     const input = await window.showInputBox({
-      title: i18n['hacker.get-css-path.title'],
-      prompt: i18n['hacker.get-css-path.prompt'],
-      placeHolder: i18n['hacker.get-css-path.placeHolder'],
+      prompt: prompt ?? i18n['hacker.get-css-path.prompt'],
       ignoreFocusOut: true,
     });
     if (input === undefined) {
@@ -160,9 +136,6 @@ class Hacker {
     }
   }
 
-  /**
-   * Force relocate CSS file path by clearing cache and searching again
-   */
   async relocate(): Promise<void> {
     const cssPath = await this.manuallyInputCssPath();
     if (!cssPath) {
@@ -170,6 +143,25 @@ class Hacker {
     }
     await this.savePath(cssPath);
     window.showInformationMessage(i18n['hacker.relocate.success']);
+  }
+
+  async relocateAuto(mute: boolean): Promise<string | null> {
+    const autoPath = await searchWorkbenchCss();
+    if (autoPath) {
+      await this.savePath(autoPath);
+      !mute && window.showInformationMessage(i18n['hacker.relocate.success']);
+      return autoPath;
+    }
+
+    const manualPath = await this.manuallyInputCssPath(i18n['hacker.relocate-auto.fail']);
+    if (manualPath) {
+      await this.savePath(manualPath);
+      !mute && window.showInformationMessage(i18n['hacker.relocate.success']);
+      return manualPath;
+    }
+
+    window.showErrorMessage(i18n['hacker.relocate-auto.fail-again']);
+    return null;
   }
 }
 

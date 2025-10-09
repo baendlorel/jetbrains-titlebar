@@ -11,6 +11,8 @@ const zh = {
   'hacker.get-css-path.not-found': '文件不存在，请检查路径',
   'hacker.clean.success': '样式清理成功',
   'hacker.relocate.success': 'CSS 文件路径已更新',
+  'hacker.relocate-auto.fail': '没有找到CSS文件，请手动指定',
+  'hacker.relocate-auto.fail-again': '没有找到CSS文件',
 };
 
 const en = {
@@ -25,6 +27,8 @@ const en = {
   'hacker.get-css-path.not-found': 'File not found, please check the path',
   'hacker.clean.success': 'Style cleanup succeeded',
   'hacker.relocate.success': 'CSS file path has been updated',
+  'hacker.relocate-auto.fail': 'No CSS file found, please specify it manually',
+  'hacker.relocate-auto.fail-again': 'No CSS file found',
 } satisfies typeof zh;
 
 export const i18n = env.language.startsWith('en') ? en : zh;
