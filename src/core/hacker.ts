@@ -82,6 +82,8 @@ class Hacker {
    */
   private async inject(cssPath: string): Promise<void> {
     const oldCss = await readFile(cssPath, 'utf8');
+
+    // ?? 可以只看几行？
     const injected = oldCss.includes(Css.token) && oldCss.includes(Css.tokenVersion);
 
     // #if DEBUG
