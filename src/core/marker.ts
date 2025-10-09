@@ -1,6 +1,6 @@
 import { StatusBarAlignment, StatusBarItem, window, workspace } from 'vscode';
-import { hashString } from './utils.js';
 import { GLOW_COLORS } from '@/lib/colors.js';
+import { hashString } from './utils.js';
 
 export class Marker {
   readonly item: StatusBarItem;

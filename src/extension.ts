@@ -1,6 +1,6 @@
 import { ExtensionContext } from 'vscode';
-import { errorPop } from './core/utils';
-import { Hacker } from './core/hacker';
+import { errorPop } from './core/utils.js';
+import { Hacker } from './core/hacker.js';
 import registers from './registers.js';
 
 export const activate = async (context: ExtensionContext) => {

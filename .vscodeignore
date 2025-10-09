@@ -11,8 +11,7 @@ vsc-extension-quickstart.md
 **/.eslintrc.json
 **/*.map
 **/*.ts
-!out/**/*.js
-!out/**/*.d.ts
+out/**/*.js.map
 node_modules/**
 tests/**
 rollup.config.mjs

@@ -1,6 +1,8 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "resolveJsonModule": false,
+    "resolvePackageJsonImports": true,
     "declaration": false
   },
   "include": ["src/**/*.ts"],

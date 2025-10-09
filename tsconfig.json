@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
     "target": "ESNext",
-    "moduleResolution": "node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "resolveJsonModule": true,
+    "resolvePackageJsonImports": true,
     "declaration": false,
     "esModuleInterop": true,
     "strict": true,
