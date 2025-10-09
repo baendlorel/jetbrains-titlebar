@@ -1,4 +1,10 @@
 draft
+.draft
+scripts
+.scripts
+artifact
+.artifact
+
 pnpm-lock.yaml
 eslint.config.*
 .vscode/**

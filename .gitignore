@@ -2,6 +2,8 @@
 out
 bin
 *.vsix
+artifact
+.artifact
 
 # Logs
 logs
