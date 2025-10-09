@@ -6,8 +6,8 @@ export default (context: ExtensionContext) => {
   const list: Disposable[] = [
     reg('jetbrains-titlebar.applyGlow', () => hacker.apply()),
     reg('jetbrains-titlebar.removeGlow', () => hacker.remove()),
-    reg('jetbrains-titlebar.relocateCssPath', () => hacker.relocate()),
-    reg('jetbrains-titlebar.relocateCssPathAuto', () => hacker.relocateAuto(false)),
+    reg('jetbrains-titlebar.manuallyRelocateCssPath', () => hacker.manuallyRelocate()),
+    reg('jetbrains-titlebar.autoRelocateCssPath', () => hacker.autoRelocate(false)),
   ].filter((v) => v !== undefined);
 
   context.subscriptions.push(...list);

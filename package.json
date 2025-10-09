@@ -55,13 +55,13 @@
         "category": "%extension.category%"
       },
       {
-        "command": "jetbrains-titlebar.relocateCssPath",
-        "title": "%command.relocateCssPath.title%",
+        "command": "jetbrains-titlebar.manuallyRelocateCssPath",
+        "title": "%command.manuallyRelocateCssPath.title%",
         "category": "%extension.category%"
       },
       {
-        "command": "jetbrains-titlebar.relocateCssPathAuto",
-        "title": "%command.relocateCssPathAuto.title%",
+        "command": "jetbrains-titlebar.autoRelocateCssPath",
+        "title": "%command.autoRelocateCssPath.title%",
         "category": "%extension.category%"
       }
     ],

@@ -45,12 +45,15 @@ class Hacker {
       return p;
     }
 
-    return await this.relocateAuto(true);
+    return await this.autoRelocate(true);
   }
 
-  private async manuallyInputCssPath(prompt?: string): Promise<string | null> {
+  /**
+   * Only get the input, will not save
+   */
+  private async inputCssPath(prompt?: string): Promise<string | null> {
     const input = await window.showInputBox({
-      prompt: prompt ?? i18n['hacker.get-css-path.prompt'],
+      prompt: prompt ?? i18n['hacker.input-path.prompt'],
       ignoreFocusOut: true,
     });
     if (input === undefined) {
@@ -58,7 +61,7 @@ class Hacker {
     }
     const trimmed = input.trim();
     if (!existsSync(trimmed)) {
-      window.showErrorMessage(i18n['hacker.get-css-path.not-found']);
+      window.showErrorMessage(i18n['file-not-found'].replace('$0', trimmed));
       return null;
     }
     return trimmed;
@@ -108,7 +111,7 @@ class Hacker {
     const lines = this.purge(oldCss.split('\n'));
     lines.push(`${Css.token}${Css.tokenVersion}${base}${styles.join('')}`);
     await writeFile(cssPath, lines.join('\n'), 'utf8');
-    window.showInformationMessage(i18n['hacker.get-css-path.success']);
+    window.showInformationMessage(i18n['hacker.input-path.success']);
   }
 
   /**
@@ -136,8 +139,8 @@ class Hacker {
     }
   }
 
-  async relocate(): Promise<void> {
-    const cssPath = await this.manuallyInputCssPath();
+  async manuallyRelocate(): Promise<void> {
+    const cssPath = await this.inputCssPath();
     if (!cssPath) {
       return;
     }
@@ -145,7 +148,7 @@ class Hacker {
     window.showInformationMessage(i18n['hacker.relocate.success']);
   }
 
-  async relocateAuto(mute: boolean): Promise<string | null> {
+  async autoRelocate(mute: boolean): Promise<string | null> {
     const autoPath = await searchWorkbenchCss();
     if (autoPath) {
       await this.savePath(autoPath);
@@ -153,14 +156,12 @@ class Hacker {
       return autoPath;
     }
 
-    const manualPath = await this.manuallyInputCssPath(i18n['hacker.relocate-auto.fail']);
+    const manualPath = await this.inputCssPath(i18n['hacker.auto-relocate.fail']);
     if (manualPath) {
       await this.savePath(manualPath);
       !mute && window.showInformationMessage(i18n['hacker.relocate.success']);
       return manualPath;
     }
-
-    window.showErrorMessage(i18n['hacker.relocate-auto.fail-again']);
     return null;
   }
 }
