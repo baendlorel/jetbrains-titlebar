@@ -35,7 +35,7 @@ class Hacker {
     const cssPath = config.get<Record<string, string>>('cssPath', {});
     cssPath[this.cssPathKey] = path;
 
-    await config.update('cssPath', path, ConfigurationTarget.Global);
+    await config.update('cssPath', cssPath, ConfigurationTarget.Global);
   }
 
   /**
@@ -61,6 +61,16 @@ class Hacker {
     }
 
     // Prompt user for manual input
+    const input = await this.manuallyInputCssPath();
+    if (input === null) {
+      return null;
+    }
+
+    await this.savePath(input);
+    return input;
+  }
+
+  private async manuallyInputCssPath(): Promise<string | null> {
     const input = await window.showInputBox({
       title: i18n['hacker.get-css-path.title'],
       prompt: i18n['hacker.get-css-path.prompt'],
@@ -75,8 +85,6 @@ class Hacker {
       window.showErrorMessage(i18n['hacker.get-css-path.not-found']);
       return null;
     }
-
-    await this.savePath(trimmed);
     return trimmed;
   }
 
@@ -122,7 +130,6 @@ class Hacker {
     );
 
     const lines = this.purge(oldCss.split('\n'));
-
     lines.push(`${Css.token}${Css.tokenVersion}${base}${styles.join('')}`);
     await writeFile(cssPath, lines.join('\n'), 'utf8');
     window.showInformationMessage(i18n['hacker.get-css-path.success']);
@@ -157,10 +164,11 @@ class Hacker {
    * Force relocate CSS file path by clearing cache and searching again
    */
   async relocate(): Promise<void> {
-    const cssPath = await this.getWorkbenchCssPath(true);
+    const cssPath = await this.manuallyInputCssPath();
     if (!cssPath) {
       return;
     }
+    await this.savePath(cssPath);
     window.showInformationMessage(i18n['hacker.relocate.success']);
   }
 }

@@ -86,7 +86,7 @@
         },
         "jetbrains-titlebar.cssPath": {
           "type": "object",
-          "default": "",
+          "default": {},
           "description": "%configuration.cssPath.description%"
         }
       }
