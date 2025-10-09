@@ -4,8 +4,8 @@
   "command.applyGlow.title": "应用标题栏光晕效果",
   "command.removeGlow.title": "移除标题栏光晕效果",
   "command.relocateCssPath.title": "重新定位 CSS 文件路径",
-  "configuration.glowIntensity.description": "光晕效果强度（0-100，单位：%）",
+  "configuration.glowIntensity.description": "光晕效果强度百分比",
   "configuration.cssPath.description": "缓存的 workbench CSS 文件路径",
-  "configuration.glowDiameter.description": "辉光直径，单位像素（注：直接注入为 width）",
-  "configuration.glowOffsetX.description": "辉光水平偏移，单位像素（中心 x 坐标，默认 120）"
+  "configuration.glowDiameter.description": "辉光直径（像素），推荐大于80，默认130",
+  "configuration.glowOffsetX.description": "辉光水平偏移（像素），默认 120"
 }

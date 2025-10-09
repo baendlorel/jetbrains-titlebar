@@ -13,7 +13,7 @@ export const activate = async (context: ExtensionContext) => {
     marker.item,
     workspace.onDidChangeWorkspaceFolders(() => marker.update()),
     workspace.onDidChangeConfiguration(async (e) => {
-      if (e.affectsConfiguration('jetbrains-titlebar.glowIntensity')) {
+      if (e.affectsConfiguration('jetbrains-titlebar')) {
         hacker
           .apply()
           .catch((err) =>
