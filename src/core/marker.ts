@@ -3,6 +3,8 @@ import { GLOW_COLORS } from '@/lib/colors.js';
 import { hashString } from './utils.js';
 
 export class Marker {
+  static readonly instance = new Marker();
+
   readonly item: StatusBarItem;
   constructor() {
     this.item = window.createStatusBarItem(StatusBarAlignment.Left, -Infinity);

@@ -4,7 +4,7 @@ import { Hacker } from './core/hacker.js';
 import registers from './registers.js';
 
 export const activate = async (context: ExtensionContext) => {
-  await Hacker.getInstance().apply().catch(errorPop);
+  await Hacker.instance.apply().catch(errorPop);
 
   registers(context);
 };

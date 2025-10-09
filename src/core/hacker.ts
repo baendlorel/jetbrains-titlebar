@@ -7,19 +7,18 @@ import { i18n } from '@/lib/i18n.js';
 import { $err, $info } from '@/lib/native.js';
 import { GLOW_COLORS } from '@/lib/colors.js';
 import { ConfigJustifier } from '@/lib/config.js';
+import { Marker } from './marker.js';
 import { searchWorkbenchCss } from './utils.js';
 
 export class Hacker {
-  static getInstance() {
-    return Hacker._instance;
-  }
+  static readonly instance = new Hacker();
 
-  private static readonly _instance = new Hacker();
   private readonly _key: string;
-
+  private readonly _idSelector: string;
   constructor() {
     const u = userInfo();
     this._key = u.uid + '-' + u.gid + '-' + u.homedir;
+    this._idSelector = Marker.instance.item.id.replace('.', '\\.');
   }
 
   /**
@@ -96,10 +95,11 @@ export class Hacker {
 
     const base = Css.base
       .replace(/\n[\s]+/g, '')
+      .replace('{{id}}', this._idSelector)
       .replace('{{intensity}}', intensity)
       .replace('{{diameter}}', diameter)
       .replace('{{offsetX}}', offsetX);
-    const template = Css.template.replace(/\n[\s]+/g, '');
+    const template = Css.template.replace(/\n[\s]+/g, '').replace('{{id}}', this._idSelector);
 
     const styles = GLOW_COLORS.map((color, index) =>
       template.replaceAll('{{color}}', color).replaceAll('{{index}}', String(index))

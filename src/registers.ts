@@ -9,8 +9,8 @@ const changed = (e: ConfigurationChangeEvent, ...names: ConfigName[]) =>
 const cmd = (c: CommandName, cb: Fn) => commands.registerCommand(`jetbrains-titlebar.${c}`, cb);
 
 export default (context: ExtensionContext) => {
-  const hacker = Hacker.getInstance();
-  const marker = new Marker();
+  const hacker = Hacker.instance;
+  const marker = Marker.instance;
 
   context.subscriptions.push(
     ...[
