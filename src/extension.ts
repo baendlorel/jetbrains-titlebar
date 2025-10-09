@@ -12,9 +12,8 @@ export const activate = async (context: ExtensionContext) => {
   context.subscriptions.push(
     marker.item,
     workspace.onDidChangeWorkspaceFolders(() => marker.update()),
-    // Listen for intensity changes and re-inject styles automatically
     workspace.onDidChangeConfiguration(async (e) => {
-      if (e.affectsConfiguration('jetbrains-titlebar.intensity')) {
+      if (e.affectsConfiguration('jetbrains-titlebar.glowIntensity')) {
         hacker
           .apply()
           .catch((err) =>

@@ -3,7 +3,7 @@ import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 
 import { i18n } from '@/lib/i18n.js';
-import { searchWorkbenchCss, getCssColors } from './utils.js';
+import { searchWorkbenchCss, getCssColors, ConfigJustifier } from './utils.js';
 
 // * /mnt/d/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css
 class Hacker {
@@ -88,25 +88,19 @@ class Hacker {
    * Inject gradient CSS styles into the workbench CSS file
    */
   private async inject(cssPath: string): Promise<void> {
-    const config = workspace.getConfiguration('jetbrains-titlebar');
-    const raw = Number(config.get<number>('intensity', Consts.DefaultIndensity));
-    const intensity = Number.isSafeInteger(raw)
-      ? Math.max(0, Math.min(100, raw)) / 100
-      : Consts.DefaultIndensity;
-
-    const colors = getCssColors();
-
-    const rawDiameter = Number(config.get<number>('glowDiameter', Consts.DefaultGlowDiameter));
-    const diameter = Number.isFinite(rawDiameter)
-      ? Math.round(Math.max(0, rawDiameter))
-      : Consts.DefaultGlowDiameter;
+    const justifier = new ConfigJustifier();
+    const intensity = justifier.percent('glowIntensity', Intensity.default);
+    const diameter = justifier.pixel('glowDiameter', Diameter.default, Diameter.min);
+    const offset = justifier.pixel('glowOffset', Offset.default, Offset.min);
 
     const base = Css.base
       .replace(/\n[\s]+/g, '')
-      .replace('{{opacity}}', String(intensity))
-      .replace('{{width}}', String(diameter));
+      .replace('{{intensity}}', intensity)
+      .replace('{{diameter}}', diameter)
+      .replace('{{offset}}', offset);
     const template = Css.template.replace(/\n[\s]+/g, '');
 
+    const colors = getCssColors();
     const styles = colors.map((color, index) =>
       template.replaceAll('{{color}}', color).replaceAll('{{index}}', String(index))
     );

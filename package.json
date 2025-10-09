@@ -68,12 +68,12 @@
     "configuration": {
       "title": "%configuration.title%",
       "properties": {
-        "jetbrains-titlebar.intensity": {
+        "jetbrains-titlebar.glowIntensity": {
           "type": "number",
           "default": 32,
           "minimum": 0,
           "maximum": 100,
-          "description": "%configuration.intensity.description%"
+          "description": "%configuration.glowIntensity.description%"
         },
         "jetbrains-titlebar.glowDiameter": {
           "type": "number",
@@ -81,6 +81,13 @@
           "minimum": 0,
           "maximum": 2000,
           "description": "%configuration.glowDiameter.description%"
+        },
+        "jetbrains-titlebar.glowOffset": {
+          "type": "number",
+          "default": 120,
+          "minimum": 0,
+          "maximum": 2000,
+          "description": "%configuration.glowOffset.description%"
         },
         "jetbrains-titlebar.cssPath": {
           "type": "string",
