@@ -2,6 +2,8 @@ declare const enum Css {
   // & use unicode to have precise strings, and avoid collision of real comments
   token = '\u002F\u002A__JETBRAINS_TITLEBAR_KASUKABETSUMUGI__\u002A\u002F',
   tokenVersion = '\u002F\u002A__VERSION__\u002A\u002F',
+  // todo 可以适当减少颜色数量，然后使用更稳定的statusbar-item做选择器
+  // base = `body:has(#KasukabeTsumugi\u005C\u002Ejetbrains-titlebar) #workbench\u005C\u002Eparts\u005C\u002Etitlebar::before{
   base = `body:has(#KasukabeTsumugi\u005C\u002Ejetbrains-titlebar) #workbench\u005C\u002Eparts\u005C\u002Etitlebar::before{
         width: {{diameter}};
         left: {{offsetX}};

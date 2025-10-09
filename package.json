@@ -110,7 +110,7 @@
     "check": "tsc -p tsconfig.build.json",
     "test": "tsx tests/index.test.ts",
     "lint": "oxlint .",
-    "package": "pnpm build && vsce package -o ./.artifact/bin",
+    "package": "pnpm build && vsce package",
     "publish": "pnpm build && vsce publish"
   },
   "devDependencies": {
