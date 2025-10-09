@@ -63,7 +63,7 @@ const options = [
       commonjs(),
       typescript({ tsconfig, removeComments: false }),
       conditional({ variables: { DEBUG: process.env.NODE_ENV === 'dev' } }),
-      terser({
+      void terser({
         format: {
           comments: false, // remove comments
         },

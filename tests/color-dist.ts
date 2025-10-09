@@ -56,8 +56,7 @@ async function main() {
     // generate strings with varying lengths
     const len = 4 + Math.floor(Math.random() * 16);
     const s = randomString(len);
-    const h = hashString(s);
-    const idx = h % GLOW_COLORS.length;
+    const idx = hashString(s);
     counts[idx]++;
   }
 

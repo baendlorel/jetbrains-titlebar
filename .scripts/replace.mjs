@@ -19,6 +19,7 @@ function formatDateFull(dt = new Date()) {
 
 const __KEBAB_NAME__ = (process.env.KSKB_TSUMUGI_REAL_NAME ?? '').replace('rollup-plugin-', '');
 const __NAME__ = __KEBAB_NAME__.replace(/(^|-)(\w)/g, (_, __, c) => c.toUpperCase());
+const __DATE_TIME__ = formatDateFull();
 
 const __PKG_INFO__ = `## About
  * @package ${__NAME__}
@@ -41,6 +42,7 @@ export const replaceOpts = {
     __KEBAB_NAME__,
     __PKG_INFO__,
     __VERSION__: pkg.version,
+    __DATE_TIME__,
   },
 };
 

@@ -1,5 +1,4 @@
 import { StatusBarAlignment, StatusBarItem, window, workspace } from 'vscode';
-import { GLOW_COLORS } from '@/lib/colors.js';
 import { hashString } from './utils.js';
 
 export class Marker {
@@ -20,8 +19,7 @@ export class Marker {
   }
 
   update() {
-    const colorIndex = this._getColorIndex();
-    this.item.text = colorIndex.toString();
+    this.item.text = this._getColorIndex().toString();
   }
 
   private _getColorIndex(): number {

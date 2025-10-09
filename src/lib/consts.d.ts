@@ -2,6 +2,7 @@ declare const enum Css {
   // & use unicode to have precise strings, and avoid collision of real comments
   token = '\u002F\u002A__JETBRAINS_TITLEBAR_KASUKABETSUMUGI__\u002A\u002F',
   tokenVersion = '\u002F\u002A__VERSION__\u002A\u002F',
+  tokenDate = '\u002F\u002A__DATE_TIME__\u002A\u002F',
   base = `body:has(#{{id}}) #workbench\u005C\u002Eparts\u005C\u002Etitlebar::before{
         width: {{diameter}};
         left: {{offsetX}};

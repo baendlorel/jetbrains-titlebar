@@ -1,5 +1,5 @@
 import { ConfigurationTarget, window, workspace } from 'vscode';
-import { readFile, writeFile } from 'node:fs/promises';
+import { appendFile, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { userInfo } from 'node:os';
 
@@ -78,16 +78,36 @@ export class Hacker {
   private async _inject(cssPath: string): Promise<void> {
     const oldCss = await readFile(cssPath, 'utf8');
 
-    const start = oldCss.indexOf(Css.token);
+    const rawStart = oldCss.indexOf(Css.token);
+    if (rawStart === -1) {
+      const css = this.generateCss();
+      await appendFile(cssPath, css, 'utf8');
+      return;
+    }
 
     // #if DEBUG
-    $info('When debugging, always inject');
+    $info(`When debugging, always inject`);
     // #else
-    if (start !== -1 && oldCss.includes(Css.tokenVersion, start)) {
+    if (oldCss.includes(Css.tokenVersion, rawStart)) {
       return; // injected already
     }
     // #endif
 
+    const eolIndex = oldCss.indexOf('\n', rawStart);
+    const end = eolIndex === -1 ? oldCss.length : eolIndex;
+    const start = oldCss[rawStart - 1] === '\n' ? rawStart - 1 : rawStart;
+    const css = this.generateCss();
+
+    const newData = `${oldCss.slice(0, start)}${css}${oldCss.slice(end)}`;
+
+    await writeFile(cssPath, newData, 'utf8');
+    $info(i18n['hacker.input-path.success']);
+  }
+
+  /**
+   * Generate css for injection, with `\n`
+   */
+  private generateCss() {
     const justifier = new ConfigJustifier();
     const intensity = justifier.percent('glowIntensity', Intensity.default);
     const diameter = justifier.pixel('glowDiameter', Diameter.default, Diameter.min);
@@ -104,14 +124,7 @@ export class Hacker {
     const styles = GLOW_COLORS.map((color, index) =>
       template.replaceAll('{{color}}', color).replaceAll('{{index}}', String(index))
     );
-
-    const eolIndex = oldCss.indexOf('\n', start) + 1;
-    const end = eolIndex === -1 ? oldCss.length : eolIndex;
-
-    const newLine = `${Css.token}${Css.tokenVersion}${base}${styles.join('')}`;
-    const newData = `${oldCss.slice(0, start)}${newLine}\n${oldCss.slice(end)}`;
-    await writeFile(cssPath, newData, 'utf8');
-    $info(i18n['hacker.input-path.success']);
+    return `\n${Css.token}${Css.tokenVersion}${Css.tokenDate}${base}${styles.join('')}\n`;
   }
 
   /**
