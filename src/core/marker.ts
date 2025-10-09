@@ -37,7 +37,6 @@ export class Marker {
     const colorSeed = config.get<string>('colorSeed', '');
     const mixedName = colorSeed ? `${folderName}::${colorSeed}` : folderName;
 
-    const hash = hashString(mixedName);
-    return hash % GLOW_COLORS.length;
+    return hashString(mixedName);
   }
 }

@@ -1,16 +1,22 @@
+import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
-import { $err } from '@/lib/native';
+import { GLOW_COLORS } from '@/lib/colors';
 
 export function hashString(str: string): number {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash = hash & hash; // Convert to 32bit integer
-  }
-  return Math.abs(hash);
+  const hash = createHash('md5').update(str).digest('hex');
+  const i = parseInt(hash.slice(0, 8), 16);
+  // let hash = 0;
+  // for (let i = 0; i < str.length; i++) {
+  //   const char = str.charCodeAt(i);
+  //   hash = (hash << 5) - hash + char;
+  //   hash = hash & hash; // Convert to 32bit integer
+  // }
+  // return Math.abs(i);
+  const t = i % GLOW_COLORS.length;
+  console.log('hashedindex', t);
+  return t;
 }
 
 /**
@@ -144,5 +150,3 @@ export async function searchWorkbenchCss(): Promise<string | null> {
 
   return null;
 }
-
-export const errorPop = (err: Error) => $err(err.message ?? err);

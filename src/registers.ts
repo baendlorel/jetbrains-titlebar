@@ -1,5 +1,5 @@
 import { commands, workspace, ExtensionContext, ConfigurationChangeEvent } from 'vscode';
-import { errorPop } from './core/utils.js';
+import { errorPop } from './lib/native.js';
 import { Hacker } from './core/hacker';
 import { Marker } from './core/marker';
 
