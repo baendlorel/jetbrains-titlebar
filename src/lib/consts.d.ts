@@ -1,4 +1,4 @@
-const enum Css {
+declare const enum Css {
   token = '\u002F\u002A__JETBRAINS_TITLEBAR_KASUKABETSUMUGI__\u002A\u002F',
   tokenVersion = '\u002F\u002A__VERSION__\u002A\u002F',
   base = `body:has(#KasukabeTsumugi\u005C\u002Ejetbrains-titlebar) #workbench\u005C\u002Eparts\u005C\u002Etitlebar::before{
@@ -20,16 +20,16 @@ const enum Css {
 }
 
 // # Default glow parameters
-const enum Intensity {
+declare const enum Intensity {
   default = 32,
 }
 
-const enum Diameter {
+declare const enum Diameter {
   default = 260,
   min = 0,
 }
 
-const enum Offset {
+declare const enum Offset {
   default = 120,
   min = -10000,
 }
