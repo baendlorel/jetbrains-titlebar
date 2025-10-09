@@ -89,6 +89,11 @@
           "maximum": 2000,
           "description": "%configuration.glowOffsetX.description%"
         },
+        "jetbrains-titlebar.colorSeed": {
+          "type": "string",
+          "default": "",
+          "description": "%configuration.colorSeed.description%"
+        },
         "jetbrains-titlebar.cssPath": {
           "type": "object",
           "default": {},

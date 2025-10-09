@@ -26,8 +26,14 @@ export function getColorIndexFromWorkspace(): number {
   }
 
   const folderName = workspaceFolders[0].name;
+
+  // Mix in color seed if configured
+  const config = workspace.getConfiguration('jetbrains-titlebar');
+  const colorSeed = config.get<string>('colorSeed', '');
+  const mixedName = colorSeed ? `${folderName}::${colorSeed}` : folderName;
+
   const colors = getCssColors();
-  const hash = hashString(folderName);
+  const hash = hashString(mixedName);
   return hash % colors.length;
 }
 

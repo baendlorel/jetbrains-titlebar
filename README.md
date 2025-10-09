@@ -62,6 +62,12 @@ Access settings via `File > Preferences > Settings > JetBrains Titlebar`
 - **Default/Recommended**: 120
 - **Description**: Horizontal offset of the glow effect from the left edge
 
+#### `jetbrains-titlebar.colorSeed`
+
+- **Type**: String
+- **Default**: `""` (empty)
+- **Description**: A random seed mixed into the folder name during color calculation. Use this to get different color variations for the same project. For example, if you don't like the current color, try setting it to "1", "2", or any other string to generate a different color.
+
 #### `jetbrains-titlebar.cssPath` —— Auto Managed
 
 - **Type**: Object
@@ -93,9 +99,10 @@ Re-run auto-detection to find the CSS file path.
 ### Color Generation Algorithm
 
 1. The extension reads your workspace folder name
-2. Computes a hash value from the name
-3. Maps the hash to one of 200+ predefined colors
-4. Generates CSS with a radial gradient effect
+2. Mixes the color seed (if configured) into the folder name
+3. Computes a hash value from the mixed name
+4. Maps the hash to one of 200+ predefined colors
+5. Generates CSS with a radial gradient effect
 
 ### CSS Injection Process
 
