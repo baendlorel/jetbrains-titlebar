@@ -14,10 +14,10 @@ export default (context: ExtensionContext) => {
 
   context.subscriptions.push(
     ...[
-      // elements
+      // * elements
       marker.item,
 
-      // change events
+      // * change events
       workspace.onDidChangeWorkspaceFolders(() => marker.update()),
       workspace.onDidChangeConfiguration((e) => {
         if (changed(e, 'colorSeed')) {
@@ -30,7 +30,7 @@ export default (context: ExtensionContext) => {
         }
       }),
 
-      // commands
+      // * commands
       cmd('applyGlow', () => hacker.apply()),
       cmd('removeGlow', () => hacker.remove()),
       cmd('manuallyRelocateCssPath', () => hacker.manuallyRelocate()),

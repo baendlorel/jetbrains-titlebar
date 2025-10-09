@@ -89,14 +89,13 @@ export class Hacker {
   private async inject(cssPath: string): Promise<void> {
     const oldCss = await readFile(cssPath, 'utf8');
 
-    // ?? 可以只看几行？
-    const injected = oldCss.includes(Css.token) && oldCss.includes(Css.tokenVersion);
+    const start = oldCss.indexOf(Css.token);
 
     // #if DEBUG
     window.showInformationMessage('When debugging, always inject');
     // #else
-    if (injected) {
-      return;
+    if (start !== -1 && oldCss.includes(Css.tokenVersion, start)) {
+      return; // injected already
     }
     // #endif
 
@@ -116,9 +115,12 @@ export class Hacker {
       template.replaceAll('{{color}}', color).replaceAll('{{index}}', String(index))
     );
 
-    const lines = this.purge(oldCss.split('\n'));
-    lines.push(`${Css.token}${Css.tokenVersion}${base}${styles.join('')}`);
-    await writeFile(cssPath, lines.join('\n'), 'utf8');
+    const eolIndex = oldCss.indexOf('\n', start) + 1;
+    const end = eolIndex === -1 ? oldCss.length : eolIndex;
+
+    const newLine = `${Css.token}${Css.tokenVersion}${base}${styles.join('')}`;
+    const newData = `${oldCss.slice(0, start)}${newLine}\n${oldCss.slice(end)}`;
+    await writeFile(cssPath, newData, 'utf8');
     window.showInformationMessage(i18n['hacker.input-path.success']);
   }
 
