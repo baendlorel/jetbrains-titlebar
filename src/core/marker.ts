@@ -18,6 +18,6 @@ export class Marker {
 
   update() {
     const colorIndex = getColorIndexFromWorkspace();
-    this.item.text = `KS${colorIndex}`;
+    this.item.text = `${colorIndex}`;
   }
 }
