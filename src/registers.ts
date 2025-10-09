@@ -33,8 +33,8 @@ export default (context: ExtensionContext) => {
       // * commands
       cmd('applyGlow', () => hacker.apply()),
       cmd('removeGlow', () => hacker.remove()),
-      cmd('manuallyRelocateCssPath', () => hacker.manuallyRelocate()),
-      cmd('autoRelocateCssPath', () => hacker.autoRelocate(false)),
+      cmd('manuallyRelocateCssPath', () => hacker.manualReloc()),
+      cmd('autoRelocateCssPath', () => hacker.autoReloc(false)),
     ].filter((v) => v !== undefined)
   );
 };

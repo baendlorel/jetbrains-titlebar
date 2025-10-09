@@ -18,11 +18,11 @@ export class Marker {
   }
 
   update() {
-    const colorIndex = this.getColorIndex();
+    const colorIndex = this._getColorIndex();
     this.item.text = colorIndex.toString();
   }
 
-  private getColorIndex(): number {
+  private _getColorIndex(): number {
     const workspaceFolders = workspace.workspaceFolders;
     if (!workspaceFolders || workspaceFolders.length === 0) {
       return 0;

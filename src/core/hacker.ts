@@ -4,8 +4,9 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { userInfo } from 'node:os';
 
 import { i18n } from '@/lib/i18n.js';
-import { searchWorkbenchCss, ConfigJustifier } from './utils.js';
+import { searchWorkbenchCss } from './utils.js';
 import { GLOW_COLORS } from '@/lib/colors.js';
+import { ConfigJustifier } from '@/lib/config.js';
 
 export class Hacker {
   static getInstance() {
@@ -23,7 +24,7 @@ export class Hacker {
   /**
    * Get saved CSS path from configuration
    */
-  private getSavedPath(): string | null {
+  private _getSavedPath(): string | null {
     const config = workspace.getConfiguration('jetbrains-titlebar');
     const map = config.get<Record<string, string>>('cssPath', {});
 
@@ -37,7 +38,7 @@ export class Hacker {
   /**
    * Save CSS path to configuration
    */
-  private async savePath(path: string): Promise<void> {
+  private async _savePath(path: string): Promise<void> {
     const config = workspace.getConfiguration('jetbrains-titlebar');
     const cssPath = config.get<Record<string, string>>('cssPath', {});
     cssPath[this._key] = path;
@@ -45,20 +46,20 @@ export class Hacker {
     await config.update('cssPath', cssPath, ConfigurationTarget.Global);
   }
 
-  private async getWorkbenchCssPath(): Promise<string | null> {
+  private async _getWorkbenchCssPath(): Promise<string | null> {
     // Try to use saved path first (unless force relocate)
-    const p = this.getSavedPath();
+    const p = this._getSavedPath();
     if (p) {
       return p;
     }
 
-    return await this.autoRelocate(true);
+    return await this.autoReloc(true);
   }
 
   /**
    * Only get the input, will not save
    */
-  private async inputCssPath(prompt?: string): Promise<string | null> {
+  private async _inputCssPath(prompt?: string): Promise<string | null> {
     const input = await window.showInputBox({
       prompt: prompt ?? i18n['hacker.input-path.prompt'],
       ignoreFocusOut: true,
@@ -74,19 +75,7 @@ export class Hacker {
     return trimmed;
   }
 
-  /**
-   * Remove lines containing the CSS token from the array
-   * @param lines Array of CSS lines
-   * @returns Filtered array without injected lines
-   */
-  private purge(lines: string[]): string[] {
-    return lines.filter((line) => !line.trim().startsWith(Css.token));
-  }
-
-  /**
-   * Inject gradient CSS styles into the workbench CSS file
-   */
-  private async inject(cssPath: string): Promise<void> {
+  private async _inject(cssPath: string): Promise<void> {
     const oldCss = await readFile(cssPath, 'utf8');
 
     const start = oldCss.indexOf(Css.token);
@@ -128,49 +117,63 @@ export class Hacker {
    * Remove injected gradient styles from the CSS file
    * @param cssPath Path to the workbench CSS file
    */
-  private async clean(cssPath: string): Promise<void> {
+  private async _clean(cssPath: string): Promise<void> {
     const css = await readFile(cssPath, 'utf8');
-    const lines = this.purge(css.split('\n'));
-    await writeFile(cssPath, lines.join('\n'), 'utf8');
+
+    const start = css.indexOf(Css.token);
+    if (start === -1) {
+      window.showInformationMessage(i18n['hacker.clean.no-need']);
+      return;
+    }
+
+    const end = css.indexOf('\n', start);
+    if (end === -1) {
+      window.showInformationMessage(i18n['hacker.clean.malformed']);
+      return;
+    }
+
+    const cleaned = css.slice(0, start) + css.slice(end);
+    await writeFile(cssPath, cleaned, 'utf8');
     window.showInformationMessage(i18n['hacker.clean.success']);
   }
 
   async apply(): Promise<void> {
-    const cssPath = await this.getWorkbenchCssPath();
+    const cssPath = await this._getWorkbenchCssPath();
     if (cssPath) {
-      await this.inject(cssPath);
+      await this._inject(cssPath);
     }
   }
 
   async remove() {
-    const cssPath = await this.getWorkbenchCssPath();
+    const cssPath = await this._getWorkbenchCssPath();
     if (cssPath) {
-      await this.clean(cssPath);
+      await this._clean(cssPath);
     }
   }
 
-  async manuallyRelocate(): Promise<void> {
-    const cssPath = await this.inputCssPath();
+  // Same sense of malloc
+  async manualReloc(): Promise<void> {
+    const cssPath = await this._inputCssPath();
     if (!cssPath) {
       return;
     }
-    await this.savePath(cssPath);
+    await this._savePath(cssPath);
     window.showInformationMessage(i18n['hacker.relocate.success']);
   }
 
-  async autoRelocate(mute: boolean): Promise<string | null> {
+  async autoReloc(mute: boolean): Promise<string | null> {
     const autoPath = await searchWorkbenchCss();
     if (autoPath) {
-      await this.savePath(autoPath);
+      await this._savePath(autoPath);
       if (!mute) {
         window.showInformationMessage(i18n['hacker.relocate.success']);
       }
       return autoPath;
     }
 
-    const manualPath = await this.inputCssPath(i18n['hacker.auto-relocate.fail']);
+    const manualPath = await this._inputCssPath(i18n['hacker.auto-relocate.fail']);
     if (manualPath) {
-      await this.savePath(manualPath);
+      await this._savePath(manualPath);
       if (!mute) {
         window.showInformationMessage(i18n['hacker.relocate.success']);
       }
