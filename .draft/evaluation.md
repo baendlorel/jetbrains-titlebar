@@ -119,7 +119,7 @@ token = '\u002F\u002A__JETBRAINS_TITLEBAR_KASUKABETSUMUGI__\u002A\u002F',
 **位置**：`src/core/utils.ts:197`
 
 ```typescript
-export const errorPop = (err: Error) => window.showErrorMessage(err.message ?? err);
+export const errorPop = (err: Error) => $err(err.message ?? err);
 ```
 
 **问题**：当 `err.message` 不存在时，直接显示 `err` 对象会显示 `[object Object]`
@@ -128,7 +128,7 @@ export const errorPop = (err: Error) => window.showErrorMessage(err.message ?? e
 ```typescript
 export const errorPop = (err: Error) => {
   const message = err.message || String(err) || 'Unknown error';
-  window.showErrorMessage(message);
+  $err(message);
 };
 ```
 

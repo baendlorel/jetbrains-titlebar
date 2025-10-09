@@ -1,12 +1,13 @@
 import { ConfigurationTarget, window, workspace } from 'vscode';
-import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { userInfo } from 'node:os';
 
 import { i18n } from '@/lib/i18n.js';
-import { searchWorkbenchCss } from './utils.js';
+import { $err, $info } from '@/lib/native.js';
 import { GLOW_COLORS } from '@/lib/colors.js';
 import { ConfigJustifier } from '@/lib/config.js';
+import { searchWorkbenchCss } from './utils.js';
 
 export class Hacker {
   static getInstance() {
@@ -69,7 +70,7 @@ export class Hacker {
     }
     const trimmed = input.trim();
     if (!existsSync(trimmed)) {
-      window.showErrorMessage(i18n['file-not-found'].replace('$0', trimmed));
+      $err(i18n['file-not-found'].replace('$0', trimmed));
       return null;
     }
     return trimmed;
@@ -81,7 +82,7 @@ export class Hacker {
     const start = oldCss.indexOf(Css.token);
 
     // #if DEBUG
-    window.showInformationMessage('When debugging, always inject');
+    $info('When debugging, always inject');
     // #else
     if (start !== -1 && oldCss.includes(Css.tokenVersion, start)) {
       return; // injected already
@@ -110,7 +111,7 @@ export class Hacker {
     const newLine = `${Css.token}${Css.tokenVersion}${base}${styles.join('')}`;
     const newData = `${oldCss.slice(0, start)}${newLine}\n${oldCss.slice(end)}`;
     await writeFile(cssPath, newData, 'utf8');
-    window.showInformationMessage(i18n['hacker.input-path.success']);
+    $info(i18n['hacker.input-path.success']);
   }
 
   /**
@@ -122,19 +123,19 @@ export class Hacker {
 
     const start = css.indexOf(Css.token);
     if (start === -1) {
-      window.showInformationMessage(i18n['hacker.clean.no-need']);
+      $info(i18n['hacker.clean.no-need']);
       return;
     }
 
     const end = css.indexOf('\n', start);
     if (end === -1) {
-      window.showInformationMessage(i18n['hacker.clean.malformed']);
+      $info(i18n['hacker.clean.malformed']);
       return;
     }
 
     const cleaned = css.slice(0, start) + css.slice(end);
     await writeFile(cssPath, cleaned, 'utf8');
-    window.showInformationMessage(i18n['hacker.clean.success']);
+    $info(i18n['hacker.clean.success']);
   }
 
   async apply(): Promise<void> {
@@ -158,7 +159,7 @@ export class Hacker {
       return;
     }
     await this._savePath(cssPath);
-    window.showInformationMessage(i18n['hacker.relocate.success']);
+    $info(i18n['hacker.relocate.success']);
   }
 
   async autoReloc(mute: boolean): Promise<string | null> {
@@ -166,7 +167,7 @@ export class Hacker {
     if (autoPath) {
       await this._savePath(autoPath);
       if (!mute) {
-        window.showInformationMessage(i18n['hacker.relocate.success']);
+        $info(i18n['hacker.relocate.success']);
       }
       return autoPath;
     }
@@ -175,7 +176,7 @@ export class Hacker {
     if (manualPath) {
       await this._savePath(manualPath);
       if (!mute) {
-        window.showInformationMessage(i18n['hacker.relocate.success']);
+        $info(i18n['hacker.relocate.success']);
       }
       return manualPath;
     }
