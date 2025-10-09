@@ -7,5 +7,5 @@
   "configuration.glowIntensity.description": "Glow effect glowIntensity as percentage (0-100)",
   "configuration.cssPath.description": "Cached workbench CSS file path",
   "configuration.glowDiameter.description": "Glow diameter in pixels (injected directly as width)",
-  "configuration.glowOffset.description": "Glow horizontal offset in pixels (center x position, default 120)"
+  "configuration.glowOffsetX.description": "Glow horizontal offset in pixels (center x position, default 120)"
 }

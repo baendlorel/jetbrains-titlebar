@@ -91,13 +91,13 @@ class Hacker {
     const justifier = new ConfigJustifier();
     const intensity = justifier.percent('glowIntensity', Intensity.default);
     const diameter = justifier.pixel('glowDiameter', Diameter.default, Diameter.min);
-    const offset = justifier.pixel('glowOffset', Offset.default, Offset.min);
+    const offsetX = justifier.pixel('glowOffsetX', Offset.default, Offset.min);
 
     const base = Css.base
       .replace(/\n[\s]+/g, '')
       .replace('{{intensity}}', intensity)
       .replace('{{diameter}}', diameter)
-      .replace('{{offset}}', offset);
+      .replace('{{offsetX}}', offsetX);
     const template = Css.template.replace(/\n[\s]+/g, '');
 
     const colors = getCssColors();

@@ -82,12 +82,12 @@
           "maximum": 2000,
           "description": "%configuration.glowDiameter.description%"
         },
-        "jetbrains-titlebar.glowOffset": {
+        "jetbrains-titlebar.glowOffsetX": {
           "type": "number",
           "default": 120,
           "minimum": 0,
           "maximum": 2000,
-          "description": "%configuration.glowOffset.description%"
+          "description": "%configuration.glowOffsetX.description%"
         },
         "jetbrains-titlebar.cssPath": {
           "type": "string",

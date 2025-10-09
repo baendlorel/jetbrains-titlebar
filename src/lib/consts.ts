@@ -4,7 +4,7 @@ const enum Css {
         content: '';
         position: absolute;
         width: {{width}}px;
-        left: {{offset}}px;
+        left: {{offsetX}}px;
         transform: translateX(-50%);
         top: 0;
         height: 100%;
