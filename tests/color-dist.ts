@@ -1,4 +1,4 @@
-import { hashString } from '../src/core/utils';
+import { hashIndex } from '../src/core/utils';
 import { GLOW_COLORS } from '../src/lib/colors';
 // Default number of samples to generate
 const DEFAULT_COUNT = 5000;
@@ -56,7 +56,7 @@ async function main() {
     // generate strings with varying lengths
     const len = 4 + Math.floor(Math.random() * 16);
     const s = randomString(len);
-    const idx = hashString(s);
+    const idx = hashIndex(s);
     counts[idx]++;
   }
 

@@ -1,5 +1,5 @@
 import { StatusBarAlignment, StatusBarItem, window, workspace } from 'vscode';
-import { hashString } from './utils.js';
+import { hashIndex } from './utils.js';
 
 export class Marker {
   static readonly instance = new Marker();
@@ -35,6 +35,6 @@ export class Marker {
     const colorSeed = config.get<string>('colorSeed', '');
     const mixedName = colorSeed ? `${folderName}::${colorSeed}` : folderName;
 
-    return hashString(mixedName);
+    return hashIndex(mixedName);
   }
 }

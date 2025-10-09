@@ -4,19 +4,12 @@ import { join } from 'node:path';
 import { homedir } from 'node:os';
 import { GLOW_COLORS } from '@/lib/colors';
 
-export function hashString(str: string): number {
-  const hash = createHash('md5').update(str).digest('hex');
-  const i = parseInt(hash.slice(0, 8), 16);
-  // let hash = 0;
-  // for (let i = 0; i < str.length; i++) {
-  //   const char = str.charCodeAt(i);
-  //   hash = (hash << 5) - hash + char;
-  //   hash = hash & hash; // Convert to 32bit integer
-  // }
-  // return Math.abs(i);
-  const t = i % GLOW_COLORS.length;
-  console.log('hashedindex', t);
-  return t;
+export function hashIndex(input: string): number {
+  const hash = createHash('sha1').update(input).digest();
+  const num = (BigInt(hash.readUInt32BE(0)) << 32n) | BigInt(hash.readUInt32BE(4));
+
+  const result = Number(num & 0x7fffffffffffffffn); // Keep it positive
+  return result % GLOW_COLORS.length;
 }
 
 /**
