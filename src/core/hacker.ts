@@ -1,14 +1,20 @@
 import { ConfigurationTarget, window, workspace } from 'vscode';
 import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
-
-import { i18n } from '@/lib/i18n.js';
-import { searchWorkbenchCss, getCssColors, ConfigJustifier } from './utils.js';
 import { userInfo } from 'node:os';
 
-// * /mnt/d/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css
-class Hacker {
+import { i18n } from '@/lib/i18n.js';
+import { searchWorkbenchCss, ConfigJustifier } from './utils.js';
+import { GLOW_COLORS } from '@/lib/colors.js';
+
+export class Hacker {
+  static getInstance() {
+    return Hacker._instance;
+  }
+
+  private static readonly _instance = new Hacker();
   private readonly _key: string;
+
   constructor() {
     const u = userInfo();
     this._key = u.uid + '-' + u.gid + '-' + u.homedir;
@@ -106,8 +112,7 @@ class Hacker {
       .replace('{{offsetX}}', offsetX);
     const template = Css.template.replace(/\n[\s]+/g, '');
 
-    const colors = getCssColors();
-    const styles = colors.map((color, index) =>
+    const styles = GLOW_COLORS.map((color, index) =>
       template.replaceAll('{{color}}', color).replaceAll('{{index}}', String(index))
     );
 
@@ -168,5 +173,3 @@ class Hacker {
     return null;
   }
 }
-
-export default new Hacker();

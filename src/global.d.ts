@@ -14,3 +14,27 @@ declare namespace logger {
   function WorkspaceNotFound(id: string): void;
   function TabNotFoundInWorkspace(id: string, tabId: number): void;
 }
+
+type Fn = (...args: any[]) => any;
+
+type Pkg = typeof import('../package.json');
+
+// # Config Name
+type _ConfigKeys = keyof Pkg['contributes']['configuration']['properties'];
+type _StripPrefix<T> = T extends _ConfigKeys
+  ? T extends `jetbrains-titlebar.${infer R}`
+    ? R
+    : never
+  : never;
+
+type ConfigName = _StripPrefix<_ConfigKeys>;
+
+// # Command Name
+type I18NKeys = keyof typeof import('../package.nls.json');
+type _StripPrefixAndTitle<T> = T extends I18NKeys
+  ? T extends `command.${infer R}.title`
+    ? R
+    : never
+  : never;
+
+type CommandName = _StripPrefixAndTitle<I18NKeys>;
