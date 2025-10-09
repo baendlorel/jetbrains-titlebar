@@ -4,7 +4,7 @@
 
 一个为 VS Code 标题栏添加炫彩光晕效果的扩展，根据工作区名称自动生成独特的颜色 —— 灵感来自 JetBrains IDE。
 
-<img src="assets/example.jpg" width="260px">
+<img src="https://raw.githubusercontent.com/baendlorel/jetbrains-titlebar/main/assets/example.png" width="260px">
 
 想了解更多有趣的项目，欢迎访问 [我的主页 💛](https://baendlorel.github.io)
 

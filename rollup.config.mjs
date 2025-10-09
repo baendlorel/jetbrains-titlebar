@@ -31,6 +31,8 @@ const aliasOpts = {
 
 // # main options
 
+const DEBUG = process.env.NODE_ENV === 'dev';
+
 /**
  * @type {import('rollup').RollupOptions[]}
  */
@@ -62,23 +64,25 @@ const options = [
       resolve(),
       commonjs(),
       typescript({ tsconfig, removeComments: false }),
-      conditional({ variables: { DEBUG: process.env.NODE_ENV === 'dev' } }),
-      void terser({
-        format: {
-          comments: false,
-        },
-        compress: {
-          reduce_vars: true,
-          drop_console: true,
-          dead_code: true, // ✅ Safe: remove dead code
-          evaluate: true, // ✅ Safe: evaluate constant expressions
-        },
-        mangle: {
-          properties: {
-            regex: /^_/, // only mangle properties starting with '_'
-          },
-        },
-      }),
+      conditional({ variables: { DEBUG } }),
+      DEBUG
+        ? null
+        : terser({
+            format: {
+              comments: false,
+            },
+            compress: {
+              reduce_vars: true,
+              drop_console: true,
+              dead_code: true, // ✅ Safe: remove dead code
+              evaluate: true, // ✅ Safe: evaluate constant expressions
+            },
+            mangle: {
+              properties: {
+                regex: /^_/, // only mangle properties starting with '_'
+              },
+            },
+          }),
     ].filter(Boolean),
     external: [],
   },

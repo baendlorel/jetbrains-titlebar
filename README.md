@@ -4,7 +4,7 @@
 
 A VS Code extension that adds a colorful glow effect to the titlebar, automatically generating unique colors based on your workspace name - inspired by JetBrains IDEs.
 
-<img src="assets/example.jpg" width="260px">
+<img src="https://raw.githubusercontent.com/baendlorel/jetbrains-titlebar/main/assets/example.png" width="260px">
 
 For more interesting projects, check out [my homepage💛](https://baendlorel.github.io)
 

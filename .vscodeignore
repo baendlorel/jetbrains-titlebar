@@ -4,6 +4,8 @@ scripts
 .scripts
 artifact
 .artifact
+assets/example.png
+.oxlintrc.json
 
 pnpm-lock.yaml
 eslint.config.*
