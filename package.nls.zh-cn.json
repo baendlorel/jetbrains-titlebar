@@ -5,8 +5,8 @@
   "command.removeGlow.title": "移除标题栏光晕效果",
   "command.manuallyRelocateCssPath.title": "手动指定 workbench.desktop.main.css 路径",
   "command.autoRelocateCssPath.title": "自动定位 workbench.desktop.main.css 路径",
-  "configuration.glowIntensity.description": "光晕效果强度百分比",
+  "configuration.glowIntensity.description": "光晕效果强度百分比，默认 32",
   "configuration.cssPath.description": "缓存的 workbench.desktop.main.css 路径，是一个homedir到css文件的映射对象",
-  "configuration.glowDiameter.description": "辉光直径（像素），推荐大于80，默认130",
+  "configuration.glowDiameter.description": "辉光直径（像素），推荐大于80，默认 260",
   "configuration.glowOffsetX.description": "辉光水平偏移（像素），默认 120"
 }

@@ -6,7 +6,13 @@ export class Marker {
   constructor() {
     this.item = window.createStatusBarItem(StatusBarAlignment.Left, NaN);
     this.update();
-    this.item.color = 'red'; // 'transparent';
+
+    // #if DEBUG
+    this.item.color = 'red';
+    // #else
+    this.item.color = 'transparent';
+    // #endif
+
     this.item.show();
   }
 
