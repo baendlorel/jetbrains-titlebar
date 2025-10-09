@@ -129,7 +129,7 @@ class Hacker {
     }
   }
 
-  async none() {
+  async remove() {
     const cssPath = await this.getWorkbenchCssPath();
     if (cssPath) {
       await this.clean(cssPath);

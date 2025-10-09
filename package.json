@@ -58,6 +58,11 @@
         "command": "jetbrains-titlebar.relocateCssPath",
         "title": "%command.relocateCssPath.title%",
         "category": "%extension.category%"
+      },
+      {
+        "command": "jetbrains-titlebar.relocateCssPathAuto",
+        "title": "%command.relocateCssPathAuto.title%",
+        "category": "%extension.category%"
       }
     ],
     "configuration": {

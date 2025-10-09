@@ -2,16 +2,12 @@ import { commands, ExtensionContext, Disposable } from 'vscode';
 import hacker from '@/core/hacker.js';
 
 export default (context: ExtensionContext) => {
+  const reg = commands.registerCommand;
   const list: Disposable[] = [
-    commands.registerCommand('jetbrains-titlebar.applyGlow', async () => {
-      await hacker.apply();
-    }),
-    commands.registerCommand('jetbrains-titlebar.removeGlow', async () => {
-      await hacker.none();
-    }),
-    commands.registerCommand('jetbrains-titlebar.relocateCssPath', async () => {
-      await hacker.relocate();
-    }),
+    reg('jetbrains-titlebar.applyGlow', () => hacker.apply()),
+    reg('jetbrains-titlebar.removeGlow', () => hacker.remove()),
+    reg('jetbrains-titlebar.relocateCssPath', () => hacker.relocate()),
+    reg('jetbrains-titlebar.relocateCssPathAuto', () => hacker.relocateAuto(false)),
   ].filter((v) => v !== undefined);
 
   context.subscriptions.push(...list);
