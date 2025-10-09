@@ -162,14 +162,18 @@ export class Hacker {
     const autoPath = await searchWorkbenchCss();
     if (autoPath) {
       await this.savePath(autoPath);
-      !mute && window.showInformationMessage(i18n['hacker.relocate.success']);
+      if (!mute) {
+        window.showInformationMessage(i18n['hacker.relocate.success']);
+      }
       return autoPath;
     }
 
     const manualPath = await this.inputCssPath(i18n['hacker.auto-relocate.fail']);
     if (manualPath) {
       await this.savePath(manualPath);
-      !mute && window.showInformationMessage(i18n['hacker.relocate.success']);
+      if (!mute) {
+        window.showInformationMessage(i18n['hacker.relocate.success']);
+      }
       return manualPath;
     }
     return null;
