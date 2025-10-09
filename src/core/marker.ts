@@ -4,7 +4,7 @@ import { getColorIndexFromWorkspace } from './utils.js';
 export class Marker {
   readonly item: StatusBarItem;
   constructor() {
-    this.item = window.createStatusBarItem(StatusBarAlignment.Left, NaN);
+    this.item = window.createStatusBarItem(StatusBarAlignment.Left, -Infinity);
     this.update();
 
     // #if DEBUG

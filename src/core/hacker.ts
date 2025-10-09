@@ -4,13 +4,14 @@ import { readFile, writeFile } from 'node:fs/promises';
 
 import { i18n } from '@/lib/i18n.js';
 import { searchWorkbenchCss, getCssColors, ConfigJustifier } from './utils.js';
-import { homedir } from 'node:os';
+import { userInfo } from 'node:os';
 
 // * /mnt/d/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css
 class Hacker {
-  private readonly cssPathKey: string;
+  private readonly _key: string;
   constructor() {
-    this.cssPathKey = homedir();
+    const u = userInfo();
+    this._key = u.uid + '-' + u.gid + '-' + u.homedir;
   }
 
   /**
@@ -20,7 +21,7 @@ class Hacker {
     const config = workspace.getConfiguration('jetbrains-titlebar');
     const map = config.get<Record<string, string>>('cssPath', {});
 
-    const cachedPath = map[this.cssPathKey];
+    const cachedPath = map[this._key];
     if (cachedPath && existsSync(cachedPath)) {
       return cachedPath;
     }
@@ -33,7 +34,7 @@ class Hacker {
   private async savePath(path: string): Promise<void> {
     const config = workspace.getConfiguration('jetbrains-titlebar');
     const cssPath = config.get<Record<string, string>>('cssPath', {});
-    cssPath[this.cssPathKey] = path;
+    cssPath[this._key] = path;
 
     await config.update('cssPath', cssPath, ConfigurationTarget.Global);
   }

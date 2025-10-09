@@ -1,4 +1,4 @@
-import { workspace, WorkspaceConfiguration } from 'vscode';
+import { window, workspace, WorkspaceConfiguration } from 'vscode';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
@@ -192,3 +192,5 @@ export class ConfigJustifier {
     return clamped.toString();
   }
 }
+
+export const errorPop = (err: Error) => window.showErrorMessage(err.message ?? err);
