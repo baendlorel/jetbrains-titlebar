@@ -65,7 +65,7 @@ const options = [
       conditional({ variables: { DEBUG: process.env.NODE_ENV === 'dev' } }),
       void terser({
         format: {
-          comments: false, // remove comments
+          comments: false,
         },
         compress: {
           reduce_vars: true,
