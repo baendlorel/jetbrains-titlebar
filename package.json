@@ -33,7 +33,7 @@
     "url": "https://github.com/baendlorel/jetbrains-titlebar/issues"
   },
   "license": "MIT",
-  "icon": "assets/icon.png",
+  "icon": "src/assets/idea.png",
   "galleryBanner": {
     "color": "#1e1e1e",
     "theme": "dark"
