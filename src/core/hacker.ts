@@ -6,19 +6,19 @@ import { userInfo } from 'node:os';
 import { i18n } from '@/lib/i18n.js';
 import { $err, $info } from '@/lib/native.js';
 import { GLOW_COLORS } from '@/lib/colors.js';
-import { ConfigJustifier } from '@/lib/config.js';
+import { Cfg } from '@/lib/config.js';
 import { Marker } from './marker.js';
 import { searchWorkbenchCss } from './utils.js';
 
 export class Hacker {
   static readonly instance = new Hacker();
 
-  private readonly _key: string;
-  private readonly _idSelector: string;
+  private readonly cssPathKey: string;
+  private readonly markerId: string;
   constructor() {
     const u = userInfo();
-    this._key = u.uid + '-' + u.gid + '-' + u.homedir;
-    this._idSelector = Marker.instance.item.id.replaceAll('.', '\\.');
+    this.cssPathKey = u.uid + '-' + u.gid + '-' + u.homedir;
+    this.markerId = Marker.instance.item.id.replaceAll('.', '\\.');
   }
 
   /**
@@ -28,7 +28,7 @@ export class Hacker {
     const config = workspace.getConfiguration('jetbrains-titlebar');
     const map = config.get<Record<string, string>>('cssPath', {});
 
-    const cachedPath = map[this._key];
+    const cachedPath = map[this.cssPathKey];
     if (cachedPath && existsSync(cachedPath)) {
       return cachedPath;
     }
@@ -41,7 +41,7 @@ export class Hacker {
   private async _savePath(path: string): Promise<void> {
     const config = workspace.getConfiguration('jetbrains-titlebar');
     const cssPath = config.get<Record<string, string>>('cssPath', {});
-    cssPath[this._key] = path;
+    cssPath[this.cssPathKey] = path;
 
     await config.update('cssPath', cssPath, ConfigurationTarget.Global);
   }
@@ -108,18 +108,17 @@ export class Hacker {
    * Generate css for injection, with `\n`
    */
   private generateCss() {
-    const justifier = new ConfigJustifier();
-    const intensity = justifier.percent('glowIntensity', Intensity.default);
-    const diameter = justifier.pixel('glowDiameter', Diameter.default, Diameter.min);
-    const offsetX = justifier.pixel('glowOffsetX', Offset.default, Offset.min);
+    const intensity = Cfg.percent('glowIntensity', Intensity.default);
+    const diameter = Cfg.pixel('glowDiameter', Diameter.default, Diameter.min);
+    const offsetX = Cfg.pixel('glowOffsetX', Offset.default, Offset.min);
 
     const base = Css.base
       .replace(/\n[\s]+/g, '')
-      .replace('{{id}}', this._idSelector)
+      .replace('{{id}}', this.markerId)
       .replace('{{intensity}}', intensity)
       .replace('{{diameter}}', diameter)
       .replace('{{offsetX}}', offsetX);
-    const template = Css.template.replace(/\n[\s]+/g, '').replace('{{id}}', this._idSelector);
+    const template = Css.template.replace(/\n[\s]+/g, '').replace('{{id}}', this.markerId);
 
     const styles = GLOW_COLORS.map((color, index) =>
       template.replaceAll('{{color}}', color).replaceAll('{{index}}', String(index)),
@@ -127,7 +126,7 @@ export class Hacker {
 
     const projectInitial = Css.projectInitial
       .replace(/\n[\s]+/g, '')
-      .replace('{{id}}', `${this._idSelector}\\.${Marker.instance.initialsItemId}`);
+      .replace('{{id}}', `${this.markerId}\\.${Marker.instance.initialsItemId}`);
 
     return `\n${Css.token}${Css.tokenVersion}${Css.tokenDate}${base}${styles.join('')}${projectInitial}\n`;
   }

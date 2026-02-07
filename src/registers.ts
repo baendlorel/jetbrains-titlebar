@@ -2,6 +2,7 @@ import { commands, workspace, ExtensionContext, ConfigurationChangeEvent } from 
 import { errorPop } from './lib/native.js';
 import { Hacker } from './core/hacker';
 import { Marker } from './core/marker';
+import { Cfg } from './lib/config.js';
 
 const changed = (e: ConfigurationChangeEvent, ...names: ConfigName[]) =>
   names.some((name) => e.affectsConfiguration(`jetbrains-titlebar.${name}`));
@@ -20,6 +21,7 @@ export default (context: ExtensionContext) => {
       // * change events
       workspace.onDidChangeWorkspaceFolders(() => marker.update()),
       workspace.onDidChangeConfiguration((e) => {
+        Cfg.refresh();
         if (changed(e, 'colorSeed')) {
           marker.update();
         } else if (changed(e, 'showProjectInitials')) {
@@ -37,6 +39,6 @@ export default (context: ExtensionContext) => {
       cmd('removeGlow', () => hacker.remove()),
       cmd('manuallyRelocateCssPath', () => hacker.manualReloc()),
       cmd('autoRelocateCssPath', () => hacker.autoReloc(false)),
-    ].filter((v) => v !== undefined)
+    ].filter((v) => v !== undefined),
   );
 };
