@@ -113,9 +113,8 @@
     "build": "rimraf out &&  tsx ./.scripts/rollup.ts",
     "watch": "tsc -watch -p ./",
     "check": "tsc -p tsconfig.build.json",
-    "test": "tsx tests/index.test.ts",
     "lint": "oxlint .",
-    "package": "vsce package",
+    "pub": "vsce package -o ./bin",
     "publish": "pnpm build && vsce publish"
   },
   "devDependencies": {
