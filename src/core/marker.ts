@@ -1,5 +1,6 @@
 import { StatusBarAlignment, StatusBarItem, window, workspace } from 'vscode';
 import { getProjectInitials, hashIndex } from './utils.js';
+import { Cfg } from '@/lib/config.js';
 
 export class Marker {
   static readonly instance = new Marker();
@@ -42,7 +43,7 @@ export class Marker {
   }
 
   syncInitialItem() {
-    if (this._shouldShowInitials()) {
+    if (Cfg.get<boolean>('showProjectInitials', true)) {
       this.createInitialItem();
       return;
     }
@@ -62,8 +63,7 @@ export class Marker {
     const folderName = workspaceFolders[0].name;
 
     // Mix in color seed if configured
-    const config = workspace.getConfiguration('jetbrains-titlebar');
-    const colorSeed = config.get<string>('colorSeed', '');
+    const colorSeed = Cfg.get<string>('colorSeed', '');
     const mixedName = colorSeed ? `${folderName}::${colorSeed}` : folderName;
 
     return hashIndex(mixedName);
@@ -75,10 +75,5 @@ export class Marker {
       return '';
     }
     return getProjectInitials(workspaceFolders[0].name);
-  }
-
-  private _shouldShowInitials(): boolean {
-    const config = workspace.getConfiguration('jetbrains-titlebar');
-    return config.get<boolean>('showProjectInitials', true);
   }
 }

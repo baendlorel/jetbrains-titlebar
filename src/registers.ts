@@ -21,7 +21,7 @@ export default (context: ExtensionContext) => {
       // * change events
       workspace.onDidChangeWorkspaceFolders(() => marker.update()),
       workspace.onDidChangeConfiguration((e) => {
-        Cfg.refresh();
+        // & Cfg.refresh() is executed when update is called
         if (changed(e, 'colorSeed')) {
           marker.update();
         } else if (changed(e, 'showProjectInitials')) {

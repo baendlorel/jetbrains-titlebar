@@ -25,8 +25,7 @@ export class Hacker {
    * Get saved CSS path from configuration
    */
   private _getSavedPath(): string | null {
-    const config = workspace.getConfiguration('jetbrains-titlebar');
-    const map = config.get<Record<string, string>>('cssPath', {});
+    const map = Cfg.get<Record<string, string>>('cssPath', {});
 
     const cachedPath = map[this.cssPathKey];
     if (cachedPath && existsSync(cachedPath)) {
@@ -39,11 +38,10 @@ export class Hacker {
    * Save CSS path to configuration
    */
   private async _savePath(path: string): Promise<void> {
-    const config = workspace.getConfiguration('jetbrains-titlebar');
-    const cssPath = config.get<Record<string, string>>('cssPath', {});
+    const cssPath = Cfg.get<Record<string, string>>('cssPath', {});
     cssPath[this.cssPathKey] = path;
 
-    await config.update('cssPath', cssPath, ConfigurationTarget.Global);
+    await Cfg.update('cssPath', cssPath, ConfigurationTarget.Global);
   }
 
   private async _getWorkbenchCssPath(): Promise<string | null> {

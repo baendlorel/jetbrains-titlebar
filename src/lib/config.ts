@@ -1,4 +1,4 @@
-import { workspace, WorkspaceConfiguration } from 'vscode';
+import { ConfigurationTarget, workspace, WorkspaceConfiguration } from 'vscode';
 
 export const getConfig = () => workspace.getConfiguration('jetbrains-titlebar');
 
@@ -9,6 +9,15 @@ export namespace Cfg {
     cache = getConfig();
   }
   export const get = <T>(section: string, defaultValue: T) => cache.get(section, defaultValue);
+  export const update: (
+    section: string,
+    value: any,
+    configurationTarget?: ConfigurationTarget | boolean | null,
+    overrideInLanguage?: boolean,
+  ) => Promise<void> = async (section, value, configurationTarget, overrideInLanguage) => {
+    await cache.update(section, value, configurationTarget, overrideInLanguage);
+    cache = getConfig();
+  };
 
   // # transformers
   export function pixel(key: string, defaultValue: number, min: number = 0, max: number = Infinity): string {
