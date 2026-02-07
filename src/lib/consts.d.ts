@@ -20,17 +20,21 @@ declare const enum Css {
         background: radial-gradient(circle at 50% 50%, {{color}}ff 0%, {{color}}80 40%, transparent 96%);
       }`,
   projectInitial = `
-  .KasukabeTsumugi\u005C\u002Ejetbrains-titlebar\u005C\u002Eproject-initials{
+  .menubar[role="menubar"]{
+    margin-left: 30px !important;
+  }
+  #KasukabeTsumugi\u005C\u002Ejetbrains-titlebar\u005C\u002Eproject-initials{
     position: fixed;
     border-radius: 5px;
-    left: 32px;
-    top: 6px;
+    left: 36px;
+    top: 6.5px;
     height: 21px;
     padding: 1.5px 0px;
     background-color: #f7f8fa28;
   }
-  .KasukabeTsumugi\u005C\u002Ejetbrains-titlebar\u005C\u002Eproject-initials .statusbar-item-label{
+  #KasukabeTsumugi\u005C\u002Ejetbrains-titlebar\u005C\u002Eproject-initials .statusbar-item-label{
     padding: 0 2.5px !important;
+    color: rgba(247, 248, 250, 0.9)
   }  
   `,
 }

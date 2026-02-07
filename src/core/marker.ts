@@ -9,11 +9,7 @@ export class Marker {
 
   constructor() {
     this.item = window.createStatusBarItem(StatusBarAlignment.Left, -Infinity);
-    this.initialItem = window.createStatusBarItem(
-      'KasukabeTsumugi.jetbrains-titlebar.project-initials',
-      StatusBarAlignment.Left,
-      -Infinity,
-    );
+    this.initialItem = window.createStatusBarItem('project-initials', StatusBarAlignment.Left, -Infinity);
     this.update();
 
     // #if DEBUG
