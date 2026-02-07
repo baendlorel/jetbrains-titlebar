@@ -1,4 +1,4 @@
-import { ConfigurationTarget, window, workspace } from 'vscode';
+import { ConfigurationTarget, window } from 'vscode';
 import { appendFile, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { userInfo } from 'node:os';
@@ -7,24 +7,22 @@ import { i18n } from '@/lib/i18n.js';
 import { $err, $info } from '@/lib/native.js';
 import { GLOW_COLORS } from '@/lib/colors.js';
 import { Cfg } from '@/lib/config.js';
-import { Marker } from './marker.js';
+import { marker } from './marker.js';
 import { searchWorkbenchCss } from './utils.js';
 
-export class Hacker {
-  static readonly instance = new Hacker();
-
+class Hacker {
   private readonly cssPathKey: string;
-  private readonly markerId: string;
+  private readonly markerIdSelector: string;
   constructor() {
     const u = userInfo();
     this.cssPathKey = u.uid + '-' + u.gid + '-' + u.homedir;
-    this.markerId = Marker.instance.item.id.replaceAll('.', '\\.');
+    this.markerIdSelector = marker.sbiId.replaceAll('.', '\\.');
   }
 
   /**
    * Get saved CSS path from configuration
    */
-  private _getSavedPath(): string | null {
+  private getSavedPath(): string | null {
     const map = Cfg.get<Record<string, string>>('cssPath', {});
 
     const cachedPath = map[this.cssPathKey];
@@ -37,16 +35,16 @@ export class Hacker {
   /**
    * Save CSS path to configuration
    */
-  private async _savePath(path: string): Promise<void> {
+  private async savePath(path: string): Promise<void> {
     const cssPath = Cfg.get<Record<string, string>>('cssPath', {});
     cssPath[this.cssPathKey] = path;
 
     await Cfg.update('cssPath', cssPath, ConfigurationTarget.Global);
   }
 
-  private async _getWorkbenchCssPath(): Promise<string | null> {
+  private async getWorkbenchCssPath(): Promise<string | null> {
     // Try to use saved path first (unless force relocate)
-    const p = this._getSavedPath();
+    const p = this.getSavedPath();
     if (p) {
       return p;
     }
@@ -57,7 +55,7 @@ export class Hacker {
   /**
    * Only get the input, will not save
    */
-  private async _inputCssPath(prompt?: string): Promise<string | null> {
+  private async inputCssPath(prompt?: string): Promise<string | null> {
     const input = await window.showInputBox({
       prompt: prompt ?? i18n['hacker.input-path.prompt'],
       ignoreFocusOut: true,
@@ -73,7 +71,7 @@ export class Hacker {
     return trimmed;
   }
 
-  private async _inject(cssPath: string): Promise<void> {
+  private async inject(cssPath: string): Promise<void> {
     const oldCss = await readFile(cssPath, 'utf8');
 
     const rawStart = oldCss.indexOf(Css.token);
@@ -112,11 +110,11 @@ export class Hacker {
 
     const base = Css.base
       .replace(/\n[\s]+/g, '')
-      .replace('{{id}}', this.markerId)
+      .replace('{{id}}', this.markerIdSelector)
       .replace('{{intensity}}', intensity)
       .replace('{{diameter}}', diameter)
       .replace('{{offsetX}}', offsetX);
-    const template = Css.template.replace(/\n[\s]+/g, '').replace('{{id}}', this.markerId);
+    const template = Css.template.replace(/\n[\s]+/g, '').replace('{{id}}', this.markerIdSelector);
 
     const styles = GLOW_COLORS.map((color, index) =>
       template.replaceAll('{{color}}', color).replaceAll('{{index}}', String(index)),
@@ -124,7 +122,7 @@ export class Hacker {
 
     const projectInitial = Css.projectInitial
       .replace(/\n[\s]+/g, '')
-      .replace('{{id}}', `${this.markerId}\\.${Marker.instance.initialsItemId}`);
+      .replace('{{id}}', `${this.markerIdSelector}\\.${marker.INITIALS_SBI_ID}`);
 
     return `\n${Css.token}${Css.tokenVersion}${Css.tokenDate}${base}${styles.join('')}${projectInitial}\n`;
   }
@@ -135,7 +133,7 @@ export class Hacker {
    * Remove injected gradient styles from the CSS file
    * @param cssPath Path to the workbench CSS file
    */
-  private async _clean(cssPath: string): Promise<void> {
+  private async clean(cssPath: string): Promise<void> {
     const css = await readFile(cssPath, 'utf8');
 
     const start = css.indexOf(Css.token);
@@ -156,42 +154,42 @@ export class Hacker {
   }
 
   async apply(): Promise<void> {
-    const cssPath = await this._getWorkbenchCssPath();
+    const cssPath = await this.getWorkbenchCssPath();
     if (cssPath) {
-      await this._inject(cssPath);
+      await this.inject(cssPath);
     }
   }
 
   async remove() {
-    const cssPath = await this._getWorkbenchCssPath();
+    const cssPath = await this.getWorkbenchCssPath();
     if (cssPath) {
-      await this._clean(cssPath);
+      await this.clean(cssPath);
     }
   }
 
   // Same sense of malloc
   async manualReloc(): Promise<void> {
-    const cssPath = await this._inputCssPath();
+    const cssPath = await this.inputCssPath();
     if (!cssPath) {
       return;
     }
-    await this._savePath(cssPath);
+    await this.savePath(cssPath);
     $info(i18n['hacker.relocate.success']);
   }
 
   async autoReloc(mute: boolean): Promise<string | null> {
     const autoPath = await searchWorkbenchCss();
     if (autoPath) {
-      await this._savePath(autoPath);
+      await this.savePath(autoPath);
       if (!mute) {
         $info(i18n['hacker.relocate.success']);
       }
       return autoPath;
     }
 
-    const manualPath = await this._inputCssPath(i18n['hacker.auto-relocate.fail']);
+    const manualPath = await this.inputCssPath(i18n['hacker.auto-relocate.fail']);
     if (manualPath) {
-      await this._savePath(manualPath);
+      await this.savePath(manualPath);
       if (!mute) {
         $info(i18n['hacker.relocate.success']);
       }
@@ -200,3 +198,5 @@ export class Hacker {
     return null;
   }
 }
+
+export const hacker = new Hacker();

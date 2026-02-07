@@ -1,8 +1,7 @@
 import { commands, workspace, ExtensionContext, ConfigurationChangeEvent } from 'vscode';
 import { errorPop } from './lib/native.js';
-import { Hacker } from './core/hacker';
-import { Marker } from './core/marker';
-import { Cfg } from './lib/config.js';
+import { hacker } from './core/hacker';
+import { marker } from './core/marker';
 
 const changed = (e: ConfigurationChangeEvent, ...names: ConfigName[]) =>
   names.some((name) => e.affectsConfiguration(`jetbrains-titlebar.${name}`));
@@ -10,13 +9,10 @@ const changed = (e: ConfigurationChangeEvent, ...names: ConfigName[]) =>
 const cmd = (c: CommandName, cb: Fn) => commands.registerCommand(`jetbrains-titlebar.${c}`, cb);
 
 export default (context: ExtensionContext) => {
-  const hacker = Hacker.instance;
-  const marker = Marker.instance;
-
   context.subscriptions.push(
     ...[
       // * elements
-      marker.item,
+      marker.sbi,
 
       // * change events
       workspace.onDidChangeWorkspaceFolders(() => marker.update()),

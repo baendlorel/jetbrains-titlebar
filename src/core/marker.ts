@@ -2,43 +2,45 @@ import { StatusBarAlignment, StatusBarItem, window, workspace } from 'vscode';
 import { getProjectInitials, hashIndex } from './utils.js';
 import { Cfg } from '@/lib/config.js';
 
-export class Marker {
-  static readonly instance = new Marker();
-
-  readonly item: StatusBarItem;
-  readonly initialsItemId = 'project-initials';
-  initialItem: StatusBarItem | null = null;
+class Marker {
+  readonly INITIALS_SBI_ID = 'project-initials';
+  readonly sbi: StatusBarItem;
+  initialSbi: StatusBarItem | null = null;
 
   constructor() {
-    this.item = window.createStatusBarItem(StatusBarAlignment.Left, -Infinity);
+    this.sbi = window.createStatusBarItem(StatusBarAlignment.Left, -Infinity);
     this.update();
 
     // #if DEBUG
-    this.item.color = 'red';
+    this.sbi.color = 'red';
     // #else
-    this.item.color = 'transparent';
+    this.sbi.color = 'transparent';
     // #endif
 
-    this.item.show();
+    this.sbi.show();
 
     this.syncInitialItem();
+  }
+
+  get sbiId() {
+    return this.sbi.id;
   }
 
   createInitialItem() {
-    if (this.initialItem) {
+    if (this.initialSbi) {
       return;
     }
-    this.initialItem = window.createStatusBarItem(this.initialsItemId, StatusBarAlignment.Left, -Infinity);
-    this.initialItem.color = '#f7f8faaf';
-    this.initialItem.show();
+    this.initialSbi = window.createStatusBarItem(this.INITIALS_SBI_ID, StatusBarAlignment.Left, -Infinity);
+    this.initialSbi.color = '#f7f8faaf';
+    this.initialSbi.show();
   }
 
   update() {
-    this.item.text = this._getColorIndex().toString();
+    this.sbi.text = this.getColorIndex().toString();
 
     this.syncInitialItem();
-    if (this.initialItem) {
-      this.initialItem.text = this._getProjectInitials();
+    if (this.initialSbi) {
+      this.initialSbi.text = this.getProjectInitials();
     }
   }
 
@@ -48,13 +50,13 @@ export class Marker {
       return;
     }
 
-    if (this.initialItem) {
-      this.initialItem.dispose();
-      this.initialItem = null;
+    if (this.initialSbi) {
+      this.initialSbi.dispose();
+      this.initialSbi = null;
     }
   }
 
-  private _getColorIndex(): number {
+  private getColorIndex(): number {
     const workspaceFolders = workspace.workspaceFolders;
     if (!workspaceFolders || workspaceFolders.length === 0) {
       return 0;
@@ -69,7 +71,7 @@ export class Marker {
     return hashIndex(mixedName);
   }
 
-  private _getProjectInitials(): string {
+  private getProjectInitials(): string {
     const workspaceFolders = workspace.workspaceFolders;
     if (!workspaceFolders || workspaceFolders.length === 0) {
       return '';
@@ -77,3 +79,5 @@ export class Marker {
     return getProjectInitials(workspaceFolders[0].name);
   }
 }
+
+export const marker = new Marker();

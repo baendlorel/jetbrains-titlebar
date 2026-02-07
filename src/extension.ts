@@ -1,10 +1,10 @@
 import { ExtensionContext } from 'vscode';
-import { Hacker } from './core/hacker.js';
+import { hacker } from './core/hacker.js';
 import { errorPop } from './lib/native.js';
 import registers from './registers.js';
 
 export const activate = async (context: ExtensionContext) => {
-  await Hacker.instance.apply().catch(errorPop);
+  await hacker.apply().catch(errorPop);
 
   registers(context);
 };
