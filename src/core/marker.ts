@@ -5,27 +5,32 @@ export class Marker {
   static readonly instance = new Marker();
 
   readonly item: StatusBarItem;
-  private _projectInitials = '';
+  readonly initialItem: StatusBarItem;
+
   constructor() {
     this.item = window.createStatusBarItem(StatusBarAlignment.Left, -Infinity);
+    this.initialItem = window.createStatusBarItem(
+      'KasukabeTsumugi.jetbrains-titlebar.project-initials',
+      StatusBarAlignment.Left,
+      -Infinity,
+    );
     this.update();
 
     // #if DEBUG
     this.item.color = 'red';
+    this.initialItem.color = '#f7f8faaf';
     // #else
     this.item.color = 'transparent';
+    this.initialItem.color = '#f7f8faaf';
     // #endif
 
     this.item.show();
+    this.initialItem.show();
   }
 
   update() {
     this.item.text = this._getColorIndex().toString();
-    this._projectInitials = this._getProjectInitials();
-  }
-
-  get projectInitials(): string {
-    return this._projectInitials;
+    this.initialItem.text = this._getProjectInitials();
   }
 
   private _getColorIndex(): number {

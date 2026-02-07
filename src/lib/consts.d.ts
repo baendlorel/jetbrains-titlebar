@@ -19,16 +19,23 @@ declare const enum Css {
   template = `body:has(#{{id}}[aria-label="{{index}}"]) #workbench\u005C\u002Eparts\u005C\u002Etitlebar::before{
         background: radial-gradient(circle at 50% 50%, {{color}}ff 0%, {{color}}80 40%, transparent 96%);
       }`,
-  windowAppIcon = `.window-appicon{
-  width:80px !important;
+  projectInitialBase = `
+  .menubar[role="menubar"]{
+    margin-left: 30px !important;
   }
   .window-appicon::after{
-      content: 'WS';
-      border-radius: 5px;
-      background: #007acc;
-      color:#f7f8fa;
-  }
-  `,
+    border-radius: 5px;
+    position: absolute;
+    margin-left: calc(100% + 3px);
+    padding: 1.5px 3px;
+    margin-top: 5px;
+  }`,
+  projectInitial = `
+  .window-appicon::after{
+    content: '{{initials}}';
+    background-color: #{{background-color}};
+    color: #{{color}};
+  }`,
 }
 
 // # Default glow parameters

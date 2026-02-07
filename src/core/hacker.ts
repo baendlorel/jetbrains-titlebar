@@ -124,9 +124,14 @@ export class Hacker {
     const styles = GLOW_COLORS.map((color, index) =>
       template.replaceAll('{{color}}', color).replaceAll('{{index}}', String(index)),
     );
-    const windowAppIcon = Css.windowAppIcon.replace(/\n[\s]+/g, '');
-    return `\n${Css.token}${Css.tokenVersion}${Css.tokenDate}${base}${styles.join('')}${windowAppIcon}\n`;
+
+    const projectInitialBase = Css.projectInitialBase.replace(/\n[\s]+/g, '');
+    const projectInitial = Css.projectInitialBase;
+
+    return `\n${Css.token}${Css.tokenVersion}${Css.tokenDate}${base}${styles.join('')}${projectInitialBase}\n`;
   }
+
+  private generateInitail() {}
 
   /**
    * Remove injected gradient styles from the CSS file
