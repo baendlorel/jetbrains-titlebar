@@ -110,24 +110,19 @@ class Hacker {
 
     const base = Css.base
       .replace(/\n[\s]+/g, '')
-      .replace('{{id}}', this.markerIdSelector)
       .replace('{{intensity}}', intensity)
       .replace('{{diameter}}', diameter)
       .replace('{{offsetX}}', offsetX);
-    const template = Css.template.replace(/\n[\s]+/g, '').replace('{{id}}', this.markerIdSelector);
+    const template = Css.template.replace(/\n[\s]+/g, '');
 
     const styles = GLOW_COLORS.map((color, index) =>
       template.replaceAll('{{color}}', color).replaceAll('{{index}}', String(index)),
     );
 
-    const projectInitial = Css.projectInitial
-      .replace(/\n[\s]+/g, '')
-      .replace('{{id}}', `${this.markerIdSelector}\\.${marker.INITIALS_SBI_ID}`);
+    const projectInitial = Css.projectInitial.replace(/\n[\s]+/g, '');
 
     return `\n${Css.token}${Css.tokenVersion}${Css.tokenDate}${base}${styles.join('')}${projectInitial}\n`;
   }
-
-  private generateInitail() {}
 
   /**
    * Remove injected gradient styles from the CSS file

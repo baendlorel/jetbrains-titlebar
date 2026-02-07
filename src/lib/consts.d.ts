@@ -3,7 +3,7 @@ declare const enum Css {
   token = '\u002F\u002A__JETBRAINS_TITLEBAR_KASUKABETSUMUGI__\u002A\u002F',
   tokenVersion = '\u002F\u002A__VERSION__\u002A\u002F',
   tokenDate = '\u002F\u002A__DATE_TIME__\u002A\u002F',
-  base = `body:has(#{{id}}) #workbench\u005C\u002Eparts\u005C\u002Etitlebar::before{
+  base = `body:has(#KasukabeTsumugi\u005C\u002Ejetbrains-titlebar) #workbench\u005C\u002Eparts\u005C\u002Etitlebar::before{
         width: {{diameter}};
         left: {{offsetX}};
         opacity: {{intensity}};
@@ -16,11 +16,11 @@ declare const enum Css {
         pointer-events: none;
         z-index: 1;
       }`,
-  template = `body:has(#{{id}}[aria-label="{{index}}"]) #workbench\u005C\u002Eparts\u005C\u002Etitlebar::before{
+  template = `body:has(#KasukabeTsumugi\u005C\u002Ejetbrains-titlebar[aria-label="{{index}}"]) #workbench\u005C\u002Eparts\u005C\u002Etitlebar::before{
         background: radial-gradient(circle at 50% 50%, {{color}}ff 0%, {{color}}80 40%, transparent 96%);
       }`,
   projectInitial = `
-  body:has(#{{id}}) .menubar[role="menubar"]{
+  body:has(#KasukabeTsumugi\u005C\u002Ejetbrains-titlebar\u005C\u002Eproject-initials) .menubar[role="menubar"]{
     margin-left: 30px !important;
   }
   #KasukabeTsumugi\u005C\u002Ejetbrains-titlebar\u005C\u002Eproject-initials{
