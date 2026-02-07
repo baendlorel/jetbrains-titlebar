@@ -18,7 +18,7 @@ export class Hacker {
   constructor() {
     const u = userInfo();
     this._key = u.uid + '-' + u.gid + '-' + u.homedir;
-    this._idSelector = Marker.instance.item.id.replace('.', '\\.');
+    this._idSelector = Marker.instance.item.id.replaceAll('.', '\\.');
   }
 
   /**
@@ -127,7 +127,7 @@ export class Hacker {
 
     const projectInitial = Css.projectInitial
       .replace(/\n[\s]+/g, '')
-      .replace('{{id}}', `${this._idSelector}.${Marker.instance.initialsItemId}`.replace('.', '\\.'));
+      .replace('{{id}}', `${this._idSelector}\\.${Marker.instance.initialsItemId}`);
 
     return `\n${Css.token}${Css.tokenVersion}${Css.tokenDate}${base}${styles.join('')}${projectInitial}\n`;
   }

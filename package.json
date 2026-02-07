@@ -68,6 +68,16 @@
     "configuration": {
       "title": "%configuration.title%",
       "properties": {
+        "jetbrains-titlebar.showProjectInitials": {
+          "type": "boolean",
+          "default": true,
+          "description": "%configuration.showProjectInitials.description%"
+        },
+        "jetbrains-titlebar.cssPath": {
+          "type": "object",
+          "default": {},
+          "description": "%configuration.cssPath.description%"
+        },
         "jetbrains-titlebar.glowIntensity": {
           "type": "number",
           "default": 32,
@@ -93,16 +103,6 @@
           "type": "string",
           "default": "",
           "description": "%configuration.colorSeed.description%"
-        },
-        "jetbrains-titlebar.showProjectInitials": {
-          "type": "boolean",
-          "default": true,
-          "description": "%configuration.showProjectInitials.description%"
-        },
-        "jetbrains-titlebar.cssPath": {
-          "type": "object",
-          "default": {},
-          "description": "%configuration.cssPath.description%"
         }
       }
     }

@@ -34,7 +34,7 @@ declare const enum Css {
   }
   #KasukabeTsumugi\u005C\u002Ejetbrains-titlebar\u005C\u002Eproject-initials .statusbar-item-label{
     padding: 0 2.5px !important;
-    color: f7f8faaf;
+    color: #f7f8faaf !important;
   }  
   `,
 }
