@@ -26,13 +26,14 @@ declare const enum Css {
   #KasukabeTsumugi\u005C\u002Ejetbrains-titlebar\u005C\u002Eproject-initials{
     position: fixed;
     border-radius: 5px;
-    left: 36px;
-    top: 6.5px;
+    left: 40px;
+    top: 7px;
     height: 21px;
-    padding: 1.5px 0px;
+    padding: .5px 0px;
     background-color: #f7f8fa28;
+    font-size: 0.9rem;
   }
-  #KasukabeTsumugi\u005C\u002Ejetbrains-titlebar\u005C\u002Eproject-initials .statusbar-item-label{
+  #KasukabeTsumugi\u005C\u002Ejetbrains-titlebar\u005C\u002Eproject-initials a.statusbar-item-label{
     padding: 0 2.5px !important;
     color: #f7f8faaf !important;
   }  
