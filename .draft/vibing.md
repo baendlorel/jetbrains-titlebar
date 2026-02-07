@@ -17,3 +17,7 @@ id:workbench.parts.titlebar
 ---
 
 git分支名字可以创建第二个渐变在整个标题栏中间或者别的什么地方
+
+---
+
+新增一个选项，要求：1、这个选项决定了是否要显示新功能的projectinital。如果

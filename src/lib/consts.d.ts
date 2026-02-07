@@ -20,7 +20,7 @@ declare const enum Css {
         background: radial-gradient(circle at 50% 50%, {{color}}ff 0%, {{color}}80 40%, transparent 96%);
       }`,
   projectInitial = `
-  .menubar[role="menubar"]{
+  body:has(#{{id}}) .menubar[role="menubar"]{
     margin-left: 30px !important;
   }
   #KasukabeTsumugi\u005C\u002Ejetbrains-titlebar\u005C\u002Eproject-initials{
@@ -34,7 +34,7 @@ declare const enum Css {
   }
   #KasukabeTsumugi\u005C\u002Ejetbrains-titlebar\u005C\u002Eproject-initials .statusbar-item-label{
     padding: 0 2.5px !important;
-    color: rgba(247, 248, 250, 0.9)
+    color: f7f8faaf;
   }  
   `,
 }

@@ -5,28 +5,37 @@ export class Marker {
   static readonly instance = new Marker();
 
   readonly item: StatusBarItem;
-  readonly initialItem: StatusBarItem;
+  initialItem: StatusBarItem | null = null;
 
   constructor() {
     this.item = window.createStatusBarItem(StatusBarAlignment.Left, -Infinity);
-    this.initialItem = window.createStatusBarItem('project-initials', StatusBarAlignment.Left, -Infinity);
     this.update();
 
     // #if DEBUG
     this.item.color = 'red';
-    this.initialItem.color = '#f7f8faaf';
     // #else
     this.item.color = 'transparent';
-    this.initialItem.color = '#f7f8faaf';
     // #endif
 
     this.item.show();
+
+    // todo 根据设置判断是否要创建
+    this.createInitialItem();
+  }
+
+  createInitialItem() {
+    this.initialItem = window.createStatusBarItem('project-initials', StatusBarAlignment.Left, -Infinity);
+    this.initialItem.color = '#f7f8faaf';
     this.initialItem.show();
   }
 
   update() {
     this.item.text = this._getColorIndex().toString();
-    this.initialItem.text = this._getProjectInitials();
+
+    // todo 根据设置判断是否要创建
+    if (this.initialItem) {
+      this.initialItem.text = this._getProjectInitials();
+    }
   }
 
   private _getColorIndex(): number {
