@@ -19,23 +19,20 @@ declare const enum Css {
   template = `body:has(#{{id}}[aria-label="{{index}}"]) #workbench\u005C\u002Eparts\u005C\u002Etitlebar::before{
         background: radial-gradient(circle at 50% 50%, {{color}}ff 0%, {{color}}80 40%, transparent 96%);
       }`,
-  projectInitialBase = `
-  .menubar[role="menubar"]{
-    margin-left: 30px !important;
-  }
-  .window-appicon::after{
-    border-radius: 5px;
-    position: absolute;
-    margin-left: calc(100% + 3px);
-    padding: 1.5px 3px;
-    margin-top: 5px;
-  }`,
   projectInitial = `
-  .window-appicon::after{
-    content: '{{initials}}';
-    background-color: #{{background-color}};
-    color: #{{color}};
-  }`,
+  .KasukabeTsumugi\u005C\u002Ejetbrains-titlebar\u005C\u002Eproject-initials{
+    position: fixed;
+    border-radius: 5px;
+    left: 32px;
+    top: 6px;
+    height: 21px;
+    padding: 1.5px 0px;
+    background-color: #f7f8fa28;
+  }
+  .KasukabeTsumugi\u005C\u002Ejetbrains-titlebar\u005C\u002Eproject-initials .statusbar-item-label{
+    padding: 0 2.5px !important;
+  }  
+  `,
 }
 
 // # Default glow parameters

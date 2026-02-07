@@ -125,10 +125,9 @@ export class Hacker {
       template.replaceAll('{{color}}', color).replaceAll('{{index}}', String(index)),
     );
 
-    const projectInitialBase = Css.projectInitialBase.replace(/\n[\s]+/g, '');
-    const projectInitial = Css.projectInitialBase;
+    const projectInitial = Css.projectInitial.replace(/\n[\s]+/g, '');
 
-    return `\n${Css.token}${Css.tokenVersion}${Css.tokenDate}${base}${styles.join('')}${projectInitialBase}\n`;
+    return `\n${Css.token}${Css.tokenVersion}${Css.tokenDate}${base}${styles.join('')}${projectInitial}\n`;
   }
 
   private generateInitail() {}
