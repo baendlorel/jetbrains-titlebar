@@ -104,15 +104,11 @@ class Hacker {
    * Generate css for injection, with `\n`
    */
   private generateCss() {
-    const intensity = Cfg.percent('glowIntensity', Intensity.default);
-    const diameter = Cfg.pixel('glowDiameter', Diameter.default, Diameter.min);
-    const offsetX = Cfg.pixel('glowOffsetX', Offset.default, Offset.min);
-
     const base = Css.base
       .replace(/\n[\s]+/g, '')
-      .replace('{{intensity}}', intensity)
-      .replace('{{diameter}}', diameter)
-      .replace('{{offsetX}}', offsetX);
+      .replace('{{intensity}}', Cfg.percent('glowIntensity', Intensity.default))
+      .replace('{{diameter}}', Cfg.pixel('glowDiameter', Diameter.default, Diameter.min))
+      .replace('{{offsetX}}', Cfg.pixel('glowOffsetX', Offset.default, Offset.min));
     const template = Css.template.replace(/\n[\s]+/g, '');
 
     const styles = GLOW_COLORS.map((color, index) =>
