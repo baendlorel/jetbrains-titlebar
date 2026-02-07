@@ -34,7 +34,7 @@ export async function searchWorkbenchCss(): Promise<string | null> {
         'out',
         'vs',
         'workbench',
-        'workbench.desktop.main.css'
+        'workbench.desktop.main.css',
       ),
       join(
         appData,
@@ -45,7 +45,7 @@ export async function searchWorkbenchCss(): Promise<string | null> {
         'out',
         'vs',
         'workbench',
-        'workbench.desktop.main.css'
+        'workbench.desktop.main.css',
       ),
       join(
         'C:',
@@ -56,7 +56,7 @@ export async function searchWorkbenchCss(): Promise<string | null> {
         'out',
         'vs',
         'workbench',
-        'workbench.desktop.main.css'
+        'workbench.desktop.main.css',
       ),
       join(
         'C:',
@@ -67,8 +67,8 @@ export async function searchWorkbenchCss(): Promise<string | null> {
         'out',
         'vs',
         'workbench',
-        'workbench.desktop.main.css'
-      )
+        'workbench.desktop.main.css',
+      ),
     );
   } else if (platform === 'darwin') {
     // macOS paths
@@ -85,7 +85,7 @@ export async function searchWorkbenchCss(): Promise<string | null> {
         'out',
         'vs',
         'workbench',
-        'workbench.desktop.main.css'
+        'workbench.desktop.main.css',
       ),
       join(
         home,
@@ -97,8 +97,8 @@ export async function searchWorkbenchCss(): Promise<string | null> {
         'out',
         'vs',
         'workbench',
-        'workbench.desktop.main.css'
-      )
+        'workbench.desktop.main.css',
+      ),
     );
   } else {
     // Linux paths
@@ -121,18 +121,17 @@ export async function searchWorkbenchCss(): Promise<string | null> {
         'out',
         'vs',
         'workbench',
-        'workbench.desktop.main.css'
+        'workbench.desktop.main.css',
       ),
       // Snap
-      '/snap/code/current/usr/share/code/resources/app/out/vs/workbench/workbench.desktop.main.css'
+      '/snap/code/current/usr/share/code/resources/app/out/vs/workbench/workbench.desktop.main.css',
     );
   }
 
-  // #if DEBUG
-  possiblePaths.push(
-    '/mnt/d/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css'
-  );
-  // #endif
+  possiblePaths.push('/mnt/c/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
+  possiblePaths.push('/mnt/d/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
+  possiblePaths.push('/mnt/e/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
+  possiblePaths.push('/mnt/f/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
 
   // Check each path
   for (const path of possiblePaths) {

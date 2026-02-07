@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
-import { execute } from './execute.js';
+import { execSync } from 'node:child_process';
 
 type BaseFileInfo = { file: string; size: number };
 
@@ -26,14 +26,13 @@ function printSize(files: string[]) {
   info.sort((a, b) => a.size - b.size);
   info.push({ file: 'Total', size: total });
 
-  const mapper = ({ file, size }: BaseFileInfo) =>
-    `${file.padEnd(maxLen, ' ')} - ${(size / 1024).toFixed(3)} KB`;
+  const mapper = ({ file, size }: BaseFileInfo) => `${file.padEnd(maxLen, ' ')} - ${(size / 1024).toFixed(3)} KB`;
 
   console.log(info.map(mapper).join('\n'));
 }
 
-async function run() {
-  await execute(['rimraf', 'out']);
+function run() {
+  execSync('rimraf out', { stdio: 'inherit' });
 
   const cwd = join(process.cwd(), 'package.json');
   const rawpkg = readFileSync(cwd, 'utf-8');
@@ -44,7 +43,7 @@ async function run() {
   console.log(`Building`, `[${purpose}]`, name, version);
   console.log(`NODE_ENV`, process.env.NODE_ENV || '[empty]');
 
-  await execute(['rollup', '-c'], { env: { ...process.env } });
+  execSync('rollup -c', { stdio: 'inherit', env: { ...process.env } });
 
   const files = readdirSync(dist);
   printSize(files);
