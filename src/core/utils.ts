@@ -12,6 +12,42 @@ export function hashIndex(input: string): number {
   return result % GLOW_COLORS.length;
 }
 
+export function getProjectInitials(name: string): string {
+  const trimmed = name.trim();
+  if (!trimmed) {
+    return '';
+  }
+
+  const normalized = trimmed
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .replace(/[._\-\\/]+/g, ' ')
+    .replace(/\s+/g, ' ');
+
+  const tokens = normalized.split(' ').filter(Boolean);
+  const initials: string[] = [];
+
+  for (const token of tokens) {
+    if (initials.length >= 2) {
+      break;
+    }
+    const match = token.match(/[\p{L}\p{N}]/u);
+    if (match) {
+      initials.push(match[0]);
+    }
+  }
+
+  if (initials.length >= 2) {
+    return initials.slice(0, 2).join('').toLocaleUpperCase();
+  }
+
+  const fallback = Array.from(trimmed.matchAll(/[\p{L}\p{N}]/gu), (m) => m[0]);
+  if (fallback.length === 0) {
+    return '';
+  }
+
+  return fallback.slice(0, 2).join('').toLocaleUpperCase();
+}
+
 /**
  * Search for workbench.desktop.main.css in common locations
  */

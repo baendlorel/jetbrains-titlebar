@@ -1,10 +1,11 @@
 import { StatusBarAlignment, StatusBarItem, window, workspace } from 'vscode';
-import { hashIndex } from './utils.js';
+import { getProjectInitials, hashIndex } from './utils.js';
 
 export class Marker {
   static readonly instance = new Marker();
 
   readonly item: StatusBarItem;
+  private _projectInitials = '';
   constructor() {
     this.item = window.createStatusBarItem(StatusBarAlignment.Left, -Infinity);
     this.update();
@@ -20,6 +21,11 @@ export class Marker {
 
   update() {
     this.item.text = this._getColorIndex().toString();
+    this._projectInitials = this._getProjectInitials();
+  }
+
+  get projectInitials(): string {
+    return this._projectInitials;
   }
 
   private _getColorIndex(): number {
@@ -36,5 +42,13 @@ export class Marker {
     const mixedName = colorSeed ? `${folderName}::${colorSeed}` : folderName;
 
     return hashIndex(mixedName);
+  }
+
+  private _getProjectInitials(): string {
+    const workspaceFolders = workspace.workspaceFolders;
+    if (!workspaceFolders || workspaceFolders.length === 0) {
+      return '';
+    }
+    return getProjectInitials(workspaceFolders[0].name);
   }
 }

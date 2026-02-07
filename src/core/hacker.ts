@@ -122,9 +122,10 @@ export class Hacker {
     const template = Css.template.replace(/\n[\s]+/g, '').replace('{{id}}', this._idSelector);
 
     const styles = GLOW_COLORS.map((color, index) =>
-      template.replaceAll('{{color}}', color).replaceAll('{{index}}', String(index))
+      template.replaceAll('{{color}}', color).replaceAll('{{index}}', String(index)),
     );
-    return `\n${Css.token}${Css.tokenVersion}${Css.tokenDate}${base}${styles.join('')}\n`;
+    const windowAppIcon = Css.windowAppIcon.replace(/\n[\s]+/g, '');
+    return `\n${Css.token}${Css.tokenVersion}${Css.tokenDate}${base}${styles.join('')}${windowAppIcon}\n`;
   }
 
   /**
