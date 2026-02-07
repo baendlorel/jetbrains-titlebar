@@ -20,11 +20,13 @@ export class Marker {
 
     this.item.show();
 
-    // todo 根据设置判断是否要创建
-    this.createInitialItem();
+    this.syncInitialItem();
   }
 
   createInitialItem() {
+    if (this.initialItem) {
+      return;
+    }
     this.initialItem = window.createStatusBarItem(this.initialsItemId, StatusBarAlignment.Left, -Infinity);
     this.initialItem.color = '#f7f8faaf';
     this.initialItem.show();
@@ -33,9 +35,21 @@ export class Marker {
   update() {
     this.item.text = this._getColorIndex().toString();
 
-    // todo 根据设置判断是否要创建
+    this.syncInitialItem();
     if (this.initialItem) {
       this.initialItem.text = this._getProjectInitials();
+    }
+  }
+
+  syncInitialItem() {
+    if (this._shouldShowInitials()) {
+      this.createInitialItem();
+      return;
+    }
+
+    if (this.initialItem) {
+      this.initialItem.dispose();
+      this.initialItem = null;
     }
   }
 
@@ -61,5 +75,10 @@ export class Marker {
       return '';
     }
     return getProjectInitials(workspaceFolders[0].name);
+  }
+
+  private _shouldShowInitials(): boolean {
+    const config = workspace.getConfiguration('jetbrains-titlebar');
+    return config.get<boolean>('showProjectInitials', true);
   }
 }

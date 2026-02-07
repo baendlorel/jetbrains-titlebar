@@ -9,5 +9,6 @@
   "configuration.cssPath.description": "缓存的 workbench.desktop.main.css 路径，是一个homedir到css文件的映射对象",
   "configuration.glowDiameter.description": "辉光直径（像素），推荐大于80，默认 260",
   "configuration.glowOffsetX.description": "辉光水平偏移（像素），默认 120",
-  "configuration.colorSeed.description": "混入文件夹名称的随机种子，用于生成更丰富的颜色变化"
+  "configuration.colorSeed.description": "混入文件夹名称的随机种子，用于生成更丰富的颜色变化",
+  "configuration.showProjectInitials.description": "在标题栏显示项目首字母"
 }

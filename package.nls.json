@@ -9,5 +9,6 @@
   "configuration.cssPath.description": "Cached workbench workbench.desktop.main.css path, a homedir-csspath map object",
   "configuration.glowDiameter.description": "Glow diameter in pixels, > 80 recommended, default 260",
   "configuration.glowOffsetX.description": "Glow horizontal offset in pixels, default 120",
-  "configuration.colorSeed.description": "Random seed mixed into folder name for color generation, allowing richer color variations"
+  "configuration.colorSeed.description": "Random seed mixed into folder name for color generation, allowing richer color variations",
+  "configuration.showProjectInitials.description": "Show project initials in the title bar"
 }

@@ -94,6 +94,11 @@
           "default": "",
           "description": "%configuration.colorSeed.description%"
         },
+        "jetbrains-titlebar.showProjectInitials": {
+          "type": "boolean",
+          "default": true,
+          "description": "%configuration.showProjectInitials.description%"
+        },
         "jetbrains-titlebar.cssPath": {
           "type": "object",
           "default": {},

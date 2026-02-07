@@ -22,6 +22,8 @@ export default (context: ExtensionContext) => {
       workspace.onDidChangeConfiguration((e) => {
         if (changed(e, 'colorSeed')) {
           marker.update();
+        } else if (changed(e, 'showProjectInitials')) {
+          marker.update();
         } else if (changed(e, 'glowIntensity', 'glowDiameter', 'glowOffsetX')) {
           hacker
             .apply()

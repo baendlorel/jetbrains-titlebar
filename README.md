@@ -8,6 +8,10 @@ A VS Code extension that adds a colorful glow effect to the titlebar, automatica
 
 For more interesting projects, check out [my homepage💛](https://baendlorel.github.io)
 
+## v1.1.0 Release Notes - 2026-02-08
+
+**Project Initials**: Added an option to display 2 letters of the project name in the titlebar.
+
 ## ✨ Features
 
 - 🎨 **Auto-Generated Colors**: Each workspace gets a unique color based on its folder name
