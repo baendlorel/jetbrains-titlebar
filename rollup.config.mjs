@@ -67,7 +67,7 @@ const options = [
       conditional({ variables: { DEBUG } }),
       DEBUG
         ? null
-        : terser({
+        : void terser({
             format: {
               comments: false,
             },
