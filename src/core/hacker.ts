@@ -125,7 +125,9 @@ export class Hacker {
       template.replaceAll('{{color}}', color).replaceAll('{{index}}', String(index)),
     );
 
-    const projectInitial = Css.projectInitial.replace(/\n[\s]+/g, '');
+    const projectInitial = Css.projectInitial
+      .replace(/\n[\s]+/g, '')
+      .replace('{{id}}', `${this._idSelector}.${Marker.instance.initialsItemId}`.replace('.', '\\.'));
 
     return `\n${Css.token}${Css.tokenVersion}${Css.tokenDate}${base}${styles.join('')}${projectInitial}\n`;
   }

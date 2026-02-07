@@ -5,6 +5,7 @@ export class Marker {
   static readonly instance = new Marker();
 
   readonly item: StatusBarItem;
+  readonly initialsItemId = 'project-initials';
   initialItem: StatusBarItem | null = null;
 
   constructor() {
@@ -24,7 +25,7 @@ export class Marker {
   }
 
   createInitialItem() {
-    this.initialItem = window.createStatusBarItem('project-initials', StatusBarAlignment.Left, -Infinity);
+    this.initialItem = window.createStatusBarItem(this.initialsItemId, StatusBarAlignment.Left, -Infinity);
     this.initialItem.color = '#f7f8faaf';
     this.initialItem.show();
   }
