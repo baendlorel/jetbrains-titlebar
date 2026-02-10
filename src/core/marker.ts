@@ -34,6 +34,11 @@ class Marker {
     this.initialSbi = window.createStatusBarItem(this.INITIALS_SBI_ID, StatusBarAlignment.Left, -Infinity);
     this.initialSbi.color = '#f7f8faaf';
     this.initialSbi.show();
+    const colorIndex = this.getColorIndex();
+    this.initialSbi.accessibilityInformation = {
+      label: 'Project Initials' + colorIndex,
+      role: String(this.colorIndexSkew(colorIndex)),
+    };
   }
 
   update() {
@@ -43,10 +48,6 @@ class Marker {
     this.syncInitialItem();
     if (this.initialSbi) {
       this.initialSbi.text = this.getProjectInitials();
-      // this.initialSbi.backgroundColor = new ThemeColor('statusBarItem.warningBackground');
-      this.initialSbi.backgroundColor = new ThemeColor(
-        String((colorIndex + GLOW_COLORS.length / 2) % GLOW_COLORS.length),
-      );
     }
   }
 
@@ -62,6 +63,10 @@ class Marker {
     }
   }
 
+  colorIndexSkew(index: number, skew?: number): number {
+    const s = Math.round(skew ?? GLOW_COLORS.length / 2);
+    return (index + s) % GLOW_COLORS.length;
+  }
   private getColorIndex(): number {
     const workspaceFolders = workspace.workspaceFolders;
     if (!workspaceFolders || workspaceFolders.length === 0) {

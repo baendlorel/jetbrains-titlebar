@@ -116,9 +116,8 @@ class Hacker {
     ).join('');
 
     const projectInitial = Css.projectInitial.replace(/\n[\s]+/g, '');
-    const projectInitialBgColorRaw = Css.projectInitialBgColor.replace(/\n[\s]+/g, '');
     const projectInitialBgColor = GLOW_COLORS.map((color, index) =>
-      projectInitialBgColorRaw.replaceAll('{{color}}', color).replaceAll('{{index}}', String(index)),
+      Css.projectInitialBgColor.replaceAll('{{color}}', color).replaceAll('{{index}}', String(index)),
     ).join('');
 
     return `\n${Css.token}${Css.tokenVersion}${Css.tokenDate}${base}${styles}${projectInitial}${projectInitialBgColor}\n`;
