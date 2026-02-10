@@ -31,11 +31,10 @@ declare const enum Css {
     top: 7px;
     height: 21px;
     padding: .5px 0px;
-   /* background-color: #f7f8fa28;*/    
    font-size: 0.9rem;
   }
   #KasukabeTsumugi\u005C\u002Ejetbrains-titlebar\u005C\u002Eproject-initials a.statusbar-item-label{
-    padding: 0 4px !important;
+    padding: 0 2px !important;
     font-size: 12px;
     color: #f7f8faf6 !important;   
   }  
