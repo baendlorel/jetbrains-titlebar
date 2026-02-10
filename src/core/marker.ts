@@ -1,6 +1,7 @@
-import { StatusBarAlignment, StatusBarItem, window, workspace } from 'vscode';
+import { StatusBarAlignment, StatusBarItem, ThemeColor, window, workspace } from 'vscode';
 import { getProjectInitials, hashIndex } from './utils.js';
 import { Cfg } from '@/lib/config.js';
+import { GLOW_COLORS, THEME_COLOR_IDS } from '@/lib/colors.js';
 
 class Marker {
   readonly INITIALS_SBI_ID = 'project-initials';
@@ -36,11 +37,16 @@ class Marker {
   }
 
   update() {
-    this.sbi.text = this.getColorIndex().toString();
+    const colorIndex = this.getColorIndex();
+    this.sbi.text = colorIndex.toString();
 
     this.syncInitialItem();
     if (this.initialSbi) {
       this.initialSbi.text = this.getProjectInitials();
+      // this.initialSbi.backgroundColor = new ThemeColor('statusBarItem.warningBackground');
+      this.initialSbi.backgroundColor = new ThemeColor(
+        String((colorIndex + GLOW_COLORS.length / 2) % GLOW_COLORS.length),
+      );
     }
   }
 

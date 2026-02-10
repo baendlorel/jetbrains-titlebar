@@ -19,6 +19,10 @@ declare const enum Css {
   template = `body:has(#KasukabeTsumugi\u005C\u002Ejetbrains-titlebar[aria-label="{{index}}"]) #workbench\u005C\u002Eparts\u005C\u002Etitlebar::before{
         background: radial-gradient(circle at 50% 50%, {{color}}ff 0%, {{color}}80 40%, transparent 96%);
       }`,
+  projectInitialBgColor = `#KasukabeTsumugi\u005C\u002Ejetbrains-titlebar\u005C\u002Eproject-initials [aria-label="{{index}}"]{
+        background: {{color}};
+      }
+      `,
   projectInitial = `
   body:has(#KasukabeTsumugi\u005C\u002Ejetbrains-titlebar\u005C\u002Eproject-initials) .menubar[role="menubar"]{
     margin-left: 30px !important;
