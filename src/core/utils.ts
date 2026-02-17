@@ -175,7 +175,7 @@ export async function searchWorkbenchCss(): Promise<string | null> {
   // Check each path
   for (const path of possiblePaths) {
     if (existsSync(path)) {
-      $info(i18n['css-found'].replace('$0', path));
+      $info(i18n('css-found', path));
       return path;
     }
   }

@@ -97,7 +97,7 @@ class Hacker {
     const newData = `${oldCss.slice(0, start)}${css}${oldCss.slice(end)}`;
 
     await writeFile(cssPath, newData, 'utf8');
-    $info(i18n['hacker.input-path.success']);
+    $info(i18n('hacker.input-path.success'));
   }
 
   /**
@@ -132,19 +132,19 @@ class Hacker {
 
     const start = css.indexOf(Css.token);
     if (start === -1) {
-      $info(i18n['hacker.clean.no-need']);
+      $info(i18n('hacker.clean.no-need'));
       return;
     }
 
     const end = css.indexOf('\n', start);
     if (end === -1) {
-      $info(i18n['hacker.clean.malformed']);
+      $info(i18n('hacker.clean.malformed'));
       return;
     }
 
     const cleaned = css.slice(0, start) + css.slice(end);
     await writeFile(cssPath, cleaned, 'utf8');
-    $info(i18n['hacker.clean.success']);
+    $info(i18n('hacker.clean.success'));
   }
 
   async apply(): Promise<void> {
@@ -168,7 +168,7 @@ class Hacker {
       return;
     }
     await this.savePath(cssPath);
-    $info(i18n['hacker.relocate.success']);
+    $info(i18n('hacker.relocate.success'));
   }
 
   async autoReloc(mute: boolean): Promise<string | null> {
@@ -176,16 +176,16 @@ class Hacker {
     if (autoPath) {
       await this.savePath(autoPath);
       if (!mute) {
-        $info(i18n['hacker.relocate.success']);
+        $info(i18n('hacker.relocate.success'));
       }
       return autoPath;
     }
 
-    const manualPath = await this.inputCssPath(i18n['hacker.auto-relocate.fail']);
+    const manualPath = await this.inputCssPath(i18n('hacker.auto-relocate.fail'));
     if (manualPath) {
       await this.savePath(manualPath);
       if (!mute) {
-        $info(i18n['hacker.relocate.success']);
+        $info(i18n('hacker.relocate.success'));
       }
       return manualPath;
     }
