@@ -172,13 +172,23 @@ class Hacker {
   }
 
   async autoReloc(mute: boolean): Promise<string | null> {
-    const autoPath = await searchWorkbenchCss();
-    if (autoPath) {
-      await this.savePath(autoPath);
+    const candidates = await searchWorkbenchCss();
+    if (candidates.length === 1) {
+      await this.savePath(candidates[0]);
       if (!mute) {
         $info(i18n('hacker.relocate.success'));
       }
-      return autoPath;
+      return candidates[0];
+    }
+
+    if (candidates.length > 0) {
+      // todo 手动选择一个路径
+
+      await this.savePath(candidates);
+      if (!mute) {
+        $info(i18n('hacker.relocate.success'));
+      }
+      return candidates;
     }
 
     const manualPath = await this.inputCssPath(i18n('hacker.auto-relocate.fail'));

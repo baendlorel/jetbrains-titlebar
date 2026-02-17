@@ -53,7 +53,7 @@ export function getProjectInitials(name: string): string {
 /**
  * Search for workbench.desktop.main.css in common locations
  */
-export async function searchWorkbenchCss(): Promise<string | null> {
+export async function searchWorkbenchCss(): Promise<string[]> {
   const possiblePaths: string[] = [];
   const home = homedir();
   const platform = process.platform;
@@ -173,14 +173,7 @@ export async function searchWorkbenchCss(): Promise<string | null> {
   possiblePaths.push(...detectedOwnPath(), ...detectOwnPathOfWSL());
 
   // Check each path
-  for (const path of possiblePaths) {
-    if (existsSync(path)) {
-      $info(i18n('css-found', path));
-      return path;
-    }
-  }
-
-  return null;
+  return possiblePaths.filter(existsSync);
 }
 
 /**
