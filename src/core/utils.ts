@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { existsSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
 import { GLOW_COLORS } from '@/lib/colors';
@@ -168,6 +168,7 @@ export async function searchWorkbenchCss(): Promise<string | null> {
   possiblePaths.push('/mnt/d/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
   possiblePaths.push('/mnt/e/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
   possiblePaths.push('/mnt/f/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
+  possiblePaths.push(...detectedOwnPath());
 
   // Check each path
   for (const path of possiblePaths) {
@@ -177,4 +178,19 @@ export async function searchWorkbenchCss(): Promise<string | null> {
   }
 
   return null;
+}
+
+/**
+ * On 2026.2, VS Code started to use a hashed folder name for the installation, which breaks the old hardcoded path. This function tries to detect the correct path by scanning the parent directory.
+ * - the path looks like `c:\Users\<username>\AppData\Local\Programs\Microsoft VS Code\c3a26841a8\resources\app\out\vs\workbench\workbench.desktop.main.css`
+ */
+function detectedOwnPath(): string[] {
+  const user = homedir();
+  const vscodeMain = join(user, 'AppData', 'Local', 'Programs', 'Microsoft VS Code');
+  if (!existsSync(vscodeMain)) {
+    return [];
+  }
+  return readdirSync(vscodeMain, { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => join(vscodeMain, d.name, 'resources', 'app', 'out', 'vs', 'workbench', 'workbench.desktop.main.css'));
 }
