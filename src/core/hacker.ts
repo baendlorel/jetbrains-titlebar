@@ -57,7 +57,7 @@ class Hacker {
    */
   private async inputCssPath(prompt?: string): Promise<string | null> {
     const input = await window.showInputBox({
-      prompt: prompt ?? i18n['hacker.input-path.prompt'],
+      prompt: prompt ?? i18n('hacker.input-path.prompt'),
       ignoreFocusOut: true,
     });
     if (input === undefined) {
@@ -65,7 +65,7 @@ class Hacker {
     }
     const trimmed = input.trim();
     if (!existsSync(trimmed)) {
-      $err(i18n['file-not-found'].replace('$0', trimmed));
+      $err(i18n('file-not-found', trimmed));
       return null;
     }
     return trimmed;

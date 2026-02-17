@@ -3,6 +3,8 @@ import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
 import { GLOW_COLORS } from '@/lib/colors';
+import { $info } from '@/lib/native';
+import { i18n } from '@/lib/i18n';
 
 export function hashIndex(input: string): number {
   const hash = createHash('sha1').update(input).digest();
@@ -168,11 +170,12 @@ export async function searchWorkbenchCss(): Promise<string | null> {
   possiblePaths.push('/mnt/d/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
   possiblePaths.push('/mnt/e/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
   possiblePaths.push('/mnt/f/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
-  possiblePaths.push(...detectedOwnPath());
+  possiblePaths.push(...detectedOwnPath(), ...detectOwnPathOfWSL());
 
   // Check each path
   for (const path of possiblePaths) {
     if (existsSync(path)) {
+      $info(i18n['css-found'].replace('$0', path));
       return path;
     }
   }
@@ -186,11 +189,45 @@ export async function searchWorkbenchCss(): Promise<string | null> {
  */
 function detectedOwnPath(): string[] {
   const user = homedir();
-  const vscodeMain = join(user, 'AppData', 'Local', 'Programs', 'Microsoft VS Code');
+  const appDataToVSCode = join('AppData', 'Local', 'Programs', 'Microsoft VS Code');
+  const vscodeMain = join(user, appDataToVSCode);
   if (!existsSync(vscodeMain)) {
     return [];
   }
+
+  const pathFromResourcesToCss = join('resources', 'app', 'out', 'vs', 'workbench', 'workbench.desktop.main.css');
+
   return readdirSync(vscodeMain, { withFileTypes: true })
     .filter((d) => d.isDirectory())
-    .map((d) => join(vscodeMain, d.name, 'resources', 'app', 'out', 'vs', 'workbench', 'workbench.desktop.main.css'));
+    .map((d) => join(vscodeMain, d.name, pathFromResourcesToCss));
+}
+
+function detectOwnPathOfWSL(): string[] {
+  const appDataToVSCode = join('AppData', 'Local', 'Programs', 'Microsoft VS Code');
+  const pathFromResourcesToCss = join('resources', 'app', 'out', 'vs', 'workbench', 'workbench.desktop.main.css');
+
+  // try to find css in windows
+  const paths: string[] = [];
+  const disks = 'cdefghijklmnopqrstuvwxyz'.split('');
+  for (const disk of disks) {
+    const userDir = join('/', 'mnt', disk, 'Users');
+    if (!existsSync(userDir)) {
+      continue;
+    }
+    const vscodeDirs = readdirSync(userDir, { withFileTypes: true })
+      .filter((d) => d.isDirectory())
+      .map((d) => join(userDir, d.name, appDataToVSCode));
+
+    for (const vscodeDir of vscodeDirs) {
+      if (!existsSync(vscodeDir)) {
+        continue;
+      }
+      const subDirs = readdirSync(vscodeDir, { withFileTypes: true })
+        .filter((d) => d.isDirectory())
+        .map((d) => join(vscodeDir, d.name, pathFromResourcesToCss));
+      paths.push(...subDirs);
+    }
+  }
+
+  return paths;
 }

@@ -1,10 +1,10 @@
 import { env } from 'vscode';
 
 const zh = {
+  'css-found': 'CSS文件找到了: $0',
   'file-not-found': '文件 $0 不存在，请检查路径',
   'hacker.input-path.prompt': '指定 workbench.desktop.main.css 路径以实现样式注入',
-  'hacker.input-path.success':
-    '样式注入成功！重启 VS Code 生效。若没有效果，可运行命令面板中的“手动指定”',
+  'hacker.input-path.success': '样式注入成功！重启 VS Code 生效。若没有效果，可运行命令面板中的“手动指定”',
   'hacker.clean.success': '样式清理成功',
   'hacker.clean.no-need': '未发现注入标记，无需清理',
   'hacker.clean.malformed': 'CSS文件格式异常，简易手动检查/清理',
@@ -13,6 +13,7 @@ const zh = {
 };
 
 const en = {
+  'css-found': 'Found CSS file at: $0',
   'file-not-found': 'File $0 not found, please check the path',
   'hacker.input-path.prompt': 'Specify the path to workbench.desktop.main.css for style injection',
   'hacker.input-path.success':
@@ -24,4 +25,10 @@ const en = {
   'hacker.auto-relocate.fail': 'No CSS file found, please specify it manually',
 } satisfies typeof zh;
 
-export const i18n = env.language.startsWith('en') ? en : zh;
+const dict = env.language.startsWith('en') ? en : zh;
+
+export const i18n = (key: keyof typeof dict, ...args: string[]) => {
+  let str = dict[key] || key;
+  args.forEach((arg, index) => (str = str.replace(`$${index}`, arg)));
+  return str;
+};
