@@ -9,6 +9,7 @@ const zh = {
   'hacker.clean.no-need': '未发现注入标记，无需清理',
   'hacker.clean.malformed': 'CSS文件格式异常，简易手动检查/清理',
   'hacker.relocate.success': 'CSS 文件路径已更新',
+  'hacker.auto-relocate.choose': '自动检测到如下css文件地址，请选择：',
   'hacker.auto-relocate.fail': '没有找到CSS文件，请手动指定',
 };
 
@@ -22,6 +23,7 @@ const en = {
   'hacker.clean.no-need': 'Did not find injection markers, no need to clean',
   'hacker.clean.malformed': 'CSS file is malformed, please check/clean it manually',
   'hacker.relocate.success': 'CSS file path has been updated',
+  'hacker.auto-relocate.choose': 'Auto-detected CSS file paths below. Please choose one:',
   'hacker.auto-relocate.fail': 'No CSS file found, please specify it manually',
 } satisfies typeof zh;
 

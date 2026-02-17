@@ -150,6 +150,7 @@ class Hacker {
   async apply(): Promise<void> {
     const cssPath = await this.getWorkbenchCssPath();
     if (cssPath) {
+      $info(i18n('css-found', cssPath));
       await this.inject(cssPath);
     }
   }
@@ -173,22 +174,19 @@ class Hacker {
 
   async autoReloc(mute: boolean): Promise<string | null> {
     const candidates = await searchWorkbenchCss();
-    if (candidates.length === 1) {
-      await this.savePath(candidates[0]);
-      if (!mute) {
-        $info(i18n('hacker.relocate.success'));
-      }
-      return candidates[0];
-    }
-
     if (candidates.length > 0) {
-      // todo 手动选择一个路径
-
-      await this.savePath(candidates);
+      const selectedPath = await window.showQuickPick(candidates, {
+        ignoreFocusOut: true,
+        placeHolder: i18n('hacker.auto-relocate.choose'),
+      });
+      if (!selectedPath) {
+        return null;
+      }
+      await this.savePath(selectedPath);
       if (!mute) {
         $info(i18n('hacker.relocate.success'));
       }
-      return candidates;
+      return selectedPath;
     }
 
     const manualPath = await this.inputCssPath(i18n('hacker.auto-relocate.fail'));
