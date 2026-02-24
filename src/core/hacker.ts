@@ -5,7 +5,7 @@ import { userInfo } from 'node:os';
 
 import { i18n } from '@/lib/i18n.js';
 import { $err, $info } from '@/lib/native.js';
-import { GLOW_COLORS } from '@/lib/colors.js';
+import { GLOW_COLORS, INITIAL_GLOW_COLORS } from '@/lib/colors.js';
 import { Cfg } from '@/lib/config.js';
 import { marker } from './marker.js';
 import { searchWorkbenchCss } from './utils.js';
@@ -116,7 +116,7 @@ class Hacker {
     ).join('');
 
     const projectInitial = Css.projectInitial.replace(/\n[\s]+/g, '');
-    const projectInitialBgColor = GLOW_COLORS.map((color, index) =>
+    const projectInitialBgColor = INITIAL_GLOW_COLORS.map((color, index) =>
       Css.projectInitialBgColor.replaceAll('{{color}}', color).replaceAll('{{index}}', String(index)),
     ).join('');
 

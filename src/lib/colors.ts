@@ -28,6 +28,17 @@ export const GLOW_COLORS = [
   '#e2007f',
 ];
 
+function getColorBrightness(hexColor: string): number {
+  const normalized = hexColor.replace('#', '');
+  const red = Number.parseInt(normalized.slice(0, 2), 16);
+  const green = Number.parseInt(normalized.slice(2, 4), 16);
+  const blue = Number.parseInt(normalized.slice(4, 6), 16);
+
+  return 0.299 * red + 0.587 * green + 0.114 * blue;
+}
+
+export const INITIAL_GLOW_COLORS = GLOW_COLORS.filter((color) => getColorBrightness(color) < 128);
+
 const FULL_GLOW_COLORS = [
   '#a80000',
   '#c50000',
