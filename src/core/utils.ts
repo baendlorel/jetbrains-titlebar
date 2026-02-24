@@ -3,8 +3,6 @@ import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
 import { GLOW_COLORS } from '@/lib/colors';
-import { $info } from '@/lib/native';
-import { i18n } from '@/lib/i18n';
 
 export function hashIndex(input: string): number {
   const hash = createHash('sha1').update(input).digest();

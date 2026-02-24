@@ -1,7 +1,7 @@
-import { StatusBarAlignment, StatusBarItem, ThemeColor, window, workspace } from 'vscode';
+import { StatusBarAlignment, StatusBarItem, window, workspace } from 'vscode';
 import { getProjectInitials, hashIndex } from './utils.js';
 import { Cfg } from '@/lib/config.js';
-import { GLOW_COLORS } from '@/lib/colors.js';
+import { GLOW_COLORS, INITIAL_GLOW_COLORS } from '@/lib/colors.js';
 
 class Marker {
   readonly INITIALS_SBI_ID = 'project-initials';
@@ -63,9 +63,9 @@ class Marker {
     }
   }
 
-  colorIndexSkew(index: number, skew?: number): number {
-    const s = Math.round(skew ?? GLOW_COLORS.length / 2);
-    return (index + s) % GLOW_COLORS.length;
+  colorIndexSkew(index: number): number {
+    const s = Math.round(INITIAL_GLOW_COLORS.length / 3);
+    return (index + s) % INITIAL_GLOW_COLORS.length;
   }
   private getColorIndex(): number {
     const workspaceFolders = workspace.workspaceFolders;
