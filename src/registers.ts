@@ -32,6 +32,6 @@ export default (context: ExtensionContext) => {
     cmd('applyGlow', () => hacker.apply()),
     cmd('removeGlow', () => hacker.remove()),
     cmd('manuallyRelocateCssPath', () => hacker.manualReloc()),
-    cmd('autoRelocateCssPath', () => hacker.autoReloc(false)),
+    cmd('autoRelocateCssPath', () => hacker.autoReloc()),
   );
 };

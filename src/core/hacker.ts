@@ -49,7 +49,7 @@ class Hacker {
       return p;
     }
 
-    return await this.autoReloc(true);
+    return await this.autoReloc();
   }
 
   /**
@@ -150,7 +150,6 @@ class Hacker {
   async apply(): Promise<void> {
     const cssPath = await this.getWorkbenchCssPath();
     if (cssPath) {
-      $info(i18n('css-found', cssPath));
       await this.inject(cssPath);
     }
   }
@@ -172,7 +171,7 @@ class Hacker {
     $info(i18n('hacker.relocate.success'));
   }
 
-  async autoReloc(mute: boolean): Promise<string | null> {
+  async autoReloc(): Promise<string | null> {
     const candidates = await searchWorkbenchCss();
     if (candidates.length > 0) {
       const selectedPath = await window.showQuickPick(candidates, {
@@ -183,18 +182,14 @@ class Hacker {
         return null;
       }
       await this.savePath(selectedPath);
-      if (!mute) {
-        $info(i18n('hacker.relocate.success'));
-      }
+      $info(i18n('hacker.relocate.success'));
       return selectedPath;
     }
 
     const manualPath = await this.inputCssPath(i18n('hacker.auto-relocate.fail'));
     if (manualPath) {
       await this.savePath(manualPath);
-      if (!mute) {
-        $info(i18n('hacker.relocate.success'));
-      }
+      $info(i18n('hacker.relocate.success'));
       return manualPath;
     }
     return null;

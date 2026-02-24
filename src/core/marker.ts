@@ -1,7 +1,7 @@
 import { StatusBarAlignment, StatusBarItem, ThemeColor, window, workspace } from 'vscode';
 import { getProjectInitials, hashIndex } from './utils.js';
 import { Cfg } from '@/lib/config.js';
-import { GLOW_COLORS, THEME_COLOR_IDS } from '@/lib/colors.js';
+import { GLOW_COLORS } from '@/lib/colors.js';
 
 class Marker {
   readonly INITIALS_SBI_ID = 'project-initials';

@@ -3,6 +3,41 @@
  */
 export const GLOW_COLORS = [
   '#a80000',
+  '#ff0000',
+  '#ff6000',
+  '#a85e00',
+  '#e27f00',
+  '#ff8f00',
+  '#ffbf00',
+  '#ffef00',
+  '#acc500',
+  '#dfff00',
+  '#73a800',
+  '#9be200',
+  '#afff00',
+  '#54a800',
+  '#7fff00',
+  '#1ce200',
+  '#00a80a',
+  '#00ff9f',
+  '#00c5c5',
+  '#00e2e2',
+  '#00ffff',
+  '#0069a8',
+  '#002aa8',
+  '#000cc5',
+  '#4700e2',
+  // * purple-pink
+  '#5400a8',
+  '#7f00ff',
+  '#af00ff',
+  '#9300a8',
+  '#ff00ef',
+  '#e2007f',
+];
+
+const FULL_GLOW_COLORS = [
+  '#a80000',
   '#c50000',
   '#e20000',
   '#ff0000',
@@ -156,186 +191,4 @@ export const GLOW_COLORS = [
   '#c50025',
   '#e2002a',
   '#ff0030',
-];
-
-export const THEME_COLOR_IDS = [
-  // Base
-  'focusBorder',
-  'foreground',
-  'disabledForeground',
-  'errorForeground',
-  'icon.foreground',
-  'selection.background',
-  'widget.border',
-  'widget.shadow',
-
-  // Activity Bar
-  'activityBar.background',
-  'activityBar.foreground',
-  'activityBar.inactiveForeground',
-  'activityBar.border',
-  'activityBar.activeBorder',
-  'activityBar.activeFocusBorder',
-  'activityBarBadge.background',
-  'activityBarBadge.foreground',
-
-  // Editor Core
-  'editor.background',
-  'editor.foreground',
-  'editorCursor.foreground',
-  'editorCursor.background',
-  'editor.selectionBackground',
-  'editor.selectionForeground',
-  'editor.inactiveSelectionBackground',
-  'editor.lineHighlightBackground',
-  'editor.lineHighlightBorder',
-  'editor.findMatchBackground',
-  'editor.findMatchHighlightBackground',
-  'editor.wordHighlightBackground',
-  'editor.wordHighlightStrongBackground',
-  'editor.hoverHighlightBackground',
-  'editor.rangeHighlightBackground',
-  'editor.symbolHighlightBackground',
-  'editor.foldBackground',
-  'editor.foldPlaceholderForeground',
-
-  // Editor Gutter / Line Numbers
-  'editorLineNumber.foreground',
-  'editorLineNumber.activeForeground',
-  'editorGutter.background',
-  'editorGutter.modifiedBackground',
-  'editorGutter.addedBackground',
-  'editorGutter.deletedBackground',
-
-  // Editor Whitespace / Guides
-  'editorWhitespace.foreground',
-  'editorIndentGuide.background',
-  'editorIndentGuide.activeBackground',
-  'editorRuler.foreground',
-
-  // Tabs / Editor Groups
-  'editorGroup.border',
-  'editorGroupHeader.tabsBackground',
-  'editorGroupHeader.tabsBorder',
-  'editorGroupHeader.border',
-  'tab.activeBackground',
-  'tab.inactiveBackground',
-  'tab.activeForeground',
-  'tab.inactiveForeground',
-  'tab.border',
-  'tab.unfocusedActiveBackground',
-  'tab.unfocusedInactiveBackground',
-
-  // Sidebar
-  'sideBar.background',
-  'sideBar.foreground',
-  'sideBar.border',
-  'sideBarTitle.foreground',
-  'sideBarSectionHeader.background',
-  'sideBarSectionHeader.foreground',
-
-  // Status Bar
-  'statusBar.background',
-  'statusBar.foreground',
-  'statusBar.border',
-  'statusBar.debuggingBackground',
-  'statusBar.noFolderBackground',
-  'statusBarItem.hoverBackground',
-  'statusBarItem.activeBackground',
-  'statusBarItem.prominentBackground',
-
-  // Title Bar
-  'titleBar.activeBackground',
-  'titleBar.activeForeground',
-  'titleBar.inactiveBackground',
-  'titleBar.inactiveForeground',
-  'titleBar.border',
-
-  // Panels
-  'panel.background',
-  'panel.border',
-  'panelTitle.activeForeground',
-  'panelTitle.inactiveForeground',
-
-  // Buttons / Inputs
-  'button.background',
-  'button.foreground',
-  'button.hoverBackground',
-  'input.background',
-  'input.foreground',
-  'input.border',
-  'input.placeholderForeground',
-  'dropdown.background',
-  'dropdown.foreground',
-  'dropdown.border',
-
-  // Lists / Trees
-  'list.activeSelectionBackground',
-  'list.activeSelectionForeground',
-  'list.inactiveSelectionBackground',
-  'list.inactiveSelectionForeground',
-  'list.hoverBackground',
-  'list.focusBackground',
-  'list.errorForeground',
-  'list.warningForeground',
-
-  // Notifications
-  'notifications.background',
-  'notifications.foreground',
-  'notifications.border',
-  'notificationCenterHeader.background',
-  'notificationToast.border',
-  'notificationsErrorIcon.foreground',
-  'notificationsWarningIcon.foreground',
-  'notificationsInfoIcon.foreground',
-
-  // Terminal
-  'terminal.background',
-  'terminal.foreground',
-  'terminalCursor.foreground',
-  'terminal.ansiBlack',
-  'terminal.ansiRed',
-  'terminal.ansiGreen',
-  'terminal.ansiYellow',
-  'terminal.ansiBlue',
-  'terminal.ansiMagenta',
-  'terminal.ansiCyan',
-  'terminal.ansiWhite',
-  'terminal.ansiBrightBlack',
-  'terminal.ansiBrightRed',
-  'terminal.ansiBrightGreen',
-  'terminal.ansiBrightYellow',
-  'terminal.ansiBrightBlue',
-  'terminal.ansiBrightMagenta',
-  'terminal.ansiBrightCyan',
-  'terminal.ansiBrightWhite',
-
-  // Peek / Diff
-  'peekView.border',
-  'peekViewEditor.background',
-  'peekViewResult.background',
-  'diffEditor.insertedTextBackground',
-  'diffEditor.removedTextBackground',
-
-  // Debug
-  'debugIcon.breakpointForeground',
-  'debugIcon.breakpointDisabledForeground',
-  'debugConsole.errorForeground',
-  'debugConsole.warningForeground',
-  'debugConsole.infoForeground',
-
-  // SCM / Git
-  'gitDecoration.addedResourceForeground',
-  'gitDecoration.modifiedResourceForeground',
-  'gitDecoration.deletedResourceForeground',
-  'gitDecoration.untrackedResourceForeground',
-  'gitDecoration.ignoredResourceForeground',
-
-  // Charts / Extensions
-  'charts.red',
-  'charts.blue',
-  'charts.green',
-  'charts.orange',
-  'extensionButton.prominentBackground',
-  'extensionButton.prominentForeground',
 ];
