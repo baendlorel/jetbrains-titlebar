@@ -31,7 +31,7 @@ const aliasOpts = {
 
 // # main options
 
-const DEBUG = process.env.NODE_ENV === 'dev';
+const IS_DEV = process.env.NODE_ENV === 'dev';
 
 /**
  * @type {import('rollup').RollupOptions[]}
@@ -43,7 +43,7 @@ const options = [
       {
         file: 'out/extension.js',
         format: 'cjs',
-        sourcemap: true,
+        sourcemap: IS_DEV,
         name: 'JetBrains Titlebar',
         globals: {
           vscode: 'vscode',
@@ -64,8 +64,8 @@ const options = [
       resolve(),
       commonjs(),
       typescript({ tsconfig, removeComments: false }),
-      conditional({ variables: { DEBUG } }),
-      DEBUG
+      conditional({ variables: { DEBUG: IS_DEV } }),
+      IS_DEV
         ? null
         : void terser({
             format: {

@@ -1,8 +1,11 @@
 import { createHash } from 'node:crypto';
 import { existsSync, readdirSync } from 'node:fs';
+import fs from 'node:fs/promises';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
 import { GLOW_COLORS } from '@/lib/colors';
+import { $info } from '@/lib/native';
+import { i18n } from '@/lib/i18n';
 
 export function hashIndex(input: string): number {
   const hash = createHash('sha1').update(input).digest();
@@ -221,4 +224,15 @@ function detectOwnPathOfWSL(): string[] {
   }
 
   return paths;
+}
+
+export async function writeCssFile(path: string, content: string): Promise<boolean> {
+  try {
+    await fs.access(path, fs.constants.W_OK);
+  } catch (error) {
+    $info(i18n('file-not-accessible', path) + ' ' + (error instanceof Error ? error.message : ''));
+    return false;
+  }
+  await fs.writeFile(path, content, 'utf8');
+  return true;
 }

@@ -8,7 +8,7 @@ import { $err, $info } from '@/lib/native.js';
 import { GLOW_COLORS, INITIAL_GLOW_COLORS } from '@/lib/colors.js';
 import { Cfg } from '@/lib/config.js';
 import { marker } from './marker.js';
-import { searchWorkbenchCss } from './utils.js';
+import { searchWorkbenchCss, writeCssFile } from './utils.js';
 
 class Hacker {
   private readonly cssPathKey: string;
@@ -96,8 +96,11 @@ class Hacker {
 
     const newData = `${oldCss.slice(0, start)}${css}${oldCss.slice(end)}`;
 
-    await writeFile(cssPath, newData, 'utf8');
-    $info(i18n('hacker.input-path.success'));
+    await writeCssFile(cssPath, newData).then((succ) => {
+      if (succ) {
+        $info(i18n('hacker.input-path.success'));
+      }
+    });
   }
 
   /**
@@ -143,8 +146,11 @@ class Hacker {
     }
 
     const cleaned = css.slice(0, start) + css.slice(end);
-    await writeFile(cssPath, cleaned, 'utf8');
-    $info(i18n('hacker.clean.success'));
+    await writeCssFile(cssPath, cleaned).then((succ) => {
+      if (succ) {
+        $info(i18n('hacker.clean.success'));
+      }
+    });
   }
 
   async apply(): Promise<void> {
