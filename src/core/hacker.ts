@@ -1,5 +1,5 @@
 import { ConfigurationTarget, window } from 'vscode';
-import { appendFile, readFile, writeFile } from 'node:fs/promises';
+import { appendFile, readFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { userInfo } from 'node:os';
 
@@ -7,16 +7,13 @@ import { i18n } from '@/lib/i18n.js';
 import { $err, $info } from '@/lib/native.js';
 import { GLOW_COLORS, INITIAL_GLOW_COLORS } from '@/lib/colors.js';
 import { Cfg } from '@/lib/config.js';
-import { marker } from './marker.js';
 import { searchWorkbenchCss, writeCssFile } from './utils.js';
 
 class Hacker {
   private readonly cssPathKey: string;
-  private readonly markerIdSelector: string;
   constructor() {
     const u = userInfo();
     this.cssPathKey = u.uid + '-' + u.gid + '-' + u.homedir;
-    this.markerIdSelector = marker.sbiId.replaceAll('.', '\\.');
   }
 
   /**

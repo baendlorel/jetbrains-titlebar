@@ -15,7 +15,7 @@ For more interesting projects, check out [my homepage💛](https://baendlorel.gi
 ## ✨ Features
 
 - 🎨 **Auto-Generated Colors**: Each workspace gets a unique color based on its folder name
-- 🌈 **Wide Color Palette**: 200+ predefined colors ensure visual distinction between projects
+- 🌈 **Wide Color Palette**: 36 evenly spaced colors ensure stable visual distinction between projects
 - ⚙️ **Customizable Glow Effect**: Adjust intensity, diameter, and position
 - 🚀 **Auto-Detection**: Automatically locates VS Code's CSS file across platforms
 - 🔄 **Real-time Updates**: Changes apply immediately when switching workspaces
@@ -66,6 +66,12 @@ Access settings via `File > Preferences > Settings > JetBrains Titlebar`
 - **Default/Recommended**: 120
 - **Description**: Horizontal offset of the glow effect from the left edge
 
+#### `jetbrains-titlebar.projectInitialColorOffset`
+
+- **Type**: Number
+- **Default**: 3
+- **Description**: Offset applied when mapping the main glow color index to the project initials tag background. For example, `3` means `index + 3`.
+
 #### `jetbrains-titlebar.colorSeed`
 
 - **Type**: String
@@ -105,7 +111,7 @@ Re-run auto-detection to find the CSS file path.
 1. The extension reads your workspace folder name
 2. Mixes the color seed (if configured) into the folder name
 3. Computes a hash value from the mixed name
-4. Maps the hash to one of 200+ predefined colors
+4. Maps the hash to one of 36 evenly spaced colors
 5. Generates CSS with a radial gradient effect
 
 ### CSS Injection Process

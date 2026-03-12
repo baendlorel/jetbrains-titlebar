@@ -1,197 +1,41 @@
+const GLOW_COLOR_COUNT = 36;
+
+function hslToHex(hue: number, saturation: number, lightness: number): string {
+  const s = saturation / 100;
+  const l = lightness / 100;
+  const chroma = (1 - Math.abs(2 * l - 1)) * s;
+  const x = chroma * (1 - Math.abs(((hue / 60) % 2) - 1));
+  const m = l - chroma / 2;
+
+  let red = 0;
+  let green = 0;
+  let blue = 0;
+
+  if (hue < 60) {
+    [red, green, blue] = [chroma, x, 0];
+  } else if (hue < 120) {
+    [red, green, blue] = [x, chroma, 0];
+  } else if (hue < 180) {
+    [red, green, blue] = [0, chroma, x];
+  } else if (hue < 240) {
+    [red, green, blue] = [0, x, chroma];
+  } else if (hue < 300) {
+    [red, green, blue] = [x, 0, chroma];
+  } else {
+    [red, green, blue] = [chroma, 0, x];
+  }
+
+  const toHex = (value: number) => Math.round((value + m) * 255).toString(16).padStart(2, '0');
+  return `#${toHex(red)}${toHex(green)}${toHex(blue)}`;
+}
+
 /**
  * CSS colors array
  */
-export const GLOW_COLORS = [
-  '#a80000',
-  '#ff0000',
-  '#ff6000',
-  '#a85e00',
-  '#e27f00',
-  '#ff8f00',
-  '#ffbf00',
-  '#ffef00',
-  '#acc500',
-  '#dfff00',
-  '#7fff00',
-  '#1ce200',
-  '#00a80a',
-  '#00ff9f',
-  '#00c5c5',
-  '#0069a8',
-  '#000cc5',
-  '#4700e2',
-  '#5400a8',
-  '#7f00ff',
-  '#af00ff',
-  '#9300a8',
-  '#ff00ef',
-  '#e2007f',
-];
+export const GLOW_COLORS = Array.from({ length: GLOW_COLOR_COUNT }, (_, index) =>
+  hslToHex((index * 360) / GLOW_COLOR_COUNT, 100, 46),
+);
 
-function getColorBrightness(hexColor: string): number {
-  const normalized = hexColor.replace('#', '');
-  const red = Number.parseInt(normalized.slice(0, 2), 16);
-  const green = Number.parseInt(normalized.slice(2, 4), 16);
-  const blue = Number.parseInt(normalized.slice(4, 6), 16);
-
-  return 0.299 * red + 0.587 * green + 0.114 * blue;
-}
-
-export const INITIAL_GLOW_COLORS = GLOW_COLORS.filter((color) => getColorBrightness(color) < 128);
-
-const FULL_GLOW_COLORS = [
-  '#a80000',
-  '#c50000',
-  '#e20000',
-  '#ff0000',
-  '#a81f00',
-  '#c52500',
-  '#e22a00',
-  '#ff3000',
-  '#a83f00',
-  '#c54a00',
-  '#e25500',
-  '#ff6000',
-  '#a85e00',
-  '#c56f00',
-  '#e27f00',
-  '#ff8f00',
-  '#a87e00',
-  '#c59400',
-  '#e2a900',
-  '#ffbf00',
-  '#a89d00',
-  '#c5b800',
-  '#e2d400',
-  '#ffef00',
-  '#93a800',
-  '#acc500',
-  '#c6e200',
-  '#dfff00',
-  '#73a800',
-  '#87c500',
-  '#9be200',
-  '#afff00',
-  '#54a800',
-  '#62c500',
-  '#71e200',
-  '#7fff00',
-  '#34a800',
-  '#3dc500',
-  '#47e200',
-  '#50ff00',
-  '#15a800',
-  '#19c500',
-  '#1ce200',
-  '#20ff00',
-  '#00a80a',
-  '#00c50c',
-  '#00e20e',
-  '#00ff10',
-  '#00a82a',
-  '#00c531',
-  '#00e238',
-  '#00ff40',
-  '#00a849',
-  '#00c556',
-  '#00e263',
-  '#00ff70',
-  '#00a869',
-  '#00c57b',
-  '#00e28d',
-  '#00ff9f',
-  '#00a888',
-  '#00c5a0',
-  '#00e2b8',
-  '#00ffcf',
-  '#00a8a8',
-  '#00c5c5',
-  '#00e2e2',
-  '#00ffff',
-  '#0088a8',
-  '#00a0c5',
-  '#00b8e2',
-  '#00cfff',
-  '#0069a8',
-  '#007bc5',
-  '#008de2',
-  '#009fff',
-  '#0049a8',
-  '#0056c5',
-  '#0063e2',
-  '#0070ff',
-  '#002aa8',
-  '#0031c5',
-  '#0038e2',
-  '#0040ff',
-  '#000aa8',
-  '#000cc5',
-  '#000ee2',
-  '#0010ff',
-  '#1500a8',
-  '#1900c5',
-  '#1c00e2',
-  '#2000ff',
-  '#3400a8',
-  '#3d00c5',
-  '#4700e2',
-  // * purple-pink
-  '#5000ff',
-  '#5400a8',
-  '#6200c5',
-  '#7100e2',
-  '#7f00ff',
-  '#7300a8',
-  '#8700c5',
-  '#9b00e2',
-  '#af00ff',
-  '#9300a8',
-  '#ac00c5',
-  '#c600e2',
-  '#5000ff',
-  '#5400a8',
-  '#6200c5',
-  '#7100e2',
-  '#7f00ff',
-  '#7300a8',
-  '#8700c5',
-  '#9b00e2',
-  '#af00ff',
-  '#9300a8',
-  '#ac00c5',
-  '#c600e2',
-  '#5000ff',
-  '#5400a8',
-  '#6200c5',
-  '#7100e2',
-  '#7f00ff',
-  '#7300a8',
-  '#8700c5',
-  '#9b00e2',
-  '#af00ff',
-  '#9300a8',
-  '#ac00c5',
-  '#c600e2',
-  // * purple-pink-end
-  '#df00ff',
-  '#a8009d',
-  '#c500b8',
-  '#e200d4',
-  '#ff00ef',
-  '#a8007e',
-  '#c50094',
-  '#e200a9',
-  '#ff00bf',
-  '#a8005e',
-  '#c5006f',
-  '#e2007f',
-  '#ff008f',
-  '#a8003f',
-  '#c5004a',
-  '#e20055',
-  '#ff0060',
-  '#a8001f',
-  '#c50025',
-  '#e2002a',
-  '#ff0030',
-];
+export const INITIAL_GLOW_COLORS = Array.from({ length: GLOW_COLOR_COUNT }, (_, index) =>
+  hslToHex((index * 360) / GLOW_COLOR_COUNT, 100, 28),
+);

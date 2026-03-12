@@ -1,7 +1,7 @@
 import { StatusBarAlignment, StatusBarItem, window, workspace } from 'vscode';
 import { getProjectInitials, hashIndex } from './utils.js';
 import { Cfg } from '@/lib/config.js';
-import { GLOW_COLORS, INITIAL_GLOW_COLORS } from '@/lib/colors.js';
+import { GLOW_COLORS } from '@/lib/colors.js';
 
 class Marker {
   readonly INITIALS_SBI_ID = 'project-initials';
@@ -34,11 +34,6 @@ class Marker {
     this.initialSbi = window.createStatusBarItem(this.INITIALS_SBI_ID, StatusBarAlignment.Left, -Infinity);
     this.initialSbi.color = '#f7f8faaf';
     this.initialSbi.show();
-    const colorIndex = this.getColorIndex();
-    this.initialSbi.accessibilityInformation = {
-      label: 'Project Initials' + colorIndex,
-      role: String(this.colorIndexSkew(colorIndex)),
-    };
   }
 
   update() {
@@ -48,6 +43,10 @@ class Marker {
     this.syncInitialItem();
     if (this.initialSbi) {
       this.initialSbi.text = this.getProjectInitials();
+      this.initialSbi.accessibilityInformation = {
+        label: 'Project Initials' + colorIndex,
+        role: String(this.colorIndexSkew(colorIndex)),
+      };
     }
   }
 
@@ -64,8 +63,9 @@ class Marker {
   }
 
   colorIndexSkew(index: number): number {
-    const s = Math.round(INITIAL_GLOW_COLORS.length / 3);
-    return (index + s) % INITIAL_GLOW_COLORS.length;
+    const rawOffset = Math.floor(Cfg.get<number>('projectInitialColorOffset', 3));
+    const offset = Number.isSafeInteger(rawOffset) ? rawOffset : 3;
+    return ((index + offset) % GLOW_COLORS.length + GLOW_COLORS.length) % GLOW_COLORS.length;
   }
   private getColorIndex(): number {
     const workspaceFolders = workspace.workspaceFolders;

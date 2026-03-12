@@ -2,6 +2,7 @@ import { commands, workspace, ExtensionContext, ConfigurationChangeEvent } from 
 import { errorPop } from './lib/native.js';
 import { hacker } from './core/hacker';
 import { marker } from './core/marker';
+import { Cfg } from './lib/config.js';
 
 const someChanged = (e: ConfigurationChangeEvent, ...names: ConfigName[]) =>
   names.some((name) => e.affectsConfiguration(`jetbrains-titlebar.${name}`));
@@ -17,8 +18,8 @@ export default (context: ExtensionContext) => {
     // * events
     workspace.onDidChangeWorkspaceFolders(() => marker.update()),
     workspace.onDidChangeConfiguration((e) => {
-      // & Cfg.refresh() is executed when update is called
-      if (someChanged(e, 'colorSeed', 'showProjectInitials')) {
+      Cfg.refresh();
+      if (someChanged(e, 'colorSeed', 'showProjectInitials', 'projectInitialColorOffset')) {
         marker.update();
       } else if (someChanged(e, 'glowIntensity', 'glowDiameter', 'glowOffsetX')) {
         hacker
