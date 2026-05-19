@@ -109,9 +109,9 @@
   },
   "scripts": {
     "lines": "clear && find ./src -type f \\( -name \"*.ts\" -o -name \"*.tsx\" -o -name \"*.js\" -o -name \"*.mjs\" -o -name \"*.cjs\" -o -name \"*.cpp\" -o -name \"*.h\" -o -name \"*.py\"  -o -name \"*.css\" -o -name \"*.rs\" -o -name \"*.rc\" \\) | xargs wc -l",
-    "test-build": "tsx ./scripts/build.ts --dev",
-    "build": "tsx ./scripts/build.ts",
-    "watch": "tsx ./scripts/build.ts --watch --dev",
+    "test-build": "vite build --mode development",
+    "build": "vite build",
+    "watch": "vite build --watch --mode development",
     "check": "tsc --noEmit -p tsconfig.build.json",
     "lint": "oxlint .",
     "pub": "vsce package -o ./bin",
@@ -121,10 +121,10 @@
     "@types/node": "^25.9.0",
     "@types/vscode": "^1.120.0",
     "@vscode/vsce": "^3.9.1",
-    "esbuild": "^0.25.5",
     "oxlint": "^1.66.0",
+    "rollup-plugin-conditional-compilation": "^2.1.4",
     "tslib": "^2.8.1",
-    "tsx": "^4.22.3",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vite": "^6.3.5"
   }
 }

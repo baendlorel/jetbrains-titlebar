@@ -11,6 +11,8 @@ import { ConfigJustifier } from '@/lib/config.js';
 import { Marker } from './marker.js';
 import { searchWorkbenchCss } from './utils.js';
 
+// TODO 重构为更清晰的版本，这个class的其实也不太好。
+// TODO 去掉事件侦听，让它一次注册，后续被垃圾回收
 export class Hacker {
   static readonly instance = new Hacker();
 
