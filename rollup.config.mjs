@@ -7,13 +7,9 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import alias from '@rollup/plugin-alias';
 import terser from '@rollup/plugin-terser';
-import replace from '@rollup/plugin-replace';
 import funcMacro from 'rollup-plugin-func-macro';
 import constEnum from 'rollup-plugin-const-enum';
 import conditional from 'rollup-plugin-conditional-compilation';
-
-// custom plugins
-import { replaceLiteralOpts, replaceOpts } from './.scripts/replace.mjs';
 
 // # common options
 
@@ -43,7 +39,7 @@ const options = [
       {
         file: 'out/extension.js',
         format: 'cjs',
-        sourcemap: true,
+        sourcemap: false,
         name: 'JetBrains Titlebar',
         globals: {
           vscode: 'vscode',
@@ -53,12 +49,6 @@ const options = [
 
     plugins: [
       alias(aliasOpts),
-      replace({
-        preventAssignment: false,
-        delimiters: ['', ''],
-        values: replaceLiteralOpts,
-      }),
-      replace(replaceOpts),
       funcMacro(),
       constEnum(),
       resolve(),

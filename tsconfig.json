@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
     "resolvePackageJsonImports": true,
     "declaration": false,
     "esModuleInterop": true,
     "strict": true,
+    "types": ["node"],
     "outDir": "out",
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "include": ["./src/**/*.ts", "./tests/**/*.ts"]
+  "include": ["./src/**/*.ts", "./tests/**/*.ts", "./scripts/**/*.ts"]
 }
