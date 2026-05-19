@@ -5,6 +5,6 @@
     "resolvePackageJsonImports": true,
     "declaration": false
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["tests/**/*", "plugins/**/*.ts", "node_modules", ".vscode-test"]
+  "include": ["./src/**/*.ts"],
+  "exclude": ["./tests/**/*", "./plugins/**/*.ts", "node_modules", ".vscode-test"]
 }
