@@ -133,8 +133,6 @@ export class Hacker {
     return `\n${Css.token}${Css.tokenVersion}${Css.tokenDate}${base}${styles.join('')}${projectInitial}\n`;
   }
 
-  private generateInitail() {}
-
   /**
    * Remove injected gradient styles from the CSS file
    * @param cssPath Path to the workbench CSS file
