@@ -1,4 +1,5 @@
 import { commands, workspace, ExtensionContext, ConfigurationChangeEvent } from 'vscode';
+import type { ConfigName, CommandName, Fn } from './types/global.js';
 import { errorPop } from './lib/native.js';
 import { Hacker } from './core/hacker';
 import { Marker } from './core/marker';
@@ -37,6 +38,6 @@ export default (context: ExtensionContext) => {
       cmd('removeGlow', () => hacker.remove()),
       cmd('manuallyRelocateCssPath', () => hacker.manualReloc()),
       cmd('autoRelocateCssPath', () => hacker.autoReloc(false)),
-    ].filter((v) => v !== undefined)
+    ].filter((v) => v !== undefined),
   );
 };

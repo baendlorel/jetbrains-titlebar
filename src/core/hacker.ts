@@ -3,6 +3,7 @@ import { appendFile, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { userInfo } from 'node:os';
 
+import { Css, Intensity, Diameter, Offset } from '@/lib/consts.js';
 import { i18n } from '@/lib/i18n.js';
 import { $err, $info } from '@/lib/native.js';
 import { GLOW_COLORS } from '@/lib/colors.js';

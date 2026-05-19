@@ -44,15 +44,9 @@ importers:
       rollup-plugin-conditional-compilation:
         specifier: ^2.1.4
         version: 2.1.4
-      rollup-plugin-const-enum:
-        specifier: ^2.0.0
-        version: 2.0.0(rollup@4.60.4)(typescript@6.0.3)
       rollup-plugin-dts:
         specifier: ^6.4.1
         version: 6.4.1(rollup@4.60.4)(typescript@6.0.3)
-      rollup-plugin-func-macro:
-        specifier: ^1.2.3
-        version: 1.2.3(rollup@4.60.4)
       tsc-alias:
         specifier: ^1.8.17
         version: 1.8.17
@@ -785,10 +779,6 @@ packages:
     resolution: {integrity: sha512-MPn5p+DoudI+3GfJSpAZZraE1lgLv0LcwbH3+xy7RgEhty3UIkmUMUA+5jPTDaxXae00AnX5u77FxGM8FhfKKA==}
     engines: {node: '>= 20'}
     hasBin: true
-
-  acorn-walk@8.3.5:
-    resolution: {integrity: sha512-HEHNfbars9v4pgpW6SO1KSPkfoS0xVOM/9UzkJltjlsHZmJasxg8aXkuZa7SMf8vKGIBhpUsPluQSqhJFCqebw==}
-    engines: {node: '>=0.4.0'}
 
   acorn@8.16.0:
     resolution: {integrity: sha512-UVJyE9MttOsBQIDKw1skb9nAwQuR5wuGD3+82K6JgJlm/Y+KI92oNsMNGZCYdDsVtRHSak0pcV5Dno5+4jh9sw==}
@@ -1618,21 +1608,12 @@ packages:
   rollup-plugin-conditional-compilation@2.1.4:
     resolution: {integrity: sha512-k5MCkvsI4Wu/RDBADbroWjnCkxjEF2YdrVw1Svg8geu82RLUf/M5gBNr6mZloh30NRq5dV/M6wHUd5aslDu8Cw==}
 
-  rollup-plugin-const-enum@2.0.0:
-    resolution: {integrity: sha512-92nudtG4BVUMNgEOdjgroadSOw9T76i7hjYrqjw78a3mWg4/nbGimvYxq8Di9z2EI+3nvFzAwI0VD5mtKLPBPw==}
-    peerDependencies:
-      rollup: '>=4.0.0'
-      typescript: '>=4.5.0'
-
   rollup-plugin-dts@6.4.1:
     resolution: {integrity: sha512-l//F3Zf7ID5GoOfLfD8kroBjQKEKpy1qfhtAdnpibFZMffPaylrg1CoDC2vGkPeTeyxUe4bVFCln2EFuL7IGGg==}
     engines: {node: '>=20'}
     peerDependencies:
       rollup: ^3.29.4 || ^4
       typescript: ^4.5 || ^5.0 || ^6.0
-
-  rollup-plugin-func-macro@1.2.3:
-    resolution: {integrity: sha512-HabcMs8HA8Oa5fKKWmfvIPPFmgSwaQD0Sf42id5J1BRz0JMtv7Pz/87v7DJiNNgnhwkDNMfnjRR6Y96BYDJFxA==}
 
   rollup@4.60.4:
     resolution: {integrity: sha512-WHeFSbZYsPu3+bLoNRUuAO+wavNlocOPf3wSHTP7hcFKVnJeWsYlCDbr3mTS14FCizf9ccIxXA8sGL8zKeQN3g==}
@@ -2529,10 +2510,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  acorn-walk@8.3.5:
-    dependencies:
-      acorn: 8.16.0
-
   acorn@8.16.0: {}
 
   agent-base@7.1.4: {}
@@ -3418,12 +3395,6 @@ snapshots:
     dependencies:
       magic-string: 0.30.21
 
-  rollup-plugin-const-enum@2.0.0(rollup@4.60.4)(typescript@6.0.3):
-    dependencies:
-      magic-string: 0.30.21
-      rollup: 4.60.4
-      typescript: 6.0.3
-
   rollup-plugin-dts@6.4.1(rollup@4.60.4)(typescript@6.0.3):
     dependencies:
       '@jridgewell/remapping': 2.3.5
@@ -3434,14 +3405,6 @@ snapshots:
       typescript: 6.0.3
     optionalDependencies:
       '@babel/code-frame': 7.29.0
-
-  rollup-plugin-func-macro@1.2.3(rollup@4.60.4):
-    dependencies:
-      '@rollup/pluginutils': 5.3.0(rollup@4.60.4)
-      acorn: 8.16.0
-      acorn-walk: 8.3.5
-    transitivePeerDependencies:
-      - rollup
 
   rollup@4.60.4:
     dependencies:

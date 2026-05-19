@@ -7,8 +7,6 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import alias from '@rollup/plugin-alias';
 import terser from '@rollup/plugin-terser';
-import funcMacro from 'rollup-plugin-func-macro';
-import constEnum from 'rollup-plugin-const-enum';
 import conditional from 'rollup-plugin-conditional-compilation';
 
 // # common options
@@ -49,8 +47,6 @@ const options = [
 
     plugins: [
       alias(aliasOpts),
-      funcMacro(),
-      constEnum(),
       resolve(),
       commonjs(),
       typescript({ tsconfig, removeComments: false }),

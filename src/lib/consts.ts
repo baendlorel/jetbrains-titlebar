@@ -1,4 +1,4 @@
-declare const enum Css {
+export const enum Css {
   // & use unicode to have precise strings, and avoid collision of real comments
   token = '\u002F\u002A__JETBRAINS_TITLEBAR_KASUKABETSUMUGI__\u002A\u002F',
   tokenVersion = '\u002F\u002A__VERSION__\u002A\u002F',
@@ -40,16 +40,16 @@ declare const enum Css {
 }
 
 // # Default glow parameters
-declare const enum Intensity {
+export const enum Intensity {
   default = 32,
 }
 
-declare const enum Diameter {
+export const enum Diameter {
   default = 260,
   min = 0,
 }
 
-declare const enum Offset {
+export const enum Offset {
   default = 120,
   min = -10000,
 }
