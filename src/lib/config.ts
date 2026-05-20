@@ -1,10 +1,14 @@
-import { userInfo } from 'os';
+import { existsSync } from 'node:fs';
+import { userInfo } from 'node:os';
 import { ConfigurationTarget, workspace } from 'vscode';
 
 const uniqueKey = ((u) => u.uid + '-' + u.gid + '-' + u.homedir)(userInfo());
 export const config = () => workspace.getConfiguration('jetbrains-titlebar');
 
-export const loadCssPath = () => config().get<Record<string, string>>('cssPath', {})[uniqueKey];
+export const loadCssPath = (): string | null => {
+  const p = config().get<Record<string, string>>('cssPath', {})[uniqueKey];
+  return p && existsSync(p) ? p : null;
+};
 export const saveCssPath = async (p: string) => {
   const cp = config().get<Record<string, string>>('cssPath', {});
   cp[uniqueKey] = p;

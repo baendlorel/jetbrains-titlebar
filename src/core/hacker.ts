@@ -10,7 +10,7 @@ import { COLORS } from '@/lib/colors.js';
 import { loadCssPath, percent, pixel, saveCssPath } from '@/lib/config.js';
 
 import { Marker } from './marker.js';
-import { searchWorkbenchCss } from './utils.js';
+import { nullReturn, searchWorkbenchCss } from './utils.js';
 
 // TODO 去掉事件侦听，让它一次注册，后续被垃圾回收
 
@@ -35,7 +35,7 @@ const tryGetCssPathAnd = async (fn?: (cssPath: string) => any): Promise<string |
 /**
  * @returns `null` if user cancels or input is invalid, otherwise the valid path
  */
-const promptForCssPath = async (prompt: string): Promise<string | null> => {
+const promptForCssPath = async (prompt: string = t('hacker.auto-relocate.fail')): Promise<string | null> => {
   const input = (await window.showInputBox({ prompt, ignoreFocusOut: true }))?.trim();
   if (!input) {
     return null;
@@ -143,8 +143,9 @@ const removeOldToken = (css: string): string => {
   return css.slice(0, start) + Css.tokenStart + css.slice(start + Css.tokenOld.length, end) + Css.tokenEnd;
 };
 
-const apply = (): Promise<string | null> => tryGetCssPathAnd(inject);
-const remove = (): Promise<string | null> => tryGetCssPathAnd(clean);
+const autoRelocate = nullReturn([searchWorkbenchCss, promptForCssPath], [saveCssPath]);
+const apply = nullReturn([loadCssPath, autoRelocate], [inject]);
+const remove = nullReturn([loadCssPath, autoRelocate], [clean]);
 
 const manualRelocate = async (): Promise<void> => {
   const cssPath = await promptForCssPath(t('hacker.input-path.prompt'));
@@ -153,18 +154,4 @@ const manualRelocate = async (): Promise<void> => {
   }
   await saveCssPath(cssPath);
   $info(t('hacker.relocate.success'));
-};
-
-const autoRelocate = async (): Promise<string | null> => {
-  const autoPath = await searchWorkbenchCss();
-  if (autoPath) {
-    return await saveCssPath(autoPath);
-  }
-
-  const manualPath = await promptForCssPath(t('hacker.auto-relocate.fail'));
-  if (manualPath) {
-    return await saveCssPath(manualPath);
-  }
-
-  return null;
 };

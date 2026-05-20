@@ -4,15 +4,26 @@ import { join } from 'node:path';
 import { homedir } from 'node:os';
 import { COLORS } from '@/lib/colors';
 
+/**
+ * 1. try to get a non-null result from `f0s` in order, if all return null/undefined, return null
+ * 2. if got a non-null result, pass it to all `f1s` in order, then return the result
+ */
 export const nullReturn =
-  <T, A>(f0: (arg: A) => T | null, ...fns: ((arg: T) => any)[]) =>
+  <T, A>(f0s: Array<((arg: A) => Promise<T | null>) | ((arg: A) => T | null)>, f1s: Array<(arg: T) => any>) =>
   async (arg: A): Promise<T | null> => {
-    const r = await f0(arg);
+    let r: T | null = null;
+    for (let i = 0; i < f0s.length; i++) {
+      r = await f0s[i](arg);
+      if (r !== null && r !== undefined) {
+        break;
+      }
+    }
     if (r === null || r === undefined) {
       return null;
     }
-    for (let i = 0; i < fns.length; i++) {
-      await fns[i](r);
+
+    for (let i = 0; i < f1s.length; i++) {
+      await f1s[i](r);
     }
     return r;
   };
