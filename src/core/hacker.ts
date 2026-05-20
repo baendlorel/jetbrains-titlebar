@@ -8,8 +8,9 @@ import { $err, $info } from '@/lib/native.js';
 import { COLORS } from '@/lib/colors.js';
 import { loadCssPath, percent, pixel, saveCssPath } from '@/lib/config.js';
 
-import { nullReturn, searchCssPath } from './utils.js';
+import { nullReturn } from './utils.js';
 import { ABBR_ITEM_ID, statusBarItem } from './marker.js';
+import { searchCssPath } from './search-css.js';
 
 // TODO 去掉事件侦听，让它一次注册，后续被垃圾回收
 const idSelector = statusBarItem.id.replaceAll('.', '\\.');
