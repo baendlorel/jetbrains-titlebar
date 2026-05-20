@@ -14,13 +14,13 @@ const createAbbrStatusBarItem = () => {
 export const updateMarker = () => {
   statusBarItem.text = getColorIndex().toString();
 
-  syncProjectInitials();
+  syncMarker();
   if (abbrItem) {
     abbrItem.text = getAbbr();
   }
 };
 
-const syncProjectInitials = () => {
+const syncMarker = () => {
   if (config().get('showProjectInitials', true)) {
     createAbbrStatusBarItem();
     return;
@@ -49,4 +49,4 @@ let abbrItem: StatusBarItem | null = null;
 updateMarker();
 statusBarItem.color = 'transparent';
 statusBarItem.show();
-syncProjectInitials();
+syncMarker();

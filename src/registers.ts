@@ -12,25 +12,23 @@ const cmd = (c: CommandName, cb: Fn) => commands.registerCommand(`jetbrains-titl
 
 export default (context: ExtensionContext) => {
   context.subscriptions.push(
-    ...[
-      // * elements
-      statusBarItem,
+    // * elements
+    statusBarItem,
 
-      // * change events
-      workspace.onDidChangeWorkspaceFolders(updateMarker),
-      workspace.onDidChangeConfiguration((e) => {
-        if (changed(e, 'colorSeed', 'showProjectInitials')) {
-          updateMarker();
-        } else if (changed(e, 'glowIntensity', 'glowDiameter', 'glowOffsetX')) {
-          apply().catch(errorPop).finally(updateMarker);
-        }
-      }),
+    // * change events
+    workspace.onDidChangeWorkspaceFolders(updateMarker),
+    workspace.onDidChangeConfiguration((e) => {
+      if (changed(e, 'colorSeed', 'showProjectInitials')) {
+        updateMarker();
+      } else if (changed(e, 'glowIntensity', 'glowDiameter', 'glowOffsetX')) {
+        apply().catch(errorPop).finally(updateMarker);
+      }
+    }),
 
-      // * commands
-      cmd('applyGlow', apply),
-      cmd('removeGlow', remove),
-      cmd('manuallyRelocateCssPath', manualRelocate),
-      cmd('autoRelocateCssPath', relocate),
-    ].filter((v) => v !== undefined),
+    // * commands
+    cmd('applyGlow', apply),
+    cmd('removeGlow', remove),
+    cmd('manuallyRelocateCssPath', manualRelocate),
+    cmd('autoRelocateCssPath', relocate),
   );
 };
