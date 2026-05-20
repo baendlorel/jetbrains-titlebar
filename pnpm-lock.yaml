@@ -11,6 +11,9 @@ importers:
       '@types/vscode':
         specifier: 1.74.0
         version: 1.74.0
+      is-wsl:
+        specifier: ^3.1.1
+        version: 3.1.1
     devDependencies:
       '@rollup/plugin-replace':
         specifier: ^6.0.3
