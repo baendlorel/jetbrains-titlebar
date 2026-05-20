@@ -33,7 +33,7 @@ export default defineConfig(({ mode }) => {
           replace({
             preventAssignment: true,
             __IS_DEV__: JSON.stringify(isDev),
-            __VERSION__: JSON.stringify(JSON.parse(json).version),
+            __VERSION__: JSON.parse(json).version,
           }),
           nodeResolve(),
           commonjs(),

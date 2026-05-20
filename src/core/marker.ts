@@ -1,23 +1,50 @@
-import { StatusBarAlignment, StatusBarItem, window } from 'vscode';
+import { Disposable, StatusBarAlignment, StatusBarItem, window } from 'vscode';
 import { getProjectInitials as getAbbr, hashIndex } from './utils.js';
 import { config, projectName } from '@/lib/config.js';
+import { t } from '@/lib/native.js';
+
+export const MARKER_ITEM_ID = 'marker';
+export const ABBR_ITEM_ID = 'project-initials';
+
+const MARKER_ITEM_NAME = t('statusbar.marker.name');
+const ABBR_ITEM_NAME = t('statusbar.project-initials.name');
+
+const setAbbrItemText = () => {
+  if (!abbrItem) {
+    return;
+  }
+
+  abbrItem.text = getAbbr();
+  abbrItem.tooltip = projectName();
+};
+
+const disposeAbbrStatusBarItem = () => {
+  if (!abbrItem) {
+    return;
+  }
+
+  abbrItem.dispose();
+  abbrItem = null;
+};
 
 const createAbbrStatusBarItem = () => {
   if (abbrItem) {
     return;
   }
+
   abbrItem = window.createStatusBarItem(ABBR_ITEM_ID, StatusBarAlignment.Left, -Infinity);
+  abbrItem.name = ABBR_ITEM_NAME;
   abbrItem.color = '#f7f8faaf';
+  setAbbrItemText();
   abbrItem.show();
 };
 
 export const updateMarker = () => {
   statusBarItem.text = getColorIndex().toString();
+  statusBarItem.tooltip = projectName();
 
   syncMarker();
-  if (abbrItem) {
-    abbrItem.text = getAbbr();
-  }
+  setAbbrItemText();
 };
 
 const syncMarker = () => {
@@ -26,10 +53,7 @@ const syncMarker = () => {
     return;
   }
 
-  if (abbrItem) {
-    abbrItem.dispose();
-    abbrItem = null;
-  }
+  disposeAbbrStatusBarItem();
 };
 
 const getColorIndex = (): number => {
@@ -42,9 +66,13 @@ const getColorIndex = (): number => {
   return hashIndex(mixedName);
 };
 
-export const ABBR_ITEM_ID = 'project-initials';
-export const statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left, -Infinity);
+export const statusBarItem = window.createStatusBarItem(MARKER_ITEM_ID, StatusBarAlignment.Left, -Infinity);
+statusBarItem.name = MARKER_ITEM_NAME;
 let abbrItem: StatusBarItem | null = null;
+
+export const markerItemsDisposable = Disposable.from(statusBarItem, {
+  dispose: disposeAbbrStatusBarItem,
+});
 
 updateMarker();
 statusBarItem.color = 'transparent';

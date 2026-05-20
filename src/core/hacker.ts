@@ -8,10 +8,7 @@ import { COLORS } from '@/lib/colors.js';
 import { loadCssPath, percent, pixel, saveCssPath } from '@/lib/config.js';
 
 import { nullReturn } from './utils.js';
-import { ABBR_ITEM_ID, statusBarItem } from './marker.js';
 import { searchCssPath } from './search-css.js';
-
-const idSelector = statusBarItem.id.replaceAll('.', '\\.');
 
 /**
  * @returns `null` if user cancels or input is invalid, otherwise the valid path
@@ -55,15 +52,14 @@ const read = async (cssPath: string): Promise<CssParts> => {
 const generate = () => {
   const base = Css.base
     .replace(/\n[\s]+/g, '')
-    .replace('{{id}}', idSelector)
     .replace('{{intensity}}', percent('glowIntensity', Intensity.default))
     .replace('{{diameter}}', pixel('glowDiameter', Diameter.default, Diameter.min))
     .replace('{{offsetX}}', pixel('glowOffsetX', Offset.default, Offset.min));
 
-  const t = Css.template.replace(/\n[\s]+/g, '').replace('{{id}}', idSelector);
-  const styles = COLORS.map((c, i) => t.replaceAll('{{color}}', c).replaceAll('{{index}}', i.toString()));
+  const t = Css.template.replace(/\n[\s]+/g, '');
+  const styles = COLORS.map((c, i) => t.replaceAll('{{color}}', c).replaceAll('{{index}}', `${i}, jetbrains-titlebar`)); // 32, jetbrains-titlebar
 
-  const abbr = Css.abbr.replace(/\n[\s]+/g, '').replace('{{id}}', `${idSelector}\\.${ABBR_ITEM_ID}`);
+  const abbr = Css.abbr.replace(/\n[\s]+/g, '');
 
   return `\n${Css.tokenStart}${Css.tokenVersion}${base}${styles.join('')}${abbr}${Css.tokenEnd}\n`;
 };

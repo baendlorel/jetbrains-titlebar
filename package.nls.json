@@ -5,6 +5,8 @@
   "command.removeGlow.title": "Remove Titlebar Glow Effect",
   "command.manuallyRelocateCssPath.title": "Manually Specify workbench.desktop.main.css Path",
   "command.autoRelocateCssPath.title": "Auto Detect workbench.desktop.main.css Path",
+  "statusbar.marker.name": "JetBrains Titlebar Marker",
+  "statusbar.project-initials.name": "JetBrains Titlebar Project Initials",
   "configuration.debug.description": "Enable debug mode for verbose logging",
   "configuration.glowIntensity.description": "Glow effect glowIntensity as percentage (0-100), default 32",
   "configuration.cssPath.description": "Cached workbench workbench.desktop.main.css path, a machineId-cssPath map object",

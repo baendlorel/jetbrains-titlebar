@@ -2,7 +2,7 @@ import type { ConfigName, CommandName, Fn } from './types/global.js';
 import { commands, workspace, ExtensionContext, ConfigurationChangeEvent } from 'vscode';
 
 import { errorPop } from './lib/native.js';
-import { statusBarItem, updateMarker } from './core/marker.js';
+import { markerItemsDisposable, updateMarker } from './core/marker.js';
 import { apply, manualRelocate, relocate, remove } from './core/hacker.js';
 
 const changed = (e: ConfigurationChangeEvent, ...names: ConfigName[]) =>
@@ -13,7 +13,7 @@ const cmd = (c: CommandName, cb: Fn) => commands.registerCommand(`jetbrains-titl
 export default (context: ExtensionContext) => {
   context.subscriptions.push(
     // * elements
-    statusBarItem,
+    markerItemsDisposable,
 
     // * change events
     workspace.onDidChangeWorkspaceFolders(updateMarker),

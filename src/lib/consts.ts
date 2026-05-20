@@ -4,7 +4,7 @@ export const enum Css {
   tokenStart = '\u002F\u002A__JETBRAINS_TITLEBAR_KASUKABETSUMUGI_START__\u002A\u002F',
   tokenEnd = '\u002F\u002A__JETBRAINS_TITLEBAR_KASUKABETSUMUGI_END__\u002A\u002F',
   tokenVersion = '\u002F\u002A__VERSION__\u002A\u002F',
-  base = `body:has(#{{id}}) #workbench\u005C\u002Eparts\u005C\u002Etitlebar::before{
+  base = `body:has(#KasukabeTsumugi\\.jetbrains-titlebar\\.marker) #workbench\\.parts\\.titlebar::before{
         width: {{diameter}};
         left: {{offsetX}};
         opacity: {{intensity}};
@@ -17,14 +17,14 @@ export const enum Css {
         pointer-events: none;
         z-index: 1;
       }`,
-  template = `body:has(#{{id}}[aria-label="{{index}}"]) #workbench\u005C\u002Eparts\u005C\u002Etitlebar::before{
+  template = `body:has(#KasukabeTsumugi\\.jetbrains-titlebar\\.marker[aria-label="{{index}}"]) #workbench\\.parts\\.titlebar::before{
         background: radial-gradient(circle at 50% 50%, {{color}}ff 0%, {{color}}80 40%, transparent 96%);
       }`,
   abbr = `
-  body:has(#{{id}}) .menubar[role="menubar"]{
+  body:has(#KasukabeTsumugi\\.jetbrains-titlebar\\.marker) .menubar[role="menubar"]{
     margin-left: 30px !important;
   }
-  #KasukabeTsumugi\u005C\u002Ejetbrains-titlebar\u005C\u002Eproject-initials{
+  #KasukabeTsumugi\\.jetbrains-titlebar\\.project-initials{
     position: fixed;
     border-radius: 5px;
     left: 36px;
@@ -33,7 +33,7 @@ export const enum Css {
     padding: 1.5px 0px;
     background-color: #f7f8fa28;
   }
-  #KasukabeTsumugi\u005C\u002Ejetbrains-titlebar\u005C\u002Eproject-initials .statusbar-item-label{
+  #KasukabeTsumugi\\.jetbrains-titlebar\\.project-initials .statusbar-item-label{
     padding: 0 2.5px !important;
     color: #f7f8faaf !important;
   }  
