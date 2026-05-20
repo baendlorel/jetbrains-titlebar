@@ -1,9 +1,11 @@
+import { workspace } from 'vscode';
 import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
 
 import { COLORS } from '@/lib/colors';
+import { projectName } from '@/lib/config';
 
 /**
  * 1. try to get a non-null result from `f0s` in order, if all return null/undefined, return null
@@ -39,21 +41,21 @@ export const hashIndex = (input: string): number => {
 /**
  * Return 1 char if the first char is CJK, otherwise return up to 2 chars.
  */
-export const getProjectInitials = (name: string): string => {
-  const trimmed = name.trim();
-  if (!trimmed) {
+export const getProjectInitials = (): string => {
+  const name = projectName();
+
+  if (!name) {
     return '';
   }
 
-  if (/[\u4e00-\u9fff\u3400-\u4dbf\uf900-\ufaff]/.test(trimmed[0])) {
-    return trimmed[0];
+  if (/[\u4e00-\u9fff\u3400-\u4dbf\uf900-\ufaff]/.test(name[0])) {
+    return name[0];
   }
 
-  const normalized = trimmed
+  const normalized = name
     .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
     .replace(/[._\-\\/]+/g, ' ')
     .replace(/\s+/g, ' ');
-
   const tokens = normalized.split(' ').filter(Boolean);
   const initials: string[] = [];
 
@@ -71,7 +73,7 @@ export const getProjectInitials = (name: string): string => {
     return initials.slice(0, 2).join('').toLocaleUpperCase();
   }
 
-  const fallback = Array.from(trimmed.matchAll(/[\p{L}\p{N}]/gu), (m) => m[0]);
+  const fallback = Array.from(name.matchAll(/[\p{L}\p{N}]/gu), (m) => m[0]);
   if (fallback.length === 0) {
     return '';
   }

@@ -1,85 +1,52 @@
-import { StatusBarAlignment, StatusBarItem, window, workspace } from 'vscode';
-import { getProjectInitials, hashIndex } from './utils.js';
+import { StatusBarAlignment, StatusBarItem, window } from 'vscode';
+import { getProjectInitials as getAbbr, hashIndex } from './utils.js';
+import { config, projectName } from '@/lib/config.js';
 
-export class Marker {
-  static readonly instance = new Marker();
+const createAbbrStatusBarItem = () => {
+  if (abbrItem) {
+    return;
+  }
+  abbrItem = window.createStatusBarItem(abbrItemId, StatusBarAlignment.Left, -Infinity);
+  abbrItem.color = '#f7f8faaf';
+  abbrItem.show();
+};
 
-  readonly item: StatusBarItem;
-  // TODO 如果是中文那么只看1个字
-  readonly initialsItemId = 'project-initials';
-  initialItem: StatusBarItem | null = null;
+const update = () => {
+  statusBarItem.text = getColorIndex().toString();
 
-  constructor() {
-    this.item = window.createStatusBarItem(StatusBarAlignment.Left, -Infinity);
-    this.update();
+  syncProjectInitials();
+  if (abbrItem) {
+    abbrItem.text = getAbbr();
+  }
+};
 
-    // #if DEBUG
-    this.item.color = 'red';
-    // #else
-    this.item.color = 'transparent';
-    // #endif
-
-    this.item.show();
-
-    this.syncInitialItem();
+const syncProjectInitials = () => {
+  if (config().get('showProjectInitials', true)) {
+    createAbbrStatusBarItem();
+    return;
   }
 
-  createInitialItem() {
-    if (this.initialItem) {
-      return;
-    }
-    this.initialItem = window.createStatusBarItem(this.initialsItemId, StatusBarAlignment.Left, -Infinity);
-    this.initialItem.color = '#f7f8faaf';
-    this.initialItem.show();
+  if (abbrItem) {
+    abbrItem.dispose();
+    abbrItem = null;
   }
+};
 
-  update() {
-    this.item.text = this._getColorIndex().toString();
+const getColorIndex = (): number => {
+  const name = projectName();
 
-    this.syncInitialItem();
-    if (this.initialItem) {
-      this.initialItem.text = this._getProjectInitials();
-    }
-  }
+  // Mix in color seed if configured
+  const colorSeed = config().get('colorSeed', '');
+  const mixedName = colorSeed ? `${name}::${colorSeed}` : name;
 
-  syncInitialItem() {
-    if (this._shouldShowInitials()) {
-      this.createInitialItem();
-      return;
-    }
+  return hashIndex(mixedName);
+};
 
-    if (this.initialItem) {
-      this.initialItem.dispose();
-      this.initialItem = null;
-    }
-  }
+const abbrItemId = 'project-initials';
+export const statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left, -Infinity);
+let abbrItem: StatusBarItem | null = null;
 
-  private _getColorIndex(): number {
-    const workspaceFolders = workspace.workspaceFolders;
-    if (!workspaceFolders || workspaceFolders.length === 0) {
-      return 0;
-    }
-
-    const folderName = workspaceFolders[0].name;
-
-    // Mix in color seed if configured
-    const config = workspace.getConfiguration('jetbrains-titlebar');
-    const colorSeed = config.get<string>('colorSeed', '');
-    const mixedName = colorSeed ? `${folderName}::${colorSeed}` : folderName;
-
-    return hashIndex(mixedName);
-  }
-
-  private _getProjectInitials(): string {
-    const workspaceFolders = workspace.workspaceFolders;
-    if (!workspaceFolders || workspaceFolders.length === 0) {
-      return '';
-    }
-    return getProjectInitials(workspaceFolders[0].name);
-  }
-
-  private _shouldShowInitials(): boolean {
-    const config = workspace.getConfiguration('jetbrains-titlebar');
-    return config.get<boolean>('showProjectInitials', true);
-  }
-}
+update();
+statusBarItem.color = 'transparent';
+statusBarItem.show();
+syncProjectInitials();

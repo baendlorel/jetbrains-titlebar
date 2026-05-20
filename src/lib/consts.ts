@@ -20,7 +20,7 @@ export const enum Css {
   template = `body:has(#{{id}}[aria-label="{{index}}"]) #workbench\u005C\u002Eparts\u005C\u002Etitlebar::before{
         background: radial-gradient(circle at 50% 50%, {{color}}ff 0%, {{color}}80 40%, transparent 96%);
       }`,
-  acronym = `
+  abbr = `
   body:has(#{{id}}) .menubar[role="menubar"]{
     margin-left: 30px !important;
   }

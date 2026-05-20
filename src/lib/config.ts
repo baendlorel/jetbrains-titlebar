@@ -23,3 +23,11 @@ export const pixel = (key: string, defaultValue: number, min: number = 0, max: n
 
 export const percent = (key: string, defaultValue: number): string =>
   (clamp(safeInt(config().get(key, defaultValue), defaultValue), 0, 100) / 100).toString();
+
+export const projectName = (): string => {
+  const workspaceFolders = workspace.workspaceFolders;
+  if (!workspaceFolders || workspaceFolders.length === 0) {
+    return '';
+  }
+  return workspaceFolders[0].name.trim();
+};

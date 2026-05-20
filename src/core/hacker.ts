@@ -8,11 +8,11 @@ import { $err, $info } from '@/lib/native.js';
 import { COLORS } from '@/lib/colors.js';
 import { loadCssPath, percent, pixel, saveCssPath } from '@/lib/config.js';
 
-import { Marker } from './marker.js';
 import { nullReturn, searchCssPath } from './utils.js';
+import { statusBarItem } from './marker.js';
 
 // TODO 去掉事件侦听，让它一次注册，后续被垃圾回收
-const idSelector = Marker.instance.item.id.replaceAll('.', '\\.');
+const idSelector = statusBarItem.id.replaceAll('.', '\\.');
 
 /**
  * @returns `null` if user cancels or input is invalid, otherwise the valid path
@@ -65,11 +65,9 @@ const generate = () => {
   const t = Css.template.replace(/\n[\s]+/g, '').replace('{{id}}', idSelector);
   const styles = COLORS.map((c, i) => t.replaceAll('{{color}}', c).replaceAll('{{index}}', i.toString()));
 
-  const acronym = Css.acronym
-    .replace(/\n[\s]+/g, '')
-    .replace('{{id}}', `${idSelector}\\.${Marker.instance.initialsItemId}`);
+  const abbr = Css.abbr.replace(/\n[\s]+/g, '').replace('{{id}}', `${idSelector}\\.${Marker.instance.initialsItemId}`);
 
-  return `\n${Css.tokenStart}${Css.tokenVersion}${base}${styles.join('')}${acronym}${Css.tokenEnd}\n`;
+  return `\n${Css.tokenStart}${Css.tokenVersion}${base}${styles.join('')}${abbr}${Css.tokenEnd}\n`;
 };
 
 const inject = async (cssPath: string, forced = false): Promise<void> => {
