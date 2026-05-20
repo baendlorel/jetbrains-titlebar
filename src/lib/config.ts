@@ -1,4 +1,4 @@
-import { workspace, WorkspaceConfiguration } from 'vscode';
+import { ConfigurationTarget, workspace, WorkspaceConfiguration } from 'vscode';
 
 export class ConfigJustifier {
   private readonly _config: WorkspaceConfiguration;
@@ -20,3 +20,13 @@ export class ConfigJustifier {
     return clamped.toString();
   }
 }
+
+export const config = () => workspace.getConfiguration('jetbrains-titlebar');
+
+export const cssPath = () => config().get<Record<string, string>>('cssPath', {});
+
+export const saveCssPath = async (key: string, p: string) => {
+  const cp = cssPath();
+  cp[key] = p;
+  return config().update('cssPath', cp, ConfigurationTarget.Global);
+};

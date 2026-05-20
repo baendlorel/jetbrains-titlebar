@@ -4,80 +4,48 @@ import { existsSync } from 'node:fs';
 import { userInfo } from 'node:os';
 
 import { Css, Intensity, Diameter, Offset } from '@/lib/consts.js';
-import { i18n } from '@/lib/i18n.js';
+import { t } from '@/lib/i18n.js';
 import { $err, $info } from '@/lib/native.js';
 import { GLOW_COLORS } from '@/lib/colors.js';
-import { ConfigJustifier } from '@/lib/config.js';
+import { ConfigJustifier, cssPath, saveCssPath } from '@/lib/config.js';
 import { Marker } from './marker.js';
 import { searchWorkbenchCss } from './utils.js';
 
 // TODO 重构为更清晰的版本，这个class的其实也不太好。
 // TODO 去掉事件侦听，让它一次注册，后续被垃圾回收
-export class Hacker {
-  static readonly instance = new Hacker();
 
-  private readonly _key: string;
-  private readonly _idSelector: string;
-  constructor() {
-    const u = userInfo();
-    this._key = u.uid + '-' + u.gid + '-' + u.homedir;
-    this._idSelector = Marker.instance.item.id.replaceAll('.', '\\.');
+const u = userInfo();
+const key = u.uid + '-' + u.gid + '-' + u.homedir;
+const idSelector = Marker.instance.item.id.replaceAll('.', '\\.');
+
+const getWorkbenchCssPath = async (): Promise<string | null> => {
+  const p = cssPath()[key];
+  if (p && existsSync(p)) {
+    return p;
   }
+  return await autoReloc(true);
+};
 
-  /**
-   * Get saved CSS path from configuration
-   */
-  private _getSavedPath(): string | null {
-    const config = workspace.getConfiguration('jetbrains-titlebar');
-    const map = config.get<Record<string, string>>('cssPath', {});
+const savePath = saveCssPath;
 
-    const cachedPath = map[this._key];
-    if (cachedPath && existsSync(cachedPath)) {
-      return cachedPath;
-    }
+const inputCssPath = async (prompt?: string): Promise<string | null> => {
+  const input = await window.showInputBox({
+    prompt: prompt ?? t('hacker.input-path.prompt'),
+    ignoreFocusOut: true,
+  });
+  if (input === undefined) {
     return null;
   }
-
-  /**
-   * Save CSS path to configuration
-   */
-  private async _savePath(path: string): Promise<void> {
-    const config = workspace.getConfiguration('jetbrains-titlebar');
-    const cssPath = config.get<Record<string, string>>('cssPath', {});
-    cssPath[this._key] = path;
-
-    await config.update('cssPath', cssPath, ConfigurationTarget.Global);
+  const trimmed = input.trim();
+  if (!existsSync(trimmed)) {
+    // TODO 这里的exist检查要更加精确提取，同时适配wsl和windows路径
+    $err(t('file-not-found', trimmed));
+    return null;
   }
+  return trimmed;
+};
 
-  private async _getWorkbenchCssPath(): Promise<string | null> {
-    // Try to use saved path first (unless force relocate)
-    const p = this._getSavedPath();
-    if (p) {
-      return p;
-    }
-
-    return await this.autoReloc(true);
-  }
-
-  /**
-   * Only get the input, will not save
-   */
-  private async _inputCssPath(prompt?: string): Promise<string | null> {
-    const input = await window.showInputBox({
-      prompt: prompt ?? i18n['hacker.input-path.prompt'],
-      ignoreFocusOut: true,
-    });
-    if (input === undefined) {
-      return null;
-    }
-    const trimmed = input.trim();
-    if (!existsSync(trimmed)) {
-      $err(i18n['file-not-found'].replace('$0', trimmed));
-      return null;
-    }
-    return trimmed;
-  }
-
+export class Hacker {
   private async _inject(cssPath: string): Promise<void> {
     const oldCss = await readFile(cssPath, 'utf8');
 
@@ -104,7 +72,7 @@ export class Hacker {
     const newData = `${oldCss.slice(0, start)}${css}${oldCss.slice(end)}`;
 
     await writeFile(cssPath, newData, 'utf8');
-    $info(i18n['hacker.input-path.success']);
+    $info(t('hacker.input-path.success'));
   }
 
   /**
@@ -144,30 +112,30 @@ export class Hacker {
 
     const start = css.indexOf(Css.token);
     if (start === -1) {
-      $info(i18n['hacker.clean.no-need']);
+      $info(t('hacker.clean.no-need'));
       return;
     }
 
     const end = css.indexOf('\n', start);
     if (end === -1) {
-      $info(i18n['hacker.clean.malformed']);
+      $info(t('hacker.clean.malformed'));
       return;
     }
 
     const cleaned = css.slice(0, start) + css.slice(end);
     await writeFile(cssPath, cleaned, 'utf8');
-    $info(i18n['hacker.clean.success']);
+    $info(t('hacker.clean.success'));
   }
 
   async apply(): Promise<void> {
-    const cssPath = await this._getWorkbenchCssPath();
+    const cssPath = await getWorkbenchCssPath();
     if (cssPath) {
       await this._inject(cssPath);
     }
   }
 
   async remove() {
-    const cssPath = await this._getWorkbenchCssPath();
+    const cssPath = await getWorkbenchCssPath();
     if (cssPath) {
       await this._clean(cssPath);
     }
@@ -175,29 +143,29 @@ export class Hacker {
 
   // Same sense of malloc
   async manualReloc(): Promise<void> {
-    const cssPath = await this._inputCssPath();
+    const cssPath = await inputCssPath();
     if (!cssPath) {
       return;
     }
-    await this._savePath(cssPath);
-    $info(i18n['hacker.relocate.success']);
+    await savePath(cssPath);
+    $info(t('hacker.relocate.success'));
   }
 
   async autoReloc(mute: boolean): Promise<string | null> {
     const autoPath = await searchWorkbenchCss();
     if (autoPath) {
-      await this._savePath(autoPath);
+      await savePath(autoPath);
       if (!mute) {
-        $info(i18n['hacker.relocate.success']);
+        $info(t('hacker.relocate.success'));
       }
       return autoPath;
     }
 
-    const manualPath = await this._inputCssPath(i18n['hacker.auto-relocate.fail']);
+    const manualPath = await this._inputCssPath(t('hacker.auto-relocate.fail'));
     if (manualPath) {
-      await this._savePath(manualPath);
+      await savePath(manualPath);
       if (!mute) {
-        $info(i18n['hacker.relocate.success']);
+        $info(t('hacker.relocate.success'));
       }
       return manualPath;
     }
