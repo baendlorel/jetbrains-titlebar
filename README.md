@@ -8,6 +8,13 @@ A VS Code extension that adds a colorful glow effect to the titlebar, automatica
 
 For more interesting projects, check out [my homepage💛](https://baendlorel.github.io)
 
+## v1.6.0 Release Notes - 2026-05-20
+**Accurate Css Locating**: We finally managed to find css file path accurately.
+
+**CJK Characters**: If the project name starts with CJK characters, we will only take 1 character for the titlebar to prevent overflow.
+
+**FP**: Functional Programming, refactor the injection and marker module to be more modular and maintainable.
+
 ## v1.1.0 Release Notes - 2026-02-08
 
 **Project Initials**: Added an option to display 2 letters of the project name in the titlebar.
