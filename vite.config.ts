@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
@@ -7,6 +8,7 @@ import commonjs from '@rollup/plugin-commonjs';
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url));
 const srcDir = path.resolve(rootDir, 'src');
+const json = readFileSync(path.resolve(rootDir, 'package.json'), 'utf-8');
 
 export default defineConfig(({ mode }) => {
   const isDev = mode === 'development';
@@ -31,6 +33,7 @@ export default defineConfig(({ mode }) => {
           replace({
             preventAssignment: true,
             __IS_DEV__: JSON.stringify(isDev),
+            __VERSION__: JSON.stringify(JSON.parse(json).version),
           }),
           nodeResolve(),
           commonjs(),

@@ -2,19 +2,25 @@ import vscode from 'vscode';
 import { existsSync } from 'node:fs';
 
 import { clamp, safeInt } from '@/core/utils.js';
+import { $info, t } from './native';
 
 const uniqueKey = vscode.env.machineId;
 export const config = () => vscode.workspace.getConfiguration('jetbrains-titlebar');
 
 export const loadCssPath = (): string | null => {
   const p = config().get<Record<string, string>>('cssPath', {})[uniqueKey];
-  return p && existsSync(p) ? p : null;
+  if (p && existsSync(p)) {
+    return p;
+  } else {
+    $info(t('config.outdated-css-path', p));
+    return null;
+  }
 };
 
 export const saveCssPath = async (p: string) => {
   const cp = config().get<Record<string, string>>('cssPath', {});
   cp[uniqueKey] = p;
-  vscode.window.showInformationMessage('saveCssPath ' + p);
+  $info(t('config.save-css-path', p));
   await config().update('cssPath', cp, vscode.ConfigurationTarget.Global);
   return p;
 };

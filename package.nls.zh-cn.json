@@ -13,6 +13,8 @@
   "configuration.colorSeed.description": "混入文件夹名称的随机种子，用于生成更丰富的颜色变化",
   "configuration.showProjectInitials.description": "在标题栏显示项目首字母",
   "file-not-found": "文件 {0} 不存在，请检查路径",
+  "config.outdated-css-path": "失效的css文件路径: {0}",
+  "config.save-css-path": "新css文件路径已保存： {0}",
   "search-css.code-shell-not-found": "appRoot\\bin\\code 没有找到，查找的路径： {0}",
   "search-css.code-shell-invalid": "appRoot\\bin\\code 无效, 文件中没有 VERSIONFOLDER 字样",
   "hacker.input-path.prompt": "指定 workbench.desktop.main.css 路径以实现样式注入",

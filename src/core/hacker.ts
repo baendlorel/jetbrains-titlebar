@@ -78,6 +78,7 @@ const inject = async (cssPath: string, forced = false): Promise<void> => {
   if (__IS_DEV__) {
     $info(`When debugging, always inject`);
   }
+  $info(`Injecting ${oldCss.before && !forced} ${cssPath}`);
   if (oldCss.before && !forced) {
     return; // injected already
   }

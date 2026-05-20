@@ -15,10 +15,6 @@ export const searchCssPath = async (): Promise<string | null> => {
       path.join(v, 'out', 'vs', 'workbench', 'workbench.desktop.main.css'),
     ])
     .flat();
-
-  vscode.window.showInformationMessage(`Searching for CSS in: ${list.join(', ')}`);
-  vscode.window.showInformationMessage(`Searching for CSS in: ${list.map(existsSync).join(', ')}`);
-
   return list.find(existsSync) ?? null;
 };
 // D:\\ProgramData\\Microsoft VS Code\\0958016b2a\\resources\\app\\resources\\app\\out\\vs\\workbench\\workbench.desktop.main.css
