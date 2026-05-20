@@ -2,6 +2,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 import replace from '@rollup/plugin-replace';
+import nodeResolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url));
 const srcDir = path.resolve(rootDir, 'src');
@@ -30,6 +32,8 @@ export default defineConfig(({ mode }) => {
             preventAssignment: true,
             __IS_DEV__: JSON.stringify(isDev),
           }),
+          nodeResolve(),
+          commonjs(),
         ],
       },
       sourcemap: false,

@@ -36,7 +36,7 @@ const tryExec = (command: string): string | null => {
  * Returns null if not in WSL or if any step fails, otherwise returns the WSL path to the VS Code resources directory
  */
 import pathWin from 'node:path/win32';
-function getWindowsPathInWsl() {
+const getWindowsPathInWsl = () => {
   if (!isWsl) {
     return null;
   }
@@ -59,4 +59,4 @@ function getWindowsPathInWsl() {
   }
 
   return path.join(wslDir, folder);
-}
+};
