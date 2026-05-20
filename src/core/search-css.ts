@@ -1,3 +1,4 @@
+import { $info } from '@/lib/native';
 import { existsSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
@@ -6,7 +7,7 @@ import { join } from 'node:path';
  * Search for workbench.desktop.main.css in common locations
  */
 export const searchCssPath = async (): Promise<string | null> => {
-  const possiblePaths: string[] = [];
+  const paths: string[] = [];
   const home = homedir();
   const platform = process.platform;
 
@@ -14,7 +15,7 @@ export const searchCssPath = async (): Promise<string | null> => {
   if (platform === 'win32') {
     // Windows paths
     const appData = process.env.LOCALAPPDATA || join(home, 'AppData', 'Local');
-    possiblePaths.push(
+    paths.push(
       join(
         appData,
         'Programs',
@@ -62,7 +63,7 @@ export const searchCssPath = async (): Promise<string | null> => {
     );
   } else if (platform === 'darwin') {
     // macOS paths
-    possiblePaths.push(
+    paths.push(
       '/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.css',
       '/Applications/Visual Studio Code - Insiders.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.css',
       join(
@@ -92,7 +93,7 @@ export const searchCssPath = async (): Promise<string | null> => {
     );
   } else {
     // Linux paths
-    possiblePaths.push(
+    paths.push(
       '/usr/share/code/resources/app/out/vs/workbench/workbench.desktop.main.css',
       '/usr/share/code-insiders/resources/app/out/vs/workbench/workbench.desktop.main.css',
       '/opt/visual-studio-code/resources/app/out/vs/workbench/workbench.desktop.main.css',
@@ -119,13 +120,13 @@ export const searchCssPath = async (): Promise<string | null> => {
   }
 
   // TODO 这里还可能是Program Data等多个文件。可以采取的策略是对每一个盘进行一次2层搜索，优先搜索Pro开头的，因为可能是program/program files。
-  possiblePaths.push('/mnt/c/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
-  possiblePaths.push('/mnt/d/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
-  possiblePaths.push('/mnt/e/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
-  possiblePaths.push('/mnt/f/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
+  paths.push('/mnt/c/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
+  paths.push('/mnt/d/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
+  paths.push('/mnt/e/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
+  paths.push('/mnt/f/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
 
   // Check each path
-  for (const path of possiblePaths) {
+  for (const path of paths) {
     if (existsSync(path)) {
       return path;
     }

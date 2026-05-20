@@ -68,6 +68,11 @@
     "configuration": {
       "title": "%configuration.title%",
       "properties": {
+        "jetbrains-titlebar.debug": {
+          "type": "boolean",
+          "default": false,
+          "description": "%configuration.debug.description%"
+        },
         "jetbrains-titlebar.showProjectInitials": {
           "type": "boolean",
           "default": true,
