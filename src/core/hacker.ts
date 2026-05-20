@@ -7,7 +7,7 @@ import { Css, Intensity, Diameter, Offset } from '@/lib/consts.js';
 import { t } from '@/lib/i18n.js';
 import { $err, $info } from '@/lib/native.js';
 import { GLOW_COLORS } from '@/lib/colors.js';
-import { ConfigJustifier, cssPath, saveCssPath } from '@/lib/config.js';
+import { ConfigJustifier, loadCssPath, saveCssPath } from '@/lib/config.js';
 import { Marker } from './marker.js';
 import { searchWorkbenchCss } from './utils.js';
 
@@ -19,7 +19,7 @@ const key = u.uid + '-' + u.gid + '-' + u.homedir;
 const idSelector = Marker.instance.item.id.replaceAll('.', '\\.');
 
 const getWorkbenchCssPath = async (): Promise<string | null> => {
-  const p = cssPath()[key];
+  const p = loadCssPath()[key];
   if (p && existsSync(p)) {
     return p;
   }
@@ -29,10 +29,12 @@ const getWorkbenchCssPath = async (): Promise<string | null> => {
 const savePath = saveCssPath;
 
 const inputCssPath = async (prompt?: string): Promise<string | null> => {
-  const input = await window.showInputBox({
-    prompt: prompt ?? t('hacker.input-path.prompt'),
-    ignoreFocusOut: true,
-  });
+  const input = (
+    await window.showInputBox({
+      prompt: prompt ?? t('hacker.input-path.prompt'),
+      ignoreFocusOut: true,
+    })
+  )?.trim();
   if (input === undefined) {
     return null;
   }

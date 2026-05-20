@@ -23,10 +23,10 @@ export class ConfigJustifier {
 
 export const config = () => workspace.getConfiguration('jetbrains-titlebar');
 
-export const cssPath = () => config().get<Record<string, string>>('cssPath', {});
+export const loadCssPath = () => config().get<Record<string, string>>('cssPath', {});
 
 export const saveCssPath = async (key: string, p: string) => {
-  const cp = cssPath();
+  const cp = loadCssPath();
   cp[key] = p;
   return config().update('cssPath', cp, ConfigurationTarget.Global);
 };
