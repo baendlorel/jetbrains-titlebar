@@ -12,11 +12,15 @@ export const searchCssPath = async (): Promise<string | null> => {
   return (
     [vscode.env.appRoot, getWindowsPathInWsl()]
       .filter((v): v is string => v !== null)
-      .map((v) => path.join(v, 'resources', 'app', 'out', 'vs', 'workbench', 'workbench.desktop.main.css'))
+      .map((v) => [
+        path.join(v, 'resources', 'app', 'out', 'vs', 'workbench', 'workbench.desktop.main.css'),
+        path.join(v, 'out', 'vs', 'workbench', 'workbench.desktop.main.css'),
+      ])
+      .flat()
       .find(existsSync) ?? null
   );
 };
-
+// D:\\ProgramData\\Microsoft VS Code\\0958016b2a\\resources\\app\\resources\\app\\out\\vs\\workbench\\workbench.desktop.main.css
 const tryExec = (command: string): string | null => {
   try {
     return execSync(command, {

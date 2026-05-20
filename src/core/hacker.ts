@@ -12,7 +12,6 @@ import { nullReturn } from './utils.js';
 import { ABBR_ITEM_ID, statusBarItem } from './marker.js';
 import { searchCssPath } from './search-css.js';
 
-// TODO 去掉事件侦听，让它一次注册，后续被垃圾回收
 const idSelector = statusBarItem.id.replaceAll('.', '\\.');
 
 /**
@@ -28,7 +27,6 @@ const promptForCssPath = async (prompt: string = t('hacker.input-path.prompt')):
     return input;
   }
 
-  // TODO 这里的exist检查要更加精确提取，同时适配wsl和windows路径
   $err(t('file-not-found', input));
   return null;
 };
