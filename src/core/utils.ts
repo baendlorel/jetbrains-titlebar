@@ -2,17 +2,29 @@ import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
-import { GLOW_COLORS } from '@/lib/colors';
+import { COLORS } from '@/lib/colors';
 
-export function hashIndex(input: string): number {
+export const nullReturn =
+  <T, A>(f0: (arg: A) => T | null, ...fns: ((arg: T) => any)[]) =>
+  async (arg: A): Promise<T | null> => {
+    const r = await f0(arg);
+    if (r === null || r === undefined) {
+      return null;
+    }
+    for (let i = 0; i < fns.length; i++) {
+      await fns[i](r);
+    }
+    return r;
+  };
+
+export const hashIndex = (input: string): number => {
   const hash = createHash('sha1').update(input).digest();
-  const num = (BigInt(hash.readUInt32BE(0)) << 32n) | BigInt(hash.readUInt32BE(4));
+  const n = (BigInt(hash.readUInt32BE(0)) << 32n) | BigInt(hash.readUInt32BE(4));
+  const r = Number(n & 0x7fffffffffffffffn); // Keep it positive
+  return r % COLORS.length;
+};
 
-  const result = Number(num & 0x7fffffffffffffffn); // Keep it positive
-  return result % GLOW_COLORS.length;
-}
-
-export function getProjectInitials(name: string): string {
+export const getProjectInitials = (name: string): string => {
   const trimmed = name.trim();
   if (!trimmed) {
     return '';
@@ -46,12 +58,12 @@ export function getProjectInitials(name: string): string {
   }
 
   return fallback.slice(0, 2).join('').toLocaleUpperCase();
-}
+};
 
 /**
  * Search for workbench.desktop.main.css in common locations
  */
-export async function searchWorkbenchCss(): Promise<string | null> {
+export const searchWorkbenchCss = async (): Promise<string | null> => {
   const possiblePaths: string[] = [];
   const home = homedir();
   const platform = process.platform;
@@ -164,6 +176,7 @@ export async function searchWorkbenchCss(): Promise<string | null> {
     );
   }
 
+  // TODO 这里还可能是Program Data等多个文件。可以采取的策略是对每一个盘进行一次2层搜索，优先搜索Pro开头的，因为可能是program/program files。
   possiblePaths.push('/mnt/c/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
   possiblePaths.push('/mnt/d/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
   possiblePaths.push('/mnt/e/Programs/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.css');
@@ -177,4 +190,4 @@ export async function searchWorkbenchCss(): Promise<string | null> {
   }
 
   return null;
-}
+};

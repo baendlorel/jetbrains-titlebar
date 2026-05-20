@@ -5,6 +5,7 @@ export class Marker {
   static readonly instance = new Marker();
 
   readonly item: StatusBarItem;
+  // TODO 如果是中文那么只看1个字
   readonly initialsItemId = 'project-initials';
   initialItem: StatusBarItem | null = null;
 

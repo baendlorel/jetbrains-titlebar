@@ -1,8 +1,9 @@
 export const enum Css {
   // & use unicode to have precise strings, and avoid collision of real comments
-  token = '\u002F\u002A__JETBRAINS_TITLEBAR_KASUKABETSUMUGI__\u002A\u002F',
+  tokenOld = '\u002F\u002A__JETBRAINS_TITLEBAR_KASUKABETSUMUGI__\u002A\u002F',
+  tokenStart = '\u002F\u002A__JETBRAINS_TITLEBAR_KASUKABETSUMUGI_START__\u002A\u002F',
+  tokenEnd = '\u002F\u002A__JETBRAINS_TITLEBAR_KASUKABETSUMUGI_END__\u002A\u002F',
   tokenVersion = '\u002F\u002A__VERSION__\u002A\u002F',
-  tokenDate = '\u002F\u002A__DATE_TIME__\u002A\u002F',
   base = `body:has(#{{id}}) #workbench\u005C\u002Eparts\u005C\u002Etitlebar::before{
         width: {{diameter}};
         left: {{offsetX}};
@@ -19,7 +20,7 @@ export const enum Css {
   template = `body:has(#{{id}}[aria-label="{{index}}"]) #workbench\u005C\u002Eparts\u005C\u002Etitlebar::before{
         background: radial-gradient(circle at 50% 50%, {{color}}ff 0%, {{color}}80 40%, transparent 96%);
       }`,
-  projectInitial = `
+  acronym = `
   body:has(#{{id}}) .menubar[role="menubar"]{
     margin-left: 30px !important;
   }

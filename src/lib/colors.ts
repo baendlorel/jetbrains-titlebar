@@ -1,7 +1,7 @@
 /**
  * CSS colors array
  */
-export const GLOW_COLORS = [
+export const COLORS = [
   '#a80000',
   '#c50000',
   '#e20000',

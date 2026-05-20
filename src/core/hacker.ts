@@ -6,7 +6,7 @@ import { userInfo } from 'node:os';
 import { Css, Intensity, Diameter, Offset } from '@/lib/consts.js';
 import { t } from '@/lib/i18n.js';
 import { $err, $info } from '@/lib/native.js';
-import { GLOW_COLORS } from '@/lib/colors.js';
+import { COLORS } from '@/lib/colors.js';
 import { loadCssPath, percent, pixel, saveCssPath } from '@/lib/config.js';
 
 import { Marker } from './marker.js';
@@ -51,62 +51,69 @@ const promptForCssPath = async (prompt: string): Promise<string | null> => {
   return null;
 };
 
-const inject = async (cssPath: string): Promise<void> => {
-  const oldCss = await readFile(cssPath, 'utf8');
-  const rawStart = oldCss.indexOf(Css.token);
-  if (rawStart === -1) {
-    const css = generateCss();
-    await appendFile(cssPath, css, 'utf8');
+interface CssParts {
+  before: string | null;
+  after: string | null;
+  content: string;
+}
+
+/**
+ * Split the CSS file content into three parts: before the token, the injected part, and after the token.
+ */
+const readCss = async (cssPath: string): Promise<CssParts> => {
+  const content = removeOldToken(await readFile(cssPath, 'utf8'));
+  const result: CssParts = { before: null, after: null, content };
+
+  const start = content.indexOf(Css.tokenStart);
+  result.before = start === -1 ? null : content.slice(0, start);
+
+  const end = content.indexOf(Css.tokenEnd, start);
+  result.after = end === -1 ? null : content.slice(end);
+
+  return result;
+};
+
+const inject = async (cssPath: string, forced = false): Promise<void> => {
+  const oldCss = await readCss(cssPath);
+  if (oldCss.before === null && oldCss.after === null) {
+    await appendFile(cssPath, generateCss(), 'utf8');
     return;
   }
 
   // #if DEBUG
   $info(`When debugging, always inject`);
   // #else
-  if (oldCss.includes(Css.tokenVersion, rawStart)) {
+  if (oldCss.before && !forced) {
     return; // injected already
   }
   // #endif
 
-  const eolIndex = oldCss.indexOf('\n', rawStart);
-  const end = eolIndex === -1 ? oldCss.length : eolIndex;
-  const start = oldCss[rawStart - 1] === '\n' ? rawStart - 1 : rawStart;
-  const css = generateCss();
-
-  const newData = `${oldCss.slice(0, start)}${css}${oldCss.slice(end)}`;
-
-  await writeFile(cssPath, newData, 'utf8');
+  await writeFile(cssPath, `${oldCss.before}${generateCss()}${oldCss.after}`, 'utf8');
   $info(t('hacker.input-path.success'));
 };
 
 const generateCss = () => {
-  const intensity = percent('glowIntensity', Intensity.default);
-  const diameter = pixel('glowDiameter', Diameter.default, Diameter.min);
-  const offsetX = pixel('glowOffsetX', Offset.default, Offset.min);
-
   const base = Css.base
     .replace(/\n[\s]+/g, '')
     .replace('{{id}}', idSelector)
-    .replace('{{intensity}}', intensity)
-    .replace('{{diameter}}', diameter)
-    .replace('{{offsetX}}', offsetX);
-  const template = Css.template.replace(/\n[\s]+/g, '').replace('{{id}}', idSelector);
+    .replace('{{intensity}}', percent('glowIntensity', Intensity.default))
+    .replace('{{diameter}}', pixel('glowDiameter', Diameter.default, Diameter.min))
+    .replace('{{offsetX}}', pixel('glowOffsetX', Offset.default, Offset.min));
 
-  const styles = GLOW_COLORS.map((color, index) =>
-    template.replaceAll('{{color}}', color).replaceAll('{{index}}', String(index)),
-  );
+  const t = Css.template.replace(/\n[\s]+/g, '').replace('{{id}}', idSelector);
+  const styles = COLORS.map((c, i) => t.replaceAll('{{color}}', c).replaceAll('{{index}}', i.toString()));
 
-  const projectInitial = Css.projectInitial
+  const acronym = Css.acronym
     .replace(/\n[\s]+/g, '')
     .replace('{{id}}', `${idSelector}\\.${Marker.instance.initialsItemId}`);
 
-  return `\n${Css.token}${Css.tokenVersion}${Css.tokenDate}${base}${styles.join('')}${projectInitial}\n`;
+  return `\n${Css.tokenStart}${Css.tokenVersion}${base}${styles.join('')}${acronym}${Css.tokenEnd}\n`;
 };
 
 const clean = async (cssPath: string): Promise<void> => {
   const css = await readFile(cssPath, 'utf8');
 
-  const start = css.indexOf(Css.token);
+  const start = css.indexOf(Css.tokenStart);
   if (start === -1) {
     $info(t('hacker.clean.no-need'));
     return;
@@ -120,6 +127,21 @@ const clean = async (cssPath: string): Promise<void> => {
 
   await writeFile(cssPath, css.slice(0, start) + css.slice(end), 'utf8');
   $info(t('hacker.clean.success'));
+};
+
+const removeOldToken = (css: string): string => {
+  const start = css.indexOf(Css.tokenOld);
+  if (start === -1) {
+    return css;
+  }
+
+  let end = css.indexOf('\n', start);
+  if (end === -1) {
+    // Consider `end` to be the end of the file if there's no newline after the token
+    end = css.length;
+  }
+
+  return css.slice(0, start) + Css.tokenStart + css.slice(start + Css.tokenOld.length, end) + Css.tokenEnd;
 };
 
 const apply = (): Promise<string | null> => tryGetCssPathAnd(inject);
