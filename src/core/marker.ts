@@ -6,7 +6,7 @@ const createAbbrStatusBarItem = () => {
   if (abbrItem) {
     return;
   }
-  abbrItem = window.createStatusBarItem(abbrItemId, StatusBarAlignment.Left, -Infinity);
+  abbrItem = window.createStatusBarItem(ABBR_ITEM_ID, StatusBarAlignment.Left, -Infinity);
   abbrItem.color = '#f7f8faaf';
   abbrItem.show();
 };
@@ -42,7 +42,7 @@ const getColorIndex = (): number => {
   return hashIndex(mixedName);
 };
 
-const abbrItemId = 'project-initials';
+export const ABBR_ITEM_ID = 'project-initials';
 export const statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left, -Infinity);
 let abbrItem: StatusBarItem | null = null;
 

@@ -9,7 +9,7 @@ import { COLORS } from '@/lib/colors.js';
 import { loadCssPath, percent, pixel, saveCssPath } from '@/lib/config.js';
 
 import { nullReturn, searchCssPath } from './utils.js';
-import { statusBarItem } from './marker.js';
+import { ABBR_ITEM_ID, statusBarItem } from './marker.js';
 
 // TODO 去掉事件侦听，让它一次注册，后续被垃圾回收
 const idSelector = statusBarItem.id.replaceAll('.', '\\.');
@@ -65,7 +65,7 @@ const generate = () => {
   const t = Css.template.replace(/\n[\s]+/g, '').replace('{{id}}', idSelector);
   const styles = COLORS.map((c, i) => t.replaceAll('{{color}}', c).replaceAll('{{index}}', i.toString()));
 
-  const abbr = Css.abbr.replace(/\n[\s]+/g, '').replace('{{id}}', `${idSelector}\\.${Marker.instance.initialsItemId}`);
+  const abbr = Css.abbr.replace(/\n[\s]+/g, '').replace('{{id}}', `${idSelector}\\.${ABBR_ITEM_ID}`);
 
   return `\n${Css.tokenStart}${Css.tokenVersion}${base}${styles.join('')}${abbr}${Css.tokenEnd}\n`;
 };
@@ -77,13 +77,12 @@ const inject = async (cssPath: string, forced = false): Promise<void> => {
     return;
   }
 
-  // #if DEBUG
-  $info(`When debugging, always inject`);
-  // #else
+  if (__IS_DEV__) {
+    $info(`When debugging, always inject`);
+  }
   if (oldCss.before && !forced) {
     return; // injected already
   }
-  // #endif
 
   await writeFile(cssPath, `${oldCss.before}${generate()}${oldCss.after}`, 'utf8');
   $info(t('hacker.input-path.success'));

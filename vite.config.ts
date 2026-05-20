@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
-import conditional from 'rollup-plugin-conditional-compilation';
+import replace from '@rollup/plugin-replace';
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url));
 const srcDir = path.resolve(rootDir, 'src');
@@ -25,7 +25,12 @@ export default defineConfig(({ mode }) => {
           exports: 'named',
           inlineDynamicImports: true,
         },
-        plugins: [conditional({ variables: { DEBUG: isDev } })],
+        plugins: [
+          replace({
+            preventAssignment: true,
+            __IS_DEV__: JSON.stringify(isDev),
+          }),
+        ],
       },
       sourcemap: false,
       target: 'node16',
