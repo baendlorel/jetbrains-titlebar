@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => {
         fileName: () => 'extension.js',
         formats: ['cjs'],
       },
-      minify: isDev ? false : 'esbuild',
+      minify: 'esbuild',
       outDir: 'out',
       rollupOptions: {
         external: ['vscode', /^node:/],

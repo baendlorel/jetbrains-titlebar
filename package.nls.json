@@ -7,9 +7,20 @@
   "command.autoRelocateCssPath.title": "Auto Detect workbench.desktop.main.css Path",
   "configuration.debug.description": "Enable debug mode for verbose logging",
   "configuration.glowIntensity.description": "Glow effect glowIntensity as percentage (0-100), default 32",
-  "configuration.cssPath.description": "Cached workbench workbench.desktop.main.css path, a homedir-csspath map object",
+  "configuration.cssPath.description": "Cached workbench workbench.desktop.main.css path, a machineId-cssPath map object",
   "configuration.glowDiameter.description": "Glow diameter in pixels, > 80 recommended, default 260",
   "configuration.glowOffsetX.description": "Glow horizontal offset in pixels, default 120",
   "configuration.colorSeed.description": "Random seed mixed into folder name for color generation, allowing richer color variations",
-  "configuration.showProjectInitials.description": "Show project initials in the title bar"
+  "configuration.showProjectInitials.description": "Show project initials in the title bar",
+  "file-not-found": "File {0} not found, please check the path",
+  "search-css.code-shell-not-found": "appRoot\\bin\\code is not found from: {0}",
+  "search-css.code-shell-invalid": "appRoot\\bin\\code is invalid, VERSIONFOLDER not found in content",
+  "hacker.input-path.prompt": "Specify the path to workbench.desktop.main.css for style injection",
+  "hacker.input-path.success": "Style injection succeeded. Restart VS Code to make it work!",
+  "hacker.clean.success": "Style cleanup succeeded",
+  "hacker.clean.no-need": "Did not find injection markers, no need to clean",
+  "hacker.clean.malformed": "CSS file is malformed, please check/clean it manually",
+  "hacker.relocate.success": "CSS file path has been updated",
+  "hacker.auto-relocate.fail": "No CSS file found, please specify it manually",
+  "hacker.invalid-windows-path": "Invalid Windows path: {0}"
 }

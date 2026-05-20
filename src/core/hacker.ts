@@ -3,8 +3,7 @@ import { appendFile, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 
 import { Css, Intensity, Diameter, Offset } from '@/lib/consts.js';
-import { t } from '@/lib/i18n.js';
-import { $err, $info } from '@/lib/native.js';
+import { $err, $info, t } from '@/lib/native.js';
 import { COLORS } from '@/lib/colors.js';
 import { loadCssPath, percent, pixel, saveCssPath } from '@/lib/config.js';
 
@@ -83,6 +82,7 @@ const inject = async (cssPath: string, forced = false): Promise<void> => {
     return; // injected already
   }
 
+  $info(cssPath);
   await writeFile(cssPath, `${oldCss.before}${generate()}${oldCss.after}`, 'utf8');
   $info(t('hacker.input-path.success'));
 };
@@ -122,6 +122,6 @@ const removeOldToken = (css: string): string => {
 };
 
 export const relocate = nullReturn([searchCssPath, promptForCssPath], [saveCssPath]);
-export const apply = nullReturn([loadCssPath, relocate], [(cssPath) => inject(cssPath, true)]);
+export const apply = nullReturn([loadCssPath, relocate], [inject]);
 export const remove = nullReturn([loadCssPath, relocate], [clean]);
 export const manualRelocate = nullReturn([promptForCssPath], [saveCssPath, () => $info(t('hacker.relocate.success'))]);

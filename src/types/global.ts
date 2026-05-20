@@ -20,3 +20,9 @@ export type CommandName = _StripPrefixAndTitle<I18NKeys>;
 declare global {
   const __IS_DEV__: boolean;
 }
+
+declare module 'vscode' {
+  export namespace l10n {
+    export function t(key: I18NKeys, ...args: string[]): string;
+  }
+}

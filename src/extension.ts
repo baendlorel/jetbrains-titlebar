@@ -1,11 +1,10 @@
-import { ExtensionContext } from 'vscode';
+import vscode from 'vscode';
 import { errorPop } from './lib/native.js';
 import registers from './registers.js';
 import { apply } from './core/hacker.js';
 
-export const activate = async (context: ExtensionContext) => {
+export const activate = async (context: vscode.ExtensionContext) => {
   await apply().catch(errorPop);
-
   registers(context);
 };
 

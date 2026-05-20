@@ -1,10 +1,10 @@
-import { ConfigurationTarget, workspace, env } from 'vscode';
+import vscode from 'vscode';
 import { existsSync } from 'node:fs';
 
-import { clamp, safeInt } from '@/core/utils';
+import { clamp, safeInt } from '@/core/utils.js';
 
-const uniqueKey = env.machineId; // ((u) => u.uid + '-' + u.gid + '-' + u.homedir)(userInfo());
-export const config = () => workspace.getConfiguration('jetbrains-titlebar');
+const uniqueKey = vscode.env.machineId;
+export const config = () => vscode.workspace.getConfiguration('jetbrains-titlebar');
 
 export const loadCssPath = (): string | null => {
   const p = config().get<Record<string, string>>('cssPath', {})[uniqueKey];
@@ -14,7 +14,8 @@ export const loadCssPath = (): string | null => {
 export const saveCssPath = async (p: string) => {
   const cp = config().get<Record<string, string>>('cssPath', {});
   cp[uniqueKey] = p;
-  await config().update('cssPath', cp, ConfigurationTarget.Global);
+  vscode.window.showInformationMessage('saveCssPath ' + p);
+  await config().update('cssPath', cp, vscode.ConfigurationTarget.Global);
   return p;
 };
 
@@ -25,7 +26,7 @@ export const percent = (key: string, defaultValue: number): string =>
   (clamp(safeInt(config().get(key, defaultValue), defaultValue), 0, 100) / 100).toString();
 
 export const projectName = (): string => {
-  const workspaceFolders = workspace.workspaceFolders;
+  const workspaceFolders = vscode.workspace.workspaceFolders;
   if (!workspaceFolders || workspaceFolders.length === 0) {
     return '';
   }
