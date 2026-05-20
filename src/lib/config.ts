@@ -1,11 +1,13 @@
+import { userInfo } from 'os';
 import { ConfigurationTarget, workspace } from 'vscode';
 
+const uniqueKey = ((u) => u.uid + '-' + u.gid + '-' + u.homedir)(userInfo());
 export const config = () => workspace.getConfiguration('jetbrains-titlebar');
 
-export const loadCssPath = () => config().get<Record<string, string>>('cssPath', {});
-export const saveCssPath = async (key: string, p: string) => {
-  const cp = loadCssPath();
-  cp[key] = p;
+export const loadCssPath = () => config().get<Record<string, string>>('cssPath', {})[uniqueKey];
+export const saveCssPath = async (p: string) => {
+  const cp = config().get<Record<string, string>>('cssPath', {});
+  cp[uniqueKey] = p;
   await config().update('cssPath', cp, ConfigurationTarget.Global);
   return p;
 };

@@ -14,11 +14,10 @@ import { searchWorkbenchCss } from './utils.js';
 
 // TODO 去掉事件侦听，让它一次注册，后续被垃圾回收
 
-const key = ((u) => u.uid + '-' + u.gid + '-' + u.homedir)(userInfo());
 const idSelector = Marker.instance.item.id.replaceAll('.', '\\.');
 
 const tryGetCssPathAnd = async (fn?: (cssPath: string) => any): Promise<string | null> => {
-  const p0 = loadCssPath()[key];
+  const p0 = loadCssPath();
   if (p0 && existsSync(p0)) {
     await fn?.(p0);
     return p0;
@@ -152,19 +151,19 @@ const manualRelocate = async (): Promise<void> => {
   if (!cssPath) {
     return;
   }
-  await saveCssPath(key, cssPath);
+  await saveCssPath(cssPath);
   $info(t('hacker.relocate.success'));
 };
 
 const autoRelocate = async (): Promise<string | null> => {
   const autoPath = await searchWorkbenchCss();
   if (autoPath) {
-    return await saveCssPath(key, autoPath);
+    return await saveCssPath(autoPath);
   }
 
   const manualPath = await promptForCssPath(t('hacker.auto-relocate.fail'));
   if (manualPath) {
-    return await saveCssPath(key, manualPath);
+    return await saveCssPath(manualPath);
   }
 
   return null;
