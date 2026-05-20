@@ -1,8 +1,8 @@
 import { commands, workspace, ExtensionContext, ConfigurationChangeEvent } from 'vscode';
 import type { ConfigName, CommandName, Fn } from './types/global.js';
 import { errorPop } from './lib/native.js';
-import { Hacker } from './core/hacker';
-import { Marker } from './core/marker';
+import { Hacker } from './core/hacker.js';
+import { Marker } from './core/marker.js';
 
 const changed = (e: ConfigurationChangeEvent, ...names: ConfigName[]) =>
   names.some((name) => e.affectsConfiguration(`jetbrains-titlebar.${name}`));
@@ -34,8 +34,8 @@ export default (context: ExtensionContext) => {
       }),
 
       // * commands
-      cmd('applyGlow', () => hacker.apply()),
-      cmd('removeGlow', () => hacker.remove()),
+      // cmd('applyGlow', () => hacker.apply()),
+      // cmd('removeGlow', () => hacker.remove()),
       cmd('manuallyRelocateCssPath', () => hacker.manualReloc()),
       cmd('autoRelocateCssPath', () => hacker.autoReloc(false)),
     ].filter((v) => v !== undefined),

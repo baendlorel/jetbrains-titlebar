@@ -17,12 +17,20 @@ import { searchWorkbenchCss } from './utils.js';
 const key = ((u) => u.uid + '-' + u.gid + '-' + u.homedir)(userInfo());
 const idSelector = Marker.instance.item.id.replaceAll('.', '\\.');
 
-const tryGetCssPath = async (): Promise<string | null> => {
-  const p = loadCssPath()[key];
-  if (p && existsSync(p)) {
-    return p;
+const tryGetCssPathAnd = async (fn?: (cssPath: string) => any): Promise<string | null> => {
+  const p0 = loadCssPath()[key];
+  if (p0 && existsSync(p0)) {
+    await fn?.(p0);
+    return p0;
   }
-  return await autoRelocate();
+
+  const p1 = await autoRelocate();
+  if (p1) {
+    await fn?.(p1);
+    return p1;
+  }
+
+  return null;
 };
 
 /**
@@ -110,24 +118,12 @@ const clean = async (cssPath: string): Promise<void> => {
     return;
   }
 
-  const cleaned = css.slice(0, start) + css.slice(end);
-  await writeFile(cssPath, cleaned, 'utf8');
+  await writeFile(cssPath, css.slice(0, start) + css.slice(end), 'utf8');
   $info(t('hacker.clean.success'));
 };
 
-const apply = async () => {
-  const cssPath = await tryGetCssPath();
-  if (cssPath) {
-    await inject(cssPath);
-  }
-};
-
-const remove = async () => {
-  const cssPath = await tryGetCssPath();
-  if (cssPath) {
-    await clean(cssPath);
-  }
-};
+const apply = (): Promise<string | null> => tryGetCssPathAnd(inject);
+const remove = (): Promise<string | null> => tryGetCssPathAnd(clean);
 
 const manualRelocate = async (): Promise<void> => {
   const cssPath = await promptForCssPath(t('hacker.input-path.prompt'));
