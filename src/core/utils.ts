@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
+
 import { COLORS } from '@/lib/colors';
 
 /**
@@ -201,4 +202,10 @@ export const searchWorkbenchCss = async (): Promise<string | null> => {
   }
 
   return null;
+};
+
+export const clamp = (n: number, min: number, max: number): number => (n <= min ? min : n >= max ? max : n);
+export const safeInt = (n: number, defaultValue: number): number => {
+  n = Math.floor(n);
+  return Number.isSafeInteger(n) ? n : defaultValue;
 };

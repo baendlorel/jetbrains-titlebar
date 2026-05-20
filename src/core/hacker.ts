@@ -1,7 +1,6 @@
 import { window } from 'vscode';
 import { appendFile, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
-import { userInfo } from 'node:os';
 
 import { Css, Intensity, Diameter, Offset } from '@/lib/consts.js';
 import { t } from '@/lib/i18n.js';
@@ -10,32 +9,15 @@ import { COLORS } from '@/lib/colors.js';
 import { loadCssPath, percent, pixel, saveCssPath } from '@/lib/config.js';
 
 import { Marker } from './marker.js';
-import { nullReturn, searchWorkbenchCss } from './utils.js';
+import { nullReturn, searchWorkbenchCss as searchCssPath } from './utils.js';
 
 // TODO 去掉事件侦听，让它一次注册，后续被垃圾回收
-
 const idSelector = Marker.instance.item.id.replaceAll('.', '\\.');
-
-const tryGetCssPathAnd = async (fn?: (cssPath: string) => any): Promise<string | null> => {
-  const p0 = loadCssPath();
-  if (p0 && existsSync(p0)) {
-    await fn?.(p0);
-    return p0;
-  }
-
-  const p1 = await autoRelocate();
-  if (p1) {
-    await fn?.(p1);
-    return p1;
-  }
-
-  return null;
-};
 
 /**
  * @returns `null` if user cancels or input is invalid, otherwise the valid path
  */
-const promptForCssPath = async (prompt: string = t('hacker.auto-relocate.fail')): Promise<string | null> => {
+const promptForCssPath = async (prompt: string = t('hacker.input-path.prompt')): Promise<string | null> => {
   const input = (await window.showInputBox({ prompt, ignoreFocusOut: true }))?.trim();
   if (!input) {
     return null;
@@ -59,7 +41,7 @@ interface CssParts {
 /**
  * Split the CSS file content into three parts: before the token, the injected part, and after the token.
  */
-const readCss = async (cssPath: string): Promise<CssParts> => {
+const read = async (cssPath: string): Promise<CssParts> => {
   const content = removeOldToken(await readFile(cssPath, 'utf8'));
   const result: CssParts = { before: null, after: null, content };
 
@@ -72,26 +54,7 @@ const readCss = async (cssPath: string): Promise<CssParts> => {
   return result;
 };
 
-const inject = async (cssPath: string, forced = false): Promise<void> => {
-  const oldCss = await readCss(cssPath);
-  if (oldCss.before === null && oldCss.after === null) {
-    await appendFile(cssPath, generateCss(), 'utf8');
-    return;
-  }
-
-  // #if DEBUG
-  $info(`When debugging, always inject`);
-  // #else
-  if (oldCss.before && !forced) {
-    return; // injected already
-  }
-  // #endif
-
-  await writeFile(cssPath, `${oldCss.before}${generateCss()}${oldCss.after}`, 'utf8');
-  $info(t('hacker.input-path.success'));
-};
-
-const generateCss = () => {
+const generate = () => {
   const base = Css.base
     .replace(/\n[\s]+/g, '')
     .replace('{{id}}', idSelector)
@@ -107,6 +70,25 @@ const generateCss = () => {
     .replace('{{id}}', `${idSelector}\\.${Marker.instance.initialsItemId}`);
 
   return `\n${Css.tokenStart}${Css.tokenVersion}${base}${styles.join('')}${acronym}${Css.tokenEnd}\n`;
+};
+
+const inject = async (cssPath: string, forced = false): Promise<void> => {
+  const oldCss = await read(cssPath);
+  if (oldCss.before === null && oldCss.after === null) {
+    await appendFile(cssPath, generate(), 'utf8');
+    return;
+  }
+
+  // #if DEBUG
+  $info(`When debugging, always inject`);
+  // #else
+  if (oldCss.before && !forced) {
+    return; // injected already
+  }
+  // #endif
+
+  await writeFile(cssPath, `${oldCss.before}${generate()}${oldCss.after}`, 'utf8');
+  $info(t('hacker.input-path.success'));
 };
 
 const clean = async (cssPath: string): Promise<void> => {
@@ -143,15 +125,7 @@ const removeOldToken = (css: string): string => {
   return css.slice(0, start) + Css.tokenStart + css.slice(start + Css.tokenOld.length, end) + Css.tokenEnd;
 };
 
-const autoRelocate = nullReturn([searchWorkbenchCss, promptForCssPath], [saveCssPath]);
-const apply = nullReturn([loadCssPath, autoRelocate], [inject]);
-const remove = nullReturn([loadCssPath, autoRelocate], [clean]);
-
-const manualRelocate = async (): Promise<void> => {
-  const cssPath = await promptForCssPath(t('hacker.input-path.prompt'));
-  if (!cssPath) {
-    return;
-  }
-  await saveCssPath(cssPath);
-  $info(t('hacker.relocate.success'));
-};
+const relocate = nullReturn([searchCssPath, promptForCssPath], [saveCssPath]);
+const apply = nullReturn([loadCssPath, relocate], [(cssPath) => inject(cssPath, true)]);
+const remove = nullReturn([loadCssPath, relocate], [clean]);
+const manualRelocate = nullReturn([promptForCssPath], [saveCssPath, () => $info(t('hacker.relocate.success'))]);
