@@ -1,10 +1,9 @@
-import { ConfigurationTarget, workspace } from 'vscode';
+import { ConfigurationTarget, workspace, env } from 'vscode';
 import { existsSync } from 'node:fs';
-import { userInfo } from 'node:os';
 
 import { clamp, safeInt } from '@/core/utils';
 
-const uniqueKey = ((u) => u.uid + '-' + u.gid + '-' + u.homedir)(userInfo());
+const uniqueKey = env.machineId; // ((u) => u.uid + '-' + u.gid + '-' + u.homedir)(userInfo());
 export const config = () => workspace.getConfiguration('jetbrains-titlebar');
 
 export const loadCssPath = (): string | null => {
