@@ -36,10 +36,17 @@ export const hashIndex = (input: string): number => {
   return r % COLORS.length;
 };
 
+/**
+ * Return 1 char if the first char is CJK, otherwise return up to 2 chars.
+ */
 export const getProjectInitials = (name: string): string => {
   const trimmed = name.trim();
   if (!trimmed) {
     return '';
+  }
+
+  if (/[\u4e00-\u9fff\u3400-\u4dbf\uf900-\ufaff]/.test(trimmed[0])) {
+    return trimmed[0];
   }
 
   const normalized = trimmed
@@ -75,7 +82,7 @@ export const getProjectInitials = (name: string): string => {
 /**
  * Search for workbench.desktop.main.css in common locations
  */
-export const searchWorkbenchCss = async (): Promise<string | null> => {
+export const searchCssPath = async (): Promise<string | null> => {
   const possiblePaths: string[] = [];
   const home = homedir();
   const platform = process.platform;

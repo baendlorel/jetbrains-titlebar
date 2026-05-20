@@ -9,7 +9,7 @@ import { COLORS } from '@/lib/colors.js';
 import { loadCssPath, percent, pixel, saveCssPath } from '@/lib/config.js';
 
 import { Marker } from './marker.js';
-import { nullReturn, searchWorkbenchCss as searchCssPath } from './utils.js';
+import { nullReturn, searchCssPath } from './utils.js';
 
 // TODO 去掉事件侦听，让它一次注册，后续被垃圾回收
 const idSelector = Marker.instance.item.id.replaceAll('.', '\\.');
