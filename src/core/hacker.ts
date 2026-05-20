@@ -122,7 +122,7 @@ const removeOldToken = (css: string): string => {
   return css.slice(0, start) + Css.tokenStart + css.slice(start + Css.tokenOld.length, end) + Css.tokenEnd;
 };
 
-const relocate = nullReturn([searchCssPath, promptForCssPath], [saveCssPath]);
-const apply = nullReturn([loadCssPath, relocate], [(cssPath) => inject(cssPath, true)]);
-const remove = nullReturn([loadCssPath, relocate], [clean]);
-const manualRelocate = nullReturn([promptForCssPath], [saveCssPath, () => $info(t('hacker.relocate.success'))]);
+export const relocate = nullReturn([searchCssPath, promptForCssPath], [saveCssPath]);
+export const apply = nullReturn([loadCssPath, relocate], [(cssPath) => inject(cssPath, true)]);
+export const remove = nullReturn([loadCssPath, relocate], [clean]);
+export const manualRelocate = nullReturn([promptForCssPath], [saveCssPath, () => $info(t('hacker.relocate.success'))]);

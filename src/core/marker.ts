@@ -11,7 +11,7 @@ const createAbbrStatusBarItem = () => {
   abbrItem.show();
 };
 
-const update = () => {
+export const updateMarker = () => {
   statusBarItem.text = getColorIndex().toString();
 
   syncProjectInitials();
@@ -46,7 +46,7 @@ export const ABBR_ITEM_ID = 'project-initials';
 export const statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left, -Infinity);
 let abbrItem: StatusBarItem | null = null;
 
-update();
+updateMarker();
 statusBarItem.color = 'transparent';
 statusBarItem.show();
 syncProjectInitials();

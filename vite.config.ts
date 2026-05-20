@@ -33,7 +33,6 @@ export default defineConfig(({ mode }) => {
         ],
       },
       sourcemap: false,
-      target: 'node16',
     },
     resolve: {
       alias: {

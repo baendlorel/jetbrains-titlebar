@@ -1,6 +1,7 @@
 import { ConfigurationTarget, workspace } from 'vscode';
 import { existsSync } from 'node:fs';
 import { userInfo } from 'node:os';
+
 import { clamp, safeInt } from '@/core/utils';
 
 const uniqueKey = ((u) => u.uid + '-' + u.gid + '-' + u.homedir)(userInfo());

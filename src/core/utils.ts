@@ -11,12 +11,14 @@ import { projectName } from '@/lib/config';
  * 1. try to get a non-null result from `f0s` in order, if all return null/undefined, return null
  * 2. if got a non-null result, pass it to all `f1s` in order, then return the result
  */
-export const nullReturn =
-  <T, A>(f0s: Array<((arg: A) => Promise<T | null>) | ((arg: A) => T | null)>, f1s: Array<(arg: T) => any>) =>
-  async (arg: A): Promise<T | null> => {
+export function nullReturn<T, A extends any[]>(
+  f0s: Array<((...arg: A) => Promise<T | null>) | ((...arg: A) => T | null)>,
+  f1s: Array<(arg: T) => any>,
+) {
+  return async (...arg: A): Promise<T | null> => {
     let r: T | null = null;
     for (let i = 0; i < f0s.length; i++) {
-      r = await f0s[i](arg);
+      r = await f0s[i](...arg);
       if (r !== null && r !== undefined) {
         break;
       }
@@ -30,6 +32,7 @@ export const nullReturn =
     }
     return r;
   };
+}
 
 export const hashIndex = (input: string): number => {
   const hash = createHash('sha1').update(input).digest();
