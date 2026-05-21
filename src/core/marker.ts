@@ -1,79 +1,54 @@
-import { Disposable, StatusBarAlignment, StatusBarItem, window } from 'vscode';
+import { StatusBarAlignment, StatusBarItem, window } from 'vscode';
 import { getProjectInitials as getAbbr, hashIndex } from './utils.js';
 import { config, projectName } from '@/lib/config.js';
 
-export const MARKER_ITEM_ID = 'marker';
-export const ABBR_ITEM_ID = 'project-initials';
-
-const MARKER_ITEM_NAME = 'JetBrains Titlebar Marker';
-const ABBR_ITEM_NAME = 'JetBrains Titlebar Project Initials';
-
-const setAbbrItemText = () => {
-  if (!abbrItem) {
-    return;
-  }
-
-  abbrItem.text = getAbbr();
-  abbrItem.tooltip = projectName();
-};
-
-const disposeAbbrStatusBarItem = () => {
-  if (!abbrItem) {
-    return;
-  }
-
-  abbrItem.dispose();
-  abbrItem = null;
-};
-
-const createAbbrStatusBarItem = () => {
-  if (abbrItem) {
-    return;
-  }
-
-  abbrItem = window.createStatusBarItem(ABBR_ITEM_ID, StatusBarAlignment.Left, -Infinity);
-  abbrItem.name = ABBR_ITEM_NAME;
-  abbrItem.color = '#f7f8faaf';
-  setAbbrItemText();
-  abbrItem.show();
-};
-
-export const updateMarker = () => {
-  statusBarItem.text = getColorIndex().toString();
-  statusBarItem.tooltip = projectName();
-
-  syncMarker();
-  setAbbrItemText();
-};
-
-const syncMarker = () => {
-  if (config().get('showProjectInitials', true)) {
-    createAbbrStatusBarItem();
-    return;
-  }
-
-  disposeAbbrStatusBarItem();
-};
-
-const getColorIndex = (): number => {
+const colorIndex = (): string => {
   const name = projectName();
-
-  // Mix in color seed if configured
   const colorSeed = config().get('colorSeed', '');
   const mixedName = colorSeed ? `${name}::${colorSeed}` : name;
-
-  return hashIndex(mixedName);
+  return hashIndex(mixedName).toString();
 };
 
-export const statusBarItem = window.createStatusBarItem(MARKER_ITEM_ID, StatusBarAlignment.Left, -Infinity);
-statusBarItem.name = MARKER_ITEM_NAME;
-let abbrItem: StatusBarItem | null = null;
+export const marker = (() => {
+  const o = window.createStatusBarItem('marker', StatusBarAlignment.Left, -Infinity);
+  o.name = 'JetBrains Titlebar Marker';
+  o.color = 'transparent';
+  o.text = colorIndex();
+  o.tooltip = projectName();
+  o.show();
+  return o;
+})();
 
-export const markerItemsDisposable = Disposable.from(statusBarItem, {
-  dispose: disposeAbbrStatusBarItem,
-});
+const createProjectInitial = (): StatusBarItem => {
+  const o = window.createStatusBarItem('project-initials', StatusBarAlignment.Left, -Infinity);
+  o.name = 'JetBrains Titlebar Project Initials';
+  o.color = '#f7f8faaf';
+  o.accessibilityInformation = { label: colorIndex() };
+  o.text = getAbbr();
+  o.tooltip = projectName();
+  o.show();
+  return o;
+};
 
-updateMarker();
-statusBarItem.color = 'transparent';
-statusBarItem.show();
-syncMarker();
+export let projectInitial: StatusBarItem | null = config().get('showProjectInitials', true)
+  ? createProjectInitial()
+  : null;
+
+export const updateMarkers = () => {
+  marker.text = colorIndex();
+
+  const showProjectInitials = config().get('showProjectInitials', true);
+  if (projectInitial && showProjectInitials) {
+    // be -> be  update color index only
+    projectInitial.accessibilityInformation = { label: colorIndex() };
+  } else if (projectInitial && !showProjectInitials) {
+    // be -> null
+    projectInitial.dispose();
+    projectInitial = null;
+  } else if (!projectInitial && showProjectInitials) {
+    // null -> be
+    projectInitial = createProjectInitial();
+  } else if (!projectInitial && !showProjectInitials) {
+    // null -> null, do nothing
+  }
+};

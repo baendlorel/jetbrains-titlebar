@@ -15,6 +15,7 @@ const zh = {
   'hacker.relocate.success': 'CSS 文件路径已更新',
   'hacker.auto-relocate.fail': '没有找到CSS文件，请手动指定',
   'hacker.invalid-windows-path': 'Windows 路径无效: {0}',
+  'marker.restart-to-apply-changes': '重启 VS Code 以应用更改',
 };
 
 const en: typeof zh = {
@@ -32,6 +33,7 @@ const en: typeof zh = {
   'hacker.relocate.success': 'CSS file path has been updated',
   'hacker.auto-relocate.fail': 'No CSS file found, please specify it manually',
   'hacker.invalid-windows-path': 'Invalid Windows path: {0}',
+  'marker.restart-to-apply-changes': 'Please restart VS Code to apply the changes',
 };
 
 const dict = vscode.env.language.includes('zh') ? zh : en;

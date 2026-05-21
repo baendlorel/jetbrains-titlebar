@@ -1,9 +1,10 @@
 import type { ConfigName, CommandName, Fn } from './types/global.js';
 import { commands, workspace, ExtensionContext, ConfigurationChangeEvent } from 'vscode';
 
-import { errorPop } from './lib/native.js';
-import { markerItemsDisposable, updateMarker } from './core/marker.js';
+import { $info, errorPop } from './lib/native.js';
+import { marker } from './core/marker.js';
 import { apply, manualRelocate, relocate, remove } from './core/hacker.js';
+import { t } from './lib/l10n.js';
 
 const changed = (e: ConfigurationChangeEvent, ...names: ConfigName[]) =>
   names.some((name) => e.affectsConfiguration(`jetbrains-titlebar.${name}`));
@@ -13,15 +14,14 @@ const cmd = (c: CommandName, cb: Fn) => commands.registerCommand(`jetbrains-titl
 export default (context: ExtensionContext) => {
   context.subscriptions.push(
     // * elements
-    markerItemsDisposable,
+    marker,
 
     // * change events
-    workspace.onDidChangeWorkspaceFolders(updateMarker),
     workspace.onDidChangeConfiguration((e) => {
       if (changed(e, 'colorSeed', 'showProjectInitials')) {
-        updateMarker();
+        $info(t('marker.restart-to-apply-changes'));
       } else if (changed(e, 'glowIntensity', 'glowDiameter', 'glowOffsetX')) {
-        apply().catch(errorPop).finally(updateMarker);
+        apply().catch(errorPop);
       }
     }),
 
