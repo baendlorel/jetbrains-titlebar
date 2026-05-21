@@ -2,7 +2,8 @@ import vscode from 'vscode';
 import { existsSync } from 'node:fs';
 
 import { clamp, safeInt } from '@/core/utils.js';
-import { $info, t } from './native';
+import { $info } from './native.js';
+import { t } from './l10n.js';
 
 const uniqueKey = vscode.env.machineId;
 export const config = () => vscode.workspace.getConfiguration('jetbrains-titlebar');

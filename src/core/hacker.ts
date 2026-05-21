@@ -3,7 +3,8 @@ import { appendFile, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 
 import { Css, Intensity, Diameter, Offset } from '@/lib/consts.js';
-import { $err, $info, t } from '@/lib/native.js';
+import { t } from '@/lib/l10n.js';
+import { $err, $info } from '@/lib/native.js';
 import { COLORS } from '@/lib/colors.js';
 import { loadCssPath, percent, pixel, saveCssPath } from '@/lib/config.js';
 

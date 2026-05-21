@@ -1,13 +1,12 @@
 import { Disposable, StatusBarAlignment, StatusBarItem, window } from 'vscode';
 import { getProjectInitials as getAbbr, hashIndex } from './utils.js';
 import { config, projectName } from '@/lib/config.js';
-import { t } from '@/lib/native.js';
 
 export const MARKER_ITEM_ID = 'marker';
 export const ABBR_ITEM_ID = 'project-initials';
 
-const MARKER_ITEM_NAME = t('statusbar.marker.name');
-const ABBR_ITEM_NAME = t('statusbar.project-initials.name');
+const MARKER_ITEM_NAME = 'JetBrains Titlebar Marker';
+const ABBR_ITEM_NAME = 'JetBrains Titlebar Project Initials';
 
 const setAbbrItemText = () => {
   if (!abbrItem) {

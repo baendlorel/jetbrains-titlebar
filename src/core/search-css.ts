@@ -2,7 +2,9 @@ import vscode from 'vscode';
 import { execSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
-import { $err, errorPop, t } from '@/lib/native.js';
+
+import { $err, errorPop } from '@/lib/native.js';
+import { t } from '@/lib/l10n.js';
 
 /**
  * Search for workbench.desktop.main.css in common locations
