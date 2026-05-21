@@ -31,6 +31,7 @@ interface CssParts {
   before: string | null;
   after: string | null;
   content: string;
+  version: string | null;
 }
 
 /**
@@ -38,13 +39,16 @@ interface CssParts {
  */
 const read = async (cssPath: string): Promise<CssParts> => {
   const content = removeOldToken(await readFile(cssPath, 'utf8'));
-  const result: CssParts = { before: null, after: null, content };
+  const result: CssParts = { before: null, after: null, content, version: null };
 
   const start = content.indexOf(Css.tokenStart);
   result.before = start === -1 ? null : content.slice(0, start);
 
   const end = content.indexOf(Css.tokenEnd, start);
   result.after = end === -1 ? null : content.slice(end);
+
+  const version = content.slice(start + Css.tokenStart.length, content.indexOf('*/', start)).match(/\*[\d.]+\*/g)?.[0];
+  result.version = version ?? null;
 
   return result;
 };
@@ -64,7 +68,7 @@ const generate = () => {
   return `\n${Css.tokenStart}${Css.tokenVersion}${base}${styles.join('')}${abbr}${Css.tokenEnd}\n`;
 };
 
-const inject = async (cssPath: string, forced = false): Promise<void> => {
+const inject = async (cssPath: string): Promise<void> => {
   const oldCss = await read(cssPath);
   if (oldCss.before === null && oldCss.after === null) {
     await appendFile(cssPath, generate(), 'utf8');
@@ -74,9 +78,12 @@ const inject = async (cssPath: string, forced = false): Promise<void> => {
   if (__IS_DEV__) {
     $info(`When debugging, always inject`);
   }
-  $info(`Injecting ${oldCss.before && !forced} ${cssPath}`);
-  if (oldCss.before && !forced) {
-    return; // injected already
+
+  if (oldCss.version === '__VERSION__') {
+    if (__IS_DEV__) {
+      $info(`__VERSION__ matches, no need to inject`);
+    }
+    return;
   }
 
   $info(cssPath);
