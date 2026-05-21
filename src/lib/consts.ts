@@ -27,15 +27,18 @@ export const enum Css {
   #KasukabeTsumugi\\.jetbrains-titlebar\\.project-initials{
     position: fixed;
     border-radius: 5px;
-    left: 36px;
+    left: 40px;
     top: 6.5px;
-    height: 21px;
+    height: 20px;
+    width: 24px;
     padding: 1.5px 0px;
     background-color: #f7f8fa28;
+    text-align: center;
   }
-  #KasukabeTsumugi\\.jetbrains-titlebar\\.project-initials .statusbar-item-label{
-    padding: 0 2.5px !important;
-    color: #f7f8faaf !important;
+  #KasukabeTsumugi\\.jetbrains-titlebar\\.project-initials > .statusbar-item-label{
+    padding: 0 0px !important;
+    color: #f7f8fae6 !important;
+    display: block;
   }  
   `,
 }
