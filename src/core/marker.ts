@@ -14,8 +14,9 @@ const marker = (() => {
   const o = window.createStatusBarItem('marker', StatusBarAlignment.Left, -Infinity);
   o.name = 'JetBrains Titlebar Marker';
   o.color = 'transparent';
-  o.text = colorIndex();
+  o.text = '';
   o.tooltip = projectName();
+  o.accessibilityInformation = { label: colorIndex() };
   o.show();
   return o;
 })();
@@ -34,7 +35,7 @@ const createProjectInitial = (): StatusBarItem => {
 let projectInitial: StatusBarItem | null = config().get('showProjectInitials', true) ? createProjectInitial() : null;
 
 export const updateMarkers = () => {
-  marker.text = colorIndex();
+  marker.accessibilityInformation = { label: colorIndex() };
 
   const showProjectInitials = config().get('showProjectInitials', true);
   if (projectInitial && showProjectInitials) {

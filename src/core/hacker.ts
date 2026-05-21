@@ -64,7 +64,7 @@ const read = async (cssPath: string): Promise<CssParts> => {
 };
 
 const replaceColorAndIndex = (text: string, color: string, index: number) =>
-  text.replaceAll('{{color}}', color).replaceAll('{{index}}', `${index}, jetbrains-titlebar`);
+  text.replaceAll('{{color}}', color).replaceAll('{{index}}', `${index}`);
 
 const generate = () => {
   const base = Css.base

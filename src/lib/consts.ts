@@ -38,7 +38,7 @@ export const enum Css {
     padding: 0 0px !important;
     color: #f7f8fae6 !important;
     display: block;
-    margin-top: -0.5px;
+    margin-top: -1.3px;
   }`,
   abbrBg = `
   body:has(#KasukabeTsumugi\\.jetbrains-titlebar\\.marker[aria-label="{{index}}"]) #KasukabeTsumugi\\.jetbrains-titlebar\\.project-initials{
