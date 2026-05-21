@@ -40,6 +40,6 @@ const dict = vscode.env.language.includes('zh') ? zh : en;
 
 export const t = (key: keyof typeof dict, ...args: string[]): string => {
   let template = dict[key] || key;
-  args.forEach((arg, index) => (template = template.replace(`{{${index}}`, arg)));
+  args.forEach((arg, index) => (template = template.replace(`{${index}}`, arg)));
   return template;
 };

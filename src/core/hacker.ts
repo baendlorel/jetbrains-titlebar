@@ -92,7 +92,6 @@ const inject = async (cssPath: string): Promise<void> => {
 
   if (oldCss.version === '__VERSION__') {
     if (!__IS_DEV__) {
-      $info(`__VERSION__ matches, no need to inject`);
       return;
     }
   } else {
