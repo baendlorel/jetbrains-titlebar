@@ -85,9 +85,10 @@ const inject = async (cssPath: string): Promise<void> => {
       $info(`__VERSION__ matches, no need to inject`);
     }
     return;
+  } else {
+    $info(t('hacker.re-inject-for-new-version'));
   }
 
-  $info(cssPath);
   await writeFile(cssPath, `${oldCss.before}${generate()}${oldCss.after}`, 'utf8');
   $info(t('hacker.input-path.success'));
 };
