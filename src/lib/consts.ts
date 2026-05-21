@@ -32,14 +32,19 @@ export const enum Css {
     height: 20px;
     width: 24px;
     padding: 1.5px 0px;
-    background-color: #f7f8fa28;
     text-align: center;
   }
   #KasukabeTsumugi\\.jetbrains-titlebar\\.project-initials > .statusbar-item-label{
     padding: 0 0px !important;
     color: #f7f8fae6 !important;
     display: block;
+    margin-top: -0.5px;
   }  
+  `,
+  abbrBg = `
+  body:has(#KasukabeTsumugi\\.jetbrains-titlebar\\.marker[aria-label="{{index}}"]) #KasukabeTsumugi\\.jetbrains-titlebar\\.project-initials{
+    background: {{color}} !important;
+  }
   `,
 }
 

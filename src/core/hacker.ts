@@ -63,6 +63,9 @@ const read = async (cssPath: string): Promise<CssParts> => {
   return result;
 };
 
+const replaceColorAndIndex = (text: string, color: string, index: number) =>
+  text.replaceAll('{{color}}', color).replaceAll('{{index}}', `${index}, jetbrains-titlebar`);
+
 const generate = () => {
   const base = Css.base
     .replace(/\n[\s]+/g, '')
@@ -70,12 +73,10 @@ const generate = () => {
     .replace('{{diameter}}', pixel('glowDiameter', Diameter.default, Diameter.min))
     .replace('{{offsetX}}', pixel('glowOffsetX', Offset.default, Offset.min));
 
-  const t = Css.template.replace(/\n[\s]+/g, '');
-  const styles = COLORS.map((c, i) => t.replaceAll('{{color}}', c).replaceAll('{{index}}', `${i}, jetbrains-titlebar`)); // 32, jetbrains-titlebar
+  const styles = COLORS.map((c, i) => replaceColorAndIndex(Css.template, c, i)); // 32, jetbrains-titlebar
+  const abbrBg = COLORS.map((c, i) => replaceColorAndIndex(Css.abbrBg, c, i));
 
-  const abbr = Css.abbr.replace(/\n[\s]+/g, '');
-
-  return `${Css.tokenStart}${Css.tokenVersion}${base}${styles.join('')}${abbr}${Css.tokenEnd}`;
+  return `${Css.tokenStart}${Css.tokenVersion}${base}${styles.join('')}${Css.abbr}${abbrBg}${Css.tokenEnd}`;
 };
 
 const inject = async (cssPath: string): Promise<void> => {
