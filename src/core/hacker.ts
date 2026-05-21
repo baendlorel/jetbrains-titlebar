@@ -73,10 +73,10 @@ const generate = () => {
     .replace('{{diameter}}', pixel('glowDiameter', Diameter.default, Diameter.min))
     .replace('{{offsetX}}', pixel('glowOffsetX', Offset.default, Offset.min));
 
-  const styles = COLORS.map((c, i) => replaceColorAndIndex(Css.template, c, i)); // 32, jetbrains-titlebar
-  const abbrBg = COLORS.map((c, i) => replaceColorAndIndex(Css.abbrBg, c, i));
+  const styles = COLORS.map((c, i) => replaceColorAndIndex(Css.template, c, i)).join(''); // 32, jetbrains-titlebar
+  const abbrBg = COLORS.map((c, i) => replaceColorAndIndex(Css.abbrBg, c, i)).join('');
 
-  return `${Css.tokenStart}${Css.tokenVersion}${base}${styles.join('')}${Css.abbr}${abbrBg}${Css.tokenEnd}`;
+  return `${Css.tokenStart}${Css.tokenVersion}${base}${styles}${Css.abbr}${abbrBg}${Css.tokenEnd}`;
 };
 
 const inject = async (cssPath: string): Promise<void> => {

@@ -39,13 +39,11 @@ export const enum Css {
     color: #f7f8fae6 !important;
     display: block;
     margin-top: -0.5px;
-  }  
-  `,
+  }`,
   abbrBg = `
   body:has(#KasukabeTsumugi\\.jetbrains-titlebar\\.marker[aria-label="{{index}}"]) #KasukabeTsumugi\\.jetbrains-titlebar\\.project-initials{
     background: {{color}} !important;
-  }
-  `,
+  }`,
 }
 
 // # Default glow parameters
