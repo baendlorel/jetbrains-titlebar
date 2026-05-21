@@ -1,6 +1,7 @@
 import { StatusBarAlignment, StatusBarItem, window } from 'vscode';
 import { getProjectInitials as getAbbr, hashIndex } from './utils.js';
 import { config, projectName } from '@/lib/config.js';
+import { Disposable } from 'vscode';
 
 const colorIndex = (): string => {
   const name = projectName();
@@ -9,7 +10,7 @@ const colorIndex = (): string => {
   return hashIndex(mixedName).toString();
 };
 
-export const marker = (() => {
+const marker = (() => {
   const o = window.createStatusBarItem('marker', StatusBarAlignment.Left, -Infinity);
   o.name = 'JetBrains Titlebar Marker';
   o.color = 'transparent';
@@ -30,9 +31,7 @@ const createProjectInitial = (): StatusBarItem => {
   return o;
 };
 
-export let projectInitial: StatusBarItem | null = config().get('showProjectInitials', true)
-  ? createProjectInitial()
-  : null;
+let projectInitial: StatusBarItem | null = config().get('showProjectInitials', true) ? createProjectInitial() : null;
 
 export const updateMarkers = () => {
   marker.text = colorIndex();
@@ -52,3 +51,10 @@ export const updateMarkers = () => {
     // null -> null, do nothing
   }
 };
+
+export const disposeMarkers = Disposable.from({
+  dispose: () => {
+    marker.dispose();
+    projectInitial?.dispose();
+  },
+});
