@@ -43,12 +43,21 @@ const read = async (cssPath: string): Promise<CssParts> => {
   const result: CssParts = { before: null, after: null, content, version: null };
 
   const start = content.indexOf(Css.tokenStart);
-  result.before = start === -1 ? null : content.slice(0, start);
+  if (start === -1) {
+    return result;
+  }
+
+  result.before = content.slice(0, start);
 
   const end = content.indexOf(Css.tokenEnd, start);
-  result.after = end === -1 ? null : content.slice(end);
+  if (end === -1) {
+    return result;
+  }
 
-  const version = content.slice(start + Css.tokenStart.length, content.indexOf('*/', start)).match(/\*[\d.]+\*/g)?.[0];
+  result.after = content.slice(end + Css.tokenEnd.length);
+
+  const innerStart = start + Css.tokenStart.length;
+  const version = content.slice(innerStart, end).match(/^\/\*([\d.]+)\*\//)?.[1];
   result.version = version ?? null;
 
   return result;
@@ -66,7 +75,7 @@ const generate = () => {
 
   const abbr = Css.abbr.replace(/\n[\s]+/g, '');
 
-  return `\n${Css.tokenStart}${Css.tokenVersion}${base}${styles.join('')}${abbr}${Css.tokenEnd}\n`;
+  return `${Css.tokenStart}${Css.tokenVersion}${base}${styles.join('')}${abbr}${Css.tokenEnd}`;
 };
 
 const inject = async (cssPath: string): Promise<void> => {
@@ -77,14 +86,14 @@ const inject = async (cssPath: string): Promise<void> => {
   }
 
   if (__IS_DEV__) {
-    $info(`When debugging, always inject`);
+    $info(`When debugging, always inject. Old version: ${oldCss.version}, new version: __VERSION__`);
   }
 
   if (oldCss.version === '__VERSION__') {
-    if (__IS_DEV__) {
+    if (!__IS_DEV__) {
       $info(`__VERSION__ matches, no need to inject`);
+      return;
     }
-    return;
   } else {
     $info(t('hacker.re-inject-for-new-version'));
   }
